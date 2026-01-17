@@ -1,0 +1,121 @@
+import pandas as pd
+import json
+import re
+
+# 1. SETUP FILES
+new_city_file = 'Mumbai.csv'
+new_city_name = "Mumbai"
+new_city_coords = [19.0760, 72.8777] # Center of Mumbai
+
+# 2. LOAD EXISTING DATA
+try:
+    with open('data.json', 'r') as f:
+        master_data = json.load(f)
+    print(f"✅ Loaded existing data. Cities found: {[c['name'] for c in master_data['cities']]}")
+except:
+    print("⚠️ Could not find 'data.json'. Starting fresh.")
+    master_data = {"cities": []}
+
+# 3. EXPANDED DICTIONARY (Added Mumbai Suffixes)
+suffix_db = {
+    # DRAVIDIAN (Green)
+    'halli': ('Village', 'Dravidian'), 'oor': ('Settlement', 'Dravidian'),
+    'ur': ('Settlement', 'Dravidian'), 'pete': ('Market', 'Dravidian'),
+    'andra': ('Lake Bed', 'Dravidian'), 'sandra': ('Lake Bed', 'Dravidian'),
+    'kuppe': ('Hillock', 'Dravidian'), 'palaya': ('Hamlet', 'Dravidian'),
+    'kere': ('Lake', 'Dravidian'),
+    
+    # MARATHI / KONKANI (Mumbai Specials) -> Orange/Red family (Indo-Aryan)
+    'wada': ('Hamlet/Colony', 'Sanskrit'), 
+    'pada': ('Hamlet', 'Sanskrit'),
+    'oli': ('Village', 'Sanskrit'),    # e.g., Borivali, Kandivali
+    'avali': ('Village', 'Sanskrit'),  # e.g., Dombivli
+    'gaon': ('Village', 'Sanskrit'),   # e.g., Goregaon, Mazgaon
+    'pakhadi': ('Side/Quarter', 'Sanskrit'),
+
+    # SANSKRIT / PERSIAN (Red)
+    'pura': ('City/Town', 'Sanskrit'), 'pur': ('City/Town', 'Sanskrit'),
+    'nagar': ('City', 'Sanskrit'), 'nagara': ('City', 'Sanskrit'),
+    'abad': ('City', 'Sanskrit'), 'bagh': ('Garden', 'Sanskrit'),
+    'baug': ('Garden', 'Sanskrit'), # Persian/Parsi influence
+
+    # ENGLISH (Blue)
+    'town': ('Town', 'English'), 'colony': ('Settlement', 'English'),
+    'block': ('Block', 'English'), 'layout': ('Layout', 'English'),
+    'road': ('Road', 'English'), 'west': ('Direction', 'English'),
+    'east': ('Direction', 'English'), 'hill': ('Hill', 'English'),
+    'park': ('Park', 'English'), ' reclamation': ('Reclamation', 'English'),
+    'chawl': ('Tenement', 'English')
+}
+
+def analyze_name(name_val):
+    if not isinstance(name_val, str) or not name_val: return "Other", "Unknown", "Other"
+    words = re.split(r'[ \-\(\)\.]+', name_val.lower())
+    match = None
+    
+    for word in words:
+        for suffix, (meaning, lang) in suffix_db.items():
+            if word.endswith(suffix):
+                # Mumbai Logic: Prefer 'wada' over 'da' if both existed
+                if lang != 'English': return ("-" + suffix, meaning, lang)
+                match = ("-" + suffix, meaning, lang)
+    if match: return match
+    return "Other", "Unknown", "Other"
+
+# 4. PROCESS NEW CITY
+print(f"Processing {new_city_name}...")
+cleaned_rows = []
+try:
+    with open(new_city_file, 'r') as f:
+        for line in f:
+            line = line.strip()
+            if not line: continue
+            if line.startswith('"'): line = line[1:]
+            if line.endswith('",'): line = line[:-2]
+            elif line.endswith('"'): line = line[:-1]
+            cleaned_rows.append(line.split('\t'))
+            
+    df = pd.DataFrame(cleaned_rows[1:], columns=cleaned_rows[0])
+    target_col = 'name' if 'name' in df.columns else 'name:en'
+
+    # Analyze
+    results = df[target_col].apply(analyze_name)
+    df['Suffix'] = results.apply(lambda x: x[0])
+    df['Meaning'] = results.apply(lambda x: x[1])
+    df['Language'] = results.apply(lambda x: x[2])
+
+    # Construct City Object
+    city_obj = {
+        "name": new_city_name,
+        "coords": new_city_coords,
+        "zoom": 11,
+        "neighborhoods": []
+    }
+
+    for index, row in df.iterrows():
+        if '@lat' not in row: continue
+        try:
+            city_obj["neighborhoods"].append({
+                "n": row[target_col],
+                "s": row['Suffix'],
+                "m": row['Meaning'],
+                "l": row['Language'],
+                "lat": float(row['@lat']),
+                "lon": float(row['@lon'])
+            })
+        except: continue
+
+    # 5. MERGE AND SAVE
+    # Remove Mumbai if it already exists (to avoid duplicates)
+    master_data['cities'] = [c for c in master_data['cities'] if c['name'] != new_city_name]
+    # Add the new Mumbai
+    master_data['cities'].append(city_obj)
+
+    with open('data.json', 'w') as f:
+        json.dump(master_data, f)
+
+    print(f"✅ Success! Added {len(city_obj['neighborhoods'])} locations for Mumbai.")
+    print("Download the updated 'data.json' and upload to GitHub.")
+
+except Exception as e:
+    print(f"❌ Error: {e}")
