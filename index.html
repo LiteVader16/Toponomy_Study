@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Etymology Map of India</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; }
+        #map { height: 100vh; width: 100vw; z-index: 1; }
+        
+        #dashboard {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 350px;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-height: 90vh;
+            overflow-y: auto;
+            display: none;
+        }
+
+        h2 { margin-top: 0; font-size: 20px; color: #333; }
+        .subtitle { font-size: 14px; color: #666; margin-bottom: 15px; }
+        
+        #toggle-btn {
+            background: #2c3e50; color: white; border: none; padding: 8px 15px;
+            border-radius: 4px; cursor: pointer; font-size: 14px; width: 100%;
+        }
+        #toggle-btn:hover { background: #34495e; }
+
+        .legend-item { display: flex; align-items: center; margin: 5px 0; font-size: 13px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; display: inline-block; }
+    </style>
+</head>
+<body>
+
+    <div id="map"></div>
+
+    <div id="dashboard">
+        <h2 id="city-title">City Stats</h2>
+        <p class="subtitle" id="city-desc">Exploring suffixes in this region.</p>
+        
+        <canvas id="suffixChart" width="300" height="200"></canvas>
+        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+        
+        <h3>Key Suffixes</h3>
+        <div id="legend-container"></div>
+        
+        <button id="toggle-btn" onclick="resetView()">Back to India View</button>
+    </div>
+
+    <script>
+        var map = L.map('map').setView([20.5937, 78.9629], 5); 
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            subdomains: 'abcd',
+            maxZoom: 19
+        }).addTo(map);
+
+        var currentMarkers = [];
+        var cityMarkers = [];
+        var myChart = null;
+
+        fetch('data.json')
+            .then(response => response.json())
+            .then(data => {
+                initIndiaView(data);
+            })
+            .catch(err => console.error("Error loading data.json:", err));
+
+        function initIndiaView(data) {
+            currentMarkers.forEach(m => map.removeLayer(m));
+            document.getElementById('dashboard').style.display = 'none';
+
+            data.cities.forEach(city => {
+                var marker = L.marker(city.coords)
+                    .addTo(map)
+                    .bindTooltip("<b>" + city.name + "</b><br>Click to explore", {permanent: false})
+                    .on('click', function() {
+                        loadCityLevel(city);
+                    });
+                cityMarkers.push(marker);
+            });
+        }
+
+        function loadCityLevel(city) {
+            cityMarkers.forEach(m => map.removeLayer(m));
+            map.flyTo(city.coords, city.zoom, { duration: 1.5 });
+
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('city-title').innerText = city.name + " Etymology";
+            document.getElementById('city-desc').innerText = "Analyzing " + city.neighborhoods.length + " neighborhoods";
+
+            var suffixCounts = {};
+            var colors = {};
+
+            city.neighborhoods.forEach(n => {
+                var color = getColor(n.s);
+                colors[n.s] = color;
+
+                var circle = L.circleMarker([n.lat, n.lon], {
+                    radius: 6, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8
+                }).addTo(map);
+                
+                circle.bindPopup(`<b>${n.n}</b><br>Suffix: ${n.s}<br>Meaning: ${n.m}`);
+                currentMarkers.push(circle);
+
+                if (suffixCounts[n.s]) suffixCounts[n.s]++;
+                else suffixCounts[n.s] = 1;
+            });
+
+            updateChart(suffixCounts, colors);
+            updateLegend(suffixCounts, colors);
+        }
+
+        function getColor(suffix) {
+            var palette = {
+                '-pur': '#e74c3c', '-nagar': '#f1c40f', '-halli': '#3498db', 
+                '-oor': '#9b59b6', '-pete': '#e67e22', '-andra': '#1abc9c',
+                '-pura': '#e74c3c', '-colony': '#2ecc71', '-layout': '#34495e',
+                'Other': '#95a5a6'
+            };
+            return palette[suffix] || palette['Other'];
+        }
+
+        function updateChart(counts, colors) {
+            var ctx = document.getElementById('suffixChart').getContext('2d');
+            var sortedKeys = Object.keys(counts).sort((a,b) => counts[b] - counts[a]).slice(0, 8);
+            var dataValues = sortedKeys.map(k => counts[k]);
+            var bgColors = sortedKeys.map(k => colors[k]);
+
+            if (myChart) myChart.destroy();
+
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: sortedKeys,
+                    datasets: [{
+                        data: dataValues,
+                        backgroundColor: bgColors,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: { legend: { display: false } }
+                }
+            });
+        }
+        
+        function updateLegend(counts, colors) {
+            var container = document.getElementById('legend-container');
+            container.innerHTML = "";
+            var sortedKeys = Object.keys(counts).sort((a,b) => counts[b] - counts[a]).slice(0, 5);
+            sortedKeys.forEach(key => {
+                container.innerHTML += `
+                    <div class="legend-item">
+                        <span class="dot" style="background:${colors[key]}"></span>
+                        <b>${key}</b>: ${counts[key]} areas
+                    </div>
+                `;
+            });
+        }
+
+        function resetView() {
+            location.reload();
+        }
+    </script>
+</body>
+</html>
