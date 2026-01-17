@@ -3,42 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Etymology Map of India</title>
-    
+    <title>Etymology Map of India</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        body { margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; }
-        #map { height: 100vh; width: 100vw; z-index: 1; }
+        body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; overflow: hidden; }
+        #map { height: 100vh; width: 100vw; }
         
         #dashboard {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 350px;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 1000;
-            max-height: 90vh;
-            overflow-y: auto;
-            display: none;
+            position: absolute; top: 20px; right: 20px; width: 340px;
+            background: rgba(255, 255, 255, 0.95); padding: 20px;
+            border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            z-index: 1000; display: none; max-height: 90vh; overflow-y: auto;
         }
-
-        h2 { margin-top: 0; font-size: 20px; color: #333; }
-        .subtitle { font-size: 14px; color: #666; margin-bottom: 15px; }
         
-        #toggle-btn {
-            background: #2c3e50; color: white; border: none; padding: 8px 15px;
-            border-radius: 4px; cursor: pointer; font-size: 14px; width: 100%;
+        h2 { margin: 0 0 5px 0; color: #2c3e50; font-size: 22px; }
+        .subtitle { color: #7f8c8d; font-size: 13px; margin-bottom: 20px; }
+        
+        /* CONTROLS */
+        .controls { display: flex; gap: 10px; margin-bottom: 15px; }
+        .btn {
+            flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer;
+            font-size: 12px; font-weight: bold; transition: all 0.2s;
         }
-        #toggle-btn:hover { background: #34495e; }
+        .btn-chart { background: #ecf0f1; color: #2c3e50; }
+        .btn-chart.active { background: #2c3e50; color: white; }
+        .btn-dl { background: #27ae60; color: white; }
+        
+        #back-btn { width: 100%; padding: 10px; background: #e74c3c; color: white; margin-top: 20px; }
 
-        .legend-item { display: flex; align-items: center; margin: 5px 0; font-size: 13px; }
-        .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; display: inline-block; }
+        /* LEGEND */
+        .legend-section { margin-top: 15px; }
+        .legend-title { font-size: 12px; font-weight: bold; color: #95a5a6; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
+        .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 13px; cursor: pointer; padding: 2px 5px; border-radius: 4px; }
+        .legend-item:hover { background: #f0f0f0; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
     </style>
 </head>
 <body>
@@ -46,134 +47,196 @@
     <div id="map"></div>
 
     <div id="dashboard">
-        <h2 id="city-title">City Stats</h2>
-        <p class="subtitle" id="city-desc">Exploring suffixes in this region.</p>
+        <h2 id="city-title">City</h2>
+        <div class="subtitle" id="city-stats">Loading...</div>
         
-        <canvas id="suffixChart" width="300" height="200"></canvas>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;">
+        <div class="controls">
+            <button class="btn btn-chart active" onclick="switchChart('doughnut')">Donut</button>
+            <button class="btn btn-chart" onclick="switchChart('bar')">Bar</button>
+            <button class="btn btn-dl" onclick="downloadCSV()">⬇ CSV</button>
+        </div>
+
+        <canvas id="mainChart" width="300" height="250"></canvas>
         
-        <h3>Key Suffixes</h3>
-        <div id="legend-container"></div>
+        <div id="legends"></div>
         
-        <button id="toggle-btn" onclick="resetView()">Back to India View</button>
+        <button id="back-btn" class="btn" onclick="location.reload()">Back to India Map</button>
     </div>
 
     <script>
-        var map = L.map('map').setView([20.5937, 78.9629], 5); 
+        // --- CONFIGURATION ---
+        const colorPalette = {
+            'Sanskrit': ['#d35400', '#e67e22', '#f39c12', '#f1c40f'], // Oranges/Yellows
+            'Dravidian': ['#16a085', '#1abc9c', '#2ecc71', '#27ae60'], // Greens/Teals
+            'English': ['#2c3e50', '#34495e', '#5d6d7e', '#8395a7'],   // Blues/Greys
+            'Other': ['#95a5a6']
+        };
 
+        let map, chartInstance;
+        let currentCityData = null;
+        let markers = [];
+        let chartType = 'doughnut';
+
+        // --- INIT MAP ---
+        map = L.map('map').setView([20.5937, 78.9629], 5);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            subdomains: 'abcd',
-            maxZoom: 19
+            attribution: '&copy; OpenStreetMap &copy; CARTO'
         }).addTo(map);
 
-        var currentMarkers = [];
-        var cityMarkers = [];
-        var myChart = null;
-
+        // --- LOAD DATA ---
         fetch('data.json')
-            .then(response => response.json())
-            .then(data => {
-                initIndiaView(data);
-            })
-            .catch(err => console.error("Error loading data.json:", err));
+            .then(res => res.json())
+            .then(data => initIndia(data));
 
-        function initIndiaView(data) {
-            currentMarkers.forEach(m => map.removeLayer(m));
-            document.getElementById('dashboard').style.display = 'none';
-
+        function initIndia(data) {
             data.cities.forEach(city => {
-                var marker = L.marker(city.coords)
-                    .addTo(map)
-                    .bindTooltip("<b>" + city.name + "</b><br>Click to explore", {permanent: false})
-                    .on('click', function() {
-                        loadCityLevel(city);
-                    });
-                cityMarkers.push(marker);
+                L.marker(city.coords).addTo(map)
+                 .bindTooltip(`<b>${city.name}</b><br>Click to explore`)
+                 .on('click', () => loadCity(city));
             });
         }
 
-        function loadCityLevel(city) {
-            cityMarkers.forEach(m => map.removeLayer(m));
-            map.flyTo(city.coords, city.zoom, { duration: 1.5 });
-
+        // --- LOAD CITY ---
+        function loadCity(city) {
+            currentCityData = city; // Save for filtering
             document.getElementById('dashboard').style.display = 'block';
-            document.getElementById('city-title').innerText = city.name + " Etymology";
-            document.getElementById('city-desc').innerText = "Analyzing " + city.neighborhoods.length + " neighborhoods";
+            document.getElementById('city-title').innerText = city.name;
+            document.getElementById('city-stats').innerText = `${city.neighborhoods.length} Neighborhoods Analyzed`;
 
-            var suffixCounts = {};
-            var colors = {};
+            map.flyTo(city.coords, city.zoom, { duration: 1.5 });
+            renderMap(city.neighborhoods);
+            renderChart(city.neighborhoods);
+        }
 
-            city.neighborhoods.forEach(n => {
-                var color = getColor(n.s);
-                colors[n.s] = color;
+        // --- RENDER MAP ---
+        function renderMap(data) {
+            // Clear old markers
+            markers.forEach(m => map.removeLayer(m));
+            markers = [];
 
-                var circle = L.circleMarker([n.lat, n.lon], {
+            data.forEach(n => {
+                let color = getColor(n.l, n.s); // Get color based on Language & Suffix
+                let circle = L.circleMarker([n.lat, n.lon], {
                     radius: 6, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8
-                }).addTo(map);
+                });
                 
-                circle.bindPopup(`<b>${n.n}</b><br>Suffix: ${n.s}<br>Meaning: ${n.m}`);
-                currentMarkers.push(circle);
+                // Add Metadata for filtering
+                circle.suffix = n.s; 
+                
+                circle.bindPopup(`<b>${n.n}</b><br>${n.s} (${n.l})<br><i>${n.m}</i>`);
+                circle.addTo(map);
+                markers.push(circle);
+            });
+        }
 
-                if (suffixCounts[n.s]) suffixCounts[n.s]++;
-                else suffixCounts[n.s] = 1;
+        // --- COLOR LOGIC ---
+        function getColor(lang, suffix) {
+            // Simple hash to pick a consistent color shade from the palette
+            let palette = colorPalette[lang] || colorPalette['Other'];
+            let hash = suffix.length % palette.length; 
+            return palette[hash];
+        }
+
+        // --- CHART & STATS ---
+        function renderChart(data) {
+            const counts = {};
+            data.forEach(n => { counts[n.s] = (counts[n.s] || 0) + 1; });
+
+            // Sort by count
+            const sortedLabels = Object.keys(counts).sort((a,b) => counts[b] - counts[a]);
+            const values = sortedLabels.map(k => counts[k]);
+            
+            // Get Colors for Chart
+            const bgColors = sortedLabels.map(label => {
+                // Find a representative language for this suffix
+                let item = data.find(n => n.s === label);
+                return getColor(item ? item.l : 'Other', label);
             });
 
-            updateChart(suffixCounts, colors);
-            updateLegend(suffixCounts, colors);
-        }
+            const ctx = document.getElementById('mainChart').getContext('2d');
+            if (chartInstance) chartInstance.destroy();
 
-        function getColor(suffix) {
-            var palette = {
-                '-pur': '#e74c3c', '-nagar': '#f1c40f', '-halli': '#3498db', 
-                '-oor': '#9b59b6', '-pete': '#e67e22', '-andra': '#1abc9c',
-                '-pura': '#e74c3c', '-colony': '#2ecc71', '-layout': '#34495e',
-                'Other': '#95a5a6'
-            };
-            return palette[suffix] || palette['Other'];
-        }
-
-        function updateChart(counts, colors) {
-            var ctx = document.getElementById('suffixChart').getContext('2d');
-            var sortedKeys = Object.keys(counts).sort((a,b) => counts[b] - counts[a]).slice(0, 8);
-            var dataValues = sortedKeys.map(k => counts[k]);
-            var bgColors = sortedKeys.map(k => colors[k]);
-
-            if (myChart) myChart.destroy();
-
-            myChart = new Chart(ctx, {
-                type: 'doughnut',
+            chartInstance = new Chart(ctx, {
+                type: chartType,
                 data: {
-                    labels: sortedKeys,
+                    labels: sortedLabels,
                     datasets: [{
-                        data: dataValues,
+                        data: values,
                         backgroundColor: bgColors,
                         borderWidth: 1
                     }]
                 },
                 options: {
                     responsive: true,
-                    plugins: { legend: { display: false } }
+                    onClick: (evt, elements) => {
+                        if (elements.length > 0) {
+                            let idx = elements[0].index;
+                            let label = sortedLabels[idx];
+                            filterMap(label);
+                        }
+                    },
+                    plugins: { legend: { display: false } } // Hide default legend
+                }
+            });
+            
+            // Build Custom Legend (Language Grouped)
+            buildLegend(counts);
+        }
+
+        function buildLegend(counts) {
+            const container = document.getElementById('legends');
+            container.innerHTML = "";
+            // We can add grouped legends here if needed, keeping it simple for now
+            // Just listing top 5 for quick reference
+            let html = '<div class="legend-section"><div class="legend-title">Top Suffixes</div>';
+            let sorted = Object.keys(counts).sort((a,b) => counts[b] - counts[a]).slice(0, 5);
+            
+            sorted.forEach(k => {
+                html += `<div class="legend-item" onclick="filterMap('${k}')">
+                    <b>${k}</b>: ${counts[k]}
+                </div>`;
+            });
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // --- INTERACTION ---
+        function filterMap(selectedSuffix) {
+            // Toggle opacity of markers
+            markers.forEach(layer => {
+                if (layer.suffix === selectedSuffix) {
+                    // If it matches, keep it visible (or toggle off if we build advanced logic)
+                    layer.setStyle({ fillOpacity: 1, opacity: 1, radius: 8 });
+                    layer.bringToFront();
+                } else {
+                    layer.setStyle({ fillOpacity: 0.1, opacity: 0.1, radius: 4 });
                 }
             });
         }
-        
-        function updateLegend(counts, colors) {
-            var container = document.getElementById('legend-container');
-            container.innerHTML = "";
-            var sortedKeys = Object.keys(counts).sort((a,b) => counts[b] - counts[a]).slice(0, 5);
-            sortedKeys.forEach(key => {
-                container.innerHTML += `
-                    <div class="legend-item">
-                        <span class="dot" style="background:${colors[key]}"></span>
-                        <b>${key}</b>: ${counts[key]} areas
-                    </div>
-                `;
-            });
+
+        function switchChart(type) {
+            chartType = type;
+            // Update buttons
+            document.querySelectorAll('.btn-chart').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            // Re-render
+            if (currentCityData) renderChart(currentCityData.neighborhoods);
         }
 
-        function resetView() {
-            location.reload();
+        function downloadCSV() {
+            if (!currentCityData) return;
+            
+            let csvContent = "data:text/csv;charset=utf-8,Name,Suffix,Language,Meaning,Lat,Lon\n";
+            currentCityData.neighborhoods.forEach(n => {
+                csvContent += `"${n.n}","${n.s}","${n.l}","${n.m}",${n.lat},${n.lon}\n`;
+            });
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `${currentCityData.name}_Etymology_Data.csv`);
+            document.body.appendChild(link);
+            link.click();
         }
     </script>
 </body>
