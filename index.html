@@ -13,16 +13,37 @@
         #map { height: 100vh; width: 100vw; }
         
         #dashboard {
-            position: absolute; top: 20px; right: 20px; width: 340px;
-            background: rgba(255, 255, 255, 0.95); padding: 20px;
-            border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            position: absolute; top: 20px; right: 20px; width: 360px;
+            background: rgba(255, 255, 255, 0.98); padding: 0; /* Removed padding to fit tabs */
+            border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);
             z-index: 1000; display: none; max-height: 90vh; overflow-y: auto;
         }
-        
+
+        /* HEADER */
+        .dash-header { padding: 20px 20px 10px 20px; }
         h2 { margin: 0 0 5px 0; color: #2c3e50; font-size: 22px; }
-        .subtitle { color: #7f8c8d; font-size: 13px; margin-bottom: 20px; }
-        
-        /* CONTROLS */
+        .subtitle { color: #7f8c8d; font-size: 13px; }
+
+        /* TABS */
+        .tab-container { display: flex; border-bottom: 1px solid #eee; margin-top: 10px; }
+        .tab-btn {
+            flex: 1; padding: 12px; background: none; border: none;
+            font-weight: 600; color: #95a5a6; cursor: pointer; border-bottom: 3px solid transparent;
+        }
+        .tab-btn.active { color: #2c3e50; border-bottom: 3px solid #e74c3c; }
+        .tab-btn:hover { background: #f9f9f9; }
+
+        /* TAB CONTENT AREAS */
+        .tab-content { padding: 20px; display: none; }
+        .tab-content.active { display: block; }
+
+        /* INSIGHTS TEXT STYLING */
+        #insight-text { font-size: 14px; line-height: 1.6; color: #34495e; }
+        #insight-text h4 { margin-top: 0; color: #e74c3c; }
+        #insight-text ul { padding-left: 20px; margin-bottom: 15px; }
+        #insight-text li { margin-bottom: 5px; }
+
+        /* CONTROLS (Stats Tab) */
         .controls { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn {
             flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer;
@@ -32,12 +53,12 @@
         .btn-chart.active { background: #2c3e50; color: white; }
         .btn-dl { background: #27ae60; color: white; }
         
-        #back-btn { width: 100%; padding: 10px; background: #e74c3c; color: white; margin-top: 20px; }
+        #back-btn { width: 100%; padding: 12px; background: #e74c3c; color: white; border: none; cursor: pointer; font-weight: bold; }
 
         /* LEGEND */
         .legend-section { margin-top: 15px; }
-        .legend-title { font-size: 12px; font-weight: bold; color: #95a5a6; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
-        .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 13px; cursor: pointer; padding: 2px 5px; border-radius: 4px; }
+        .legend-title { font-size: 11px; font-weight: bold; color: #95a5a6; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: background 0.2s; }
         .legend-item:hover { background: #f0f0f0; }
         .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
     </style>
@@ -47,33 +68,69 @@
     <div id="map"></div>
 
     <div id="dashboard">
-        <h2 id="city-title">City</h2>
-        <div class="subtitle" id="city-stats">Loading...</div>
-        
-        <div class="controls">
-            <button class="btn btn-chart active" onclick="switchChart('doughnut')">Donut</button>
-            <button class="btn btn-chart" onclick="switchChart('bar')">Bar</button>
-            <button class="btn btn-dl" onclick="downloadCSV()">⬇ CSV</button>
+        <div class="dash-header">
+            <h2 id="city-title">City</h2>
+            <div class="subtitle" id="city-stats">Loading...</div>
         </div>
 
-        <canvas id="mainChart" width="300" height="250"></canvas>
+        <div class="tab-container">
+            <button class="tab-btn active" onclick="openTab('stats')">Data & Charts</button>
+            <button class="tab-btn" onclick="openTab('insights')">Insights</button>
+        </div>
+
+        <div id="view-stats" class="tab-content active">
+            <div class="controls">
+                <button class="btn btn-chart active" onclick="switchChart('doughnut')">Donut</button>
+                <button class="btn btn-chart" onclick="switchChart('bar')">Bar</button>
+                <button class="btn btn-dl" onclick="downloadCSV()">⬇ CSV</button>
+            </div>
+            <canvas id="mainChart" width="300" height="250"></canvas>
+            <div id="legends"></div>
+        </div>
+
+        <div id="view-insights" class="tab-content">
+            <div id="insight-text">
+                Select a city to read insights.
+            </div>
+        </div>
         
-        <div id="legends"></div>
-        
-        <button id="back-btn" class="btn" onclick="location.reload()">Back to India Map</button>
+        <button id="back-btn" onclick="location.reload()">Back to India Map</button>
     </div>
 
     <script>
-        // --- CONFIGURATION ---
+        // --- 1. YOUR INSIGHTS DATABASE ---
+        // EDIT THIS SECTION TO ADD TEXT FOR EACH CITY
+        const cityInsights = {
+            "Bengaluru": `
+                <h4>The Garden City's Dual Identity</h4>
+                <p>Bangalore's etymology reveals a clear divide between its ancient roots and modern expansion.</p>
+                <ul>
+                    <li><b>-halli (Village):</b> This suffix dominates the map, proving that modern Bangalore was formed by absorbing hundreds of existing agrarian villages (e.g., Marathahalli, Kodihalli).</li>
+                    <li><b>-nagar (City):</b> These represent the planned extensions post-Independence (e.g., Jayanagar, Indiranagar). Note how they cluster in organized grids.</li>
+                    <li><b>English Influence:</b> Areas like 'Town' (Frazer Town) and 'Layout' reflect the British Cantonment era and modern real estate booms.</li>
+                </ul>
+                <p><i>Click the 'Data' tab to see the breakdown.</i></p>
+            `,
+            "Mumbai": `
+                <h4>Example Text for Mumbai</h4>
+                <p>When you add Mumbai data later, you can type its history here.</p>
+            `
+        };
+
+        // --- 2. CONFIGURATION ---
         const colorPalette = {
-            'Sanskrit': ['#F57F17', '#F9A825', '#FBC02D', '#FDD835', '#4caf50', '#FFEE58', '#FFF176', '#FFF59D'], // Yellows
-            'Dravidian': ['#4A0404', '#610505', '#780606', '#900C0C', '#A71313', 
-        '#BE1A1A', '#D62323', '#E53935', '#EF5350', '#E57373', 
-        '#EF9A9A', '#FFCDD2', '#FFEBEE', '#FF8A80', '#FF5252'], // Reds
-            'English': ['#0D47A1', '#1565C0', '#1976D2', '#1E88E5', '#2196F3', 
-        '#42A5F5', '#64B5F6', '#90CAF9', '#BBDEFB', '#E3F2FD', 
-        '#01579B', '#0277BD', '#0288D1', '#039BE5', '#03A9F4'],   // Blues
-            'Other': ['#95a5a6'] // Blacks
+             'Sanskrit': [
+                '#4A0404', '#610505', '#780606', '#900C0C', '#A71313', 
+                '#BE1A1A', '#D62323', '#E53935', '#EF5350', '#E57373', 
+                '#EF9A9A', '#FFCDD2', '#FFEBEE', '#FF8A80', '#FF5252'
+            ],
+            'English': [
+                '#0D47A1', '#1565C0', '#1976D2', '#1E88E5', '#2196F3', 
+                '#42A5F5', '#64B5F6', '#90CAF9', '#BBDEFB', '#E3F2FD', 
+                '#01579B', '#0277BD', '#0288D1', '#039BE5', '#03A9F4'
+            ],
+            'Dravidian': ['#1b5e20', '#2e7d32', '#388e3c', '#43a047', '#4caf50', '#66bb6a', '#81c784', '#a5d6a7'],
+            'Other': ['#95a5a6']
         };
 
         let map, chartInstance;
@@ -102,57 +159,79 @@
 
         // --- LOAD CITY ---
         function loadCity(city) {
-            currentCityData = city; // Save for filtering
+            currentCityData = city;
             document.getElementById('dashboard').style.display = 'block';
             document.getElementById('city-title').innerText = city.name;
-            document.getElementById('city-stats').innerText = `${city.neighborhoods.length} Neighborhoods Analyzed`;
+            document.getElementById('city-stats').innerText = `${city.neighborhoods.length} Neighborhoods`;
+
+            // INJECT INSIGHTS
+            const insightBox = document.getElementById('insight-text');
+            if (cityInsights[city.name]) {
+                insightBox.innerHTML = cityInsights[city.name];
+            } else {
+                insightBox.innerHTML = "<p>No insights added for this city yet.</p>";
+            }
+
+            // Reset to Stats Tab by default
+            openTab('stats');
 
             map.flyTo(city.coords, city.zoom, { duration: 1.5 });
             renderMap(city.neighborhoods);
             renderChart(city.neighborhoods);
         }
 
+        // --- TAB LOGIC ---
+        function openTab(tabName) {
+            // Hide all tabs
+            document.getElementById('view-stats').style.display = 'none';
+            document.getElementById('view-insights').style.display = 'none';
+            
+            // Deactivate buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+
+            // Show selected tab
+            if (tabName === 'stats') {
+                document.getElementById('view-stats').style.display = 'block';
+                buttons[0].classList.add('active');
+            } else {
+                document.getElementById('view-insights').style.display = 'block';
+                buttons[1].classList.add('active');
+            }
+        }
+
         // --- RENDER MAP ---
         function renderMap(data) {
-            // Clear old markers
             markers.forEach(m => map.removeLayer(m));
             markers = [];
 
             data.forEach(n => {
-                let color = getColor(n.l, n.s); // Get color based on Language & Suffix
+                let color = getColor(n.l, n.s);
                 let circle = L.circleMarker([n.lat, n.lon], {
-                    radius: 5, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8
+                    radius: 6, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8
                 });
-                
-                // Add Metadata for filtering
                 circle.suffix = n.s; 
-                
                 circle.bindPopup(`<b>${n.n}</b><br>${n.s} (${n.l})<br><i>${n.m}</i>`);
                 circle.addTo(map);
                 markers.push(circle);
             });
         }
 
-        // --- COLOR LOGIC ---
         function getColor(lang, suffix) {
-            // Simple hash to pick a consistent color shade from the palette
             let palette = colorPalette[lang] || colorPalette['Other'];
-            let hash = suffix.length % palette.length; 
-            return palette[hash];
+            let hash = 0;
+            for (let i = 0; i < suffix.length; i++) hash += suffix.charCodeAt(i);
+            return palette[hash % palette.length];
         }
 
         // --- CHART & STATS ---
         function renderChart(data) {
             const counts = {};
             data.forEach(n => { counts[n.s] = (counts[n.s] || 0) + 1; });
-
-            // Sort by count
             const sortedLabels = Object.keys(counts).sort((a,b) => counts[b] - counts[a]);
             const values = sortedLabels.map(k => counts[k]);
             
-            // Get Colors for Chart
             const bgColors = sortedLabels.map(label => {
-                // Find a representative language for this suffix
                 let item = data.find(n => n.s === label);
                 return getColor(item ? item.l : 'Other', label);
             });
@@ -179,37 +258,24 @@
                             filterMap(label);
                         }
                     },
-                    plugins: { legend: { display: false } } // Hide default legend
+                    plugins: { legend: { display: false } }
                 }
             });
-            
-            // Build Custom Legend (Language Grouped)
             buildLegend(counts);
         }
 
         function buildLegend(counts) {
             const container = document.getElementById('legends');
-            container.innerHTML = "";
-            // We can add grouped legends here if needed, keeping it simple for now
-            // Just listing top 5 for quick reference
-            let html = '<div class="legend-section"><div class="legend-title">Top Suffixes</div>';
+            container.innerHTML = '<div class="legend-section"><div class="legend-title">Top Suffixes</div></div>';
             let sorted = Object.keys(counts).sort((a,b) => counts[b] - counts[a]).slice(0, 5);
-            
             sorted.forEach(k => {
-                html += `<div class="legend-item" onclick="filterMap('${k}')">
-                    <b>${k}</b>: ${counts[k]}
-                </div>`;
+                container.innerHTML += `<div class="legend-item" onclick="filterMap('${k}')"><b>${k}</b>: ${counts[k]}</div>`;
             });
-            html += '</div>';
-            container.innerHTML = html;
         }
 
-        // --- INTERACTION ---
         function filterMap(selectedSuffix) {
-            // Toggle opacity of markers
             markers.forEach(layer => {
                 if (layer.suffix === selectedSuffix) {
-                    // If it matches, keep it visible (or toggle off if we build advanced logic)
                     layer.setStyle({ fillOpacity: 1, opacity: 1, radius: 8 });
                     layer.bringToFront();
                 } else {
@@ -220,21 +286,17 @@
 
         function switchChart(type) {
             chartType = type;
-            // Update buttons
             document.querySelectorAll('.btn-chart').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
-            // Re-render
             if (currentCityData) renderChart(currentCityData.neighborhoods);
         }
 
         function downloadCSV() {
             if (!currentCityData) return;
-            
             let csvContent = "data:text/csv;charset=utf-8,Name,Suffix,Language,Meaning,Lat,Lon\n";
             currentCityData.neighborhoods.forEach(n => {
                 csvContent += `"${n.n}","${n.s}","${n.l}","${n.m}",${n.lat},${n.lon}\n`;
             });
-
             const encodedUri = encodeURI(csvContent);
             const link = document.createElement("a");
             link.setAttribute("href", encodedUri);
