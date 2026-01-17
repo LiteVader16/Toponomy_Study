@@ -1,0 +1,651 @@
+@id	@type	@lat	@lon	name	name:en	place
+245654272	node	18.9319334	72.8271436	Churchgate		neighbourhood
+245654576	node	18.9429941	72.8262921	Navjeevan Wadi		neighbourhood
+245657778	node	18.9759291	72.8393799	Mustafa Bazaar		neighbourhood
+245658745	node	18.9914237	72.8364587	Lalbaug	Lalbaug	suburb
+245658868	node	18.9911218	72.8548908	Priyadarshini Ambica Nagar		neighbourhood
+245659295	node	18.9996351	72.8599349	Rajiv Gandhi Nagar		neighbourhood
+245659664	node	19.0039990	72.8475097	Ambedkar Nagar		neighbourhood
+245660130	node	19.0115373	72.8905892	Ambapada		neighbourhood
+245660341	node	19.0157176	72.8655421	Korba Mithagar		neighbourhood
+245660420	node	19.0137508	72.8654260	Lal Bahadur Shastri Nagar		neighbourhood
+245660604	node	19.0173423	72.8674746	Panchsheel Nagar		neighbourhood
+245660801	node	19.0192545	72.8689016	Barkat Ali Nagar		neighbourhood
+245660883	node	19.0183290	72.9091655	Prayag Nagar		neighbourhood
+245661244	node	19.0250002	72.9061681	Vishnu Nagar		neighbourhood
+245661614	node	19.0255252	72.8891898	Sri Ganesh Patel Nagar		neighbourhood
+245662182	node	19.0295314	72.8693989	CGS Colony		neighbourhood
+245662657	node	19.0360956	72.8990875	BP Colony		neighbourhood
+245662677	node	19.0350000	72.9449000	Payal Pada		neighbourhood
+245662746	node	19.0364591	72.9508938	Upper Trombay		neighbourhood
+245662755	node	19.0371475	72.8394547	Kapad Bazar		neighbourhood
+245662803	node	19.0369905	72.8621647	Guru Tegh Bahadur Nagar		suburb
+245662855	node	19.0332068	72.9488998	Trombay Koliwada		neighbourhood
+245663132	node	19.0397000	72.9389000	TIFR Colony		neighbourhood
+245663253	node	19.0454742	72.9067582	RCF Colony		neighbourhood
+245663333	node	19.0412000	72.8481000	Bhatiya Nagar		neighbourhood
+245663434	node	19.0432474	72.8918081	Collector Colony		neighbourhood
+245663827	node	19.0463395	72.8410029	Fishermen Colony		neighbourhood
+245663905	node	19.0445775	72.8901279	Vijay Nagar		neighbourhood
+245663944	node	19.0463570	72.9025304	Borla Society		neighbourhood
+245664026	node	19.0458988	72.8904687	VES HOSTEL		neighbourhood
+245664135	node	19.0492112	72.9054038	Maitri Park		neighbourhood
+245664144	node	19.0485257	72.8875786	Chembur Colony		neighbourhood
+245664227	node	19.0498216	72.8602953	Kala Qila		neighbourhood
+245664335	node	19.0492000	72.8788000	Mahatma Phule Nagar		neighbourhood
+245664355	node	19.0505605	72.8611572	PMGP Colony		neighbourhood
+245664525	node	19.0513907	72.8869208	Ramji Ambedkar Nagar		neighbourhood
+245664605	node	19.0514135	72.9114314	Shivneri Nagar		neighbourhood
+245665134	node	19.0552238	72.8938192	Ganesh Nagar		neighbourhood
+245665558	node	19.0570035	72.8804980	Naik Nagar		neighbourhood
+245665635	node	19.0573887	72.8824530	Shivshrushti		neighbourhood
+245665638	node	19.0579562	72.9055659	Subhash Nagar		neighbourhood
+245666110	node	19.0607418	72.8949685	Postal Colony		neighbourhood
+245666177	node	19.0610000	72.8810000	Nehru Nagar	Nehru Nagar	neighbourhood
+245666194	node	19.0627075	72.8910418	Sai Baba Nagar		neighbourhood
+245666457	node	19.0637885	72.9249000	Shivaji Nagar		suburb
+245666473	node	19.0628728	72.9019425	Phule Nagar		neighbourhood
+245666594	node	19.0646267	72.9008764	Jyoti Nagar		neighbourhood
+245666802	node	19.0627798	72.8728237	Ram Manohar Lohia Nagar		neighbourhood
+245666912	node	19.0656000	72.8819000	Naware Baug Jagruti Nagar		neighbourhood
+245667240	node	19.0679783	72.8873276	Sabale Nagar		neighbourhood
+245667526	node	19.0692541	72.9019227	Pestom Sagar Colony		neighbourhood
+245667543	node	19.0732808	72.8625539	Vidya Nagari		neighbourhood
+245667675	node	19.0729921	72.8284323	Ambedkar Colony		neighbourhood
+245667924	node	19.0740000	72.8815000	Netaji Nagar		neighbourhood
+245667945	node	19.0741334	72.9085221	Garodia Nagar		neighbourhood
+245667970	node	19.0764570	72.8880556	Premier Colony		neighbourhood
+245668044	node	19.0761530	72.8319138	Vithaldas Nagar	Vithaldas Nagar	neighbourhood
+245668559	node	19.0801000	72.9155000	Samata Colony		neighbourhood
+245668599	node	19.0806000	72.8941000	Sai Sagar		neighbourhood
+245668677	node	19.0815000	72.9159000	Naidu Colony		neighbourhood
+245668718	node	19.0777344	72.9003536	Vidya Vihar East		suburb
+245668988	node	19.0842323	72.9186350	Ghatkopar		suburb
+245669049	node	19.0903449	72.8405847	Kothu Wadi		neighbourhood
+245669204	node	19.0875000	72.8277000	Chandrabai Nagar		neighbourhood
+245669211	node	19.0895840	72.8409782	MSEB Colony		neighbourhood
+245669378	node	19.0873708	72.8871292	Sunder Baug		neighbourhood
+245669472	node	19.0911867	72.9092006	Gangawadi		neighbourhood
+245669474	node	19.0908037	72.9167981	Laxmi Nagar		neighbourhood
+245669667	node	19.0942142	72.8957166	Narayan Nagar		neighbourhood
+245669829	node	19.0949344	72.9088515	Jagdusha Nagar		neighbourhood
+245669851	node	19.0941778	72.9108738	Sainath Nagar		neighbourhood
+245669964	node	19.0958613	72.8975984	Shiv Premi Nagar		neighbourhood
+245670013	node	19.0948913	72.9135910	Damodar Park		neighbourhood
+245670134	node	19.0970000	72.8945000	Asalpha		suburb
+245670274	node	19.0989932	72.8971921	Kulkarni Wadi		neighbourhood
+245670540	node	19.1034624	72.8585612	Bamanwada		neighbourhood
+245670584	node	19.1008449	72.9118196	Amrut Nagar		neighbourhood
+245670711	node	19.1016318	72.9144376	Park Site Colony		neighbourhood
+245670960	node	19.1061867	72.8793994	Chimatpada		neighbourhood
+245670983	node	19.1068264	72.8756308	Navpada		neighbourhood
+245671112	node	19.1016734	72.9236504	Pirojsha Godrej Nagar		suburb
+245671345	node	19.1073949	72.9289886	Godrej Station Side Colony		neighbourhood
+245671498	node	19.1136865	72.9297750	Hariyali		neighbourhood
+245671585	node	19.1088244	72.9148393	Varsha Nagar		neighbourhood
+245671674	node	19.1094051	72.9173693	Vasant Nagar		neighbourhood
+245671681	node	19.1132940	72.9351762	Kannamwar Nagar I		neighbourhood
+245671696	node	19.1091482	72.8945793	Chandivali		suburb
+245671999	node	19.1152873	72.8618085	Chakala	Chakala	neighbourhood
+245672865	node	19.1168383	72.9401198	Kannamwar Nagar II		neighbourhood
+245673516	node	19.1237521	72.8376829	Munshi Nagar		neighbourhood
+245673601	node	19.1217086	72.9232030	Chandan Nagar		neighbourhood
+245674432	node	19.1336235	72.8975934	Paspoli Village		neighbourhood
+245674691	node	19.1312000	72.8149000	Joseph Patel Wadi		neighbourhood
+245674983	node	19.1391201	72.9048058	Peru Baug		neighbourhood
+245675316	node	19.1433206	72.9251908	Jamil Nagar		neighbourhood
+245675466	node	19.1442447	72.9244247	Samarath Nagar		neighbourhood
+245675629	node	19.1432444	72.8353779	Behram Baug		neighbourhood
+245675641	node	19.1403402	72.7890879	Christian Wada		neighbourhood
+245675808	node	19.1432340	72.7989598	Dhondewadi		neighbourhood
+245675887	node	19.1479253	72.9241119	Santoshi Mata Hill		neighbourhood
+245675915	node	19.1439280	72.7980352	Pascal Wadi		neighbourhood
+245675918	node	19.1490182	72.9257057	Sai Nagar		neighbourhood
+245675975	node	19.1491416	72.9372099	Bhattipada		neighbourhood
+245676168	node	19.1507737	72.9309976	Sarvoday Nagar		neighbourhood
+245676436	node	19.1485870	72.8378546	Motilal Nagar I		neighbourhood
+245676608	node	19.1560835	72.9273657	Tembhipada		neighbourhood
+245676654	node	19.1592749	72.9290662	Tanajiwadi		neighbourhood
+245676679	node	19.1543344	72.9394015	Bhandup Industrial Area		neighbourhood
+245676797	node	19.1599327	72.9302769	Tulshethpada		neighbourhood
+245676818	node	19.1551050	72.8829275	Agaripada		neighbourhood
+245677009	node	19.1628583	72.9341720	Sonapur		neighbourhood
+245677072	node	19.1582101	72.8359531	Shastri Nagar		neighbourhood
+245677080	node	19.1582000	72.9311000	Shrirampada		neighbourhood
+245677088	node	19.1585671	72.7841410	Fazalbhoy Wadi		neighbourhood
+245677112	node	19.1624658	72.9562251	Tatanagar		neighbourhood
+245677126	node	19.1661238	72.9488873	Vaithara Nagar		neighbourhood
+245677226	node	19.1658230	72.9546392	LIC Housing Colony		neighbourhood
+245677285	node	19.1642497	72.8395324	Motilal Nagar III		neighbourhood
+245677305	node	19.1650350	72.9304173	Khindipada		neighbourhood
+245677453	node	19.1619000	72.8425000	Unnat Nagar		neighbourhood
+245677699	node	19.1672245	72.9676413	MHADA Colony		neighbourhood
+245677851	node	19.1658979	72.9619708	Mahakali Nagar		neighbourhood
+245677900	node	19.1717774	72.9463808	Keshav Pada		neighbourhood
+245678295	node	19.1700000	72.8460000	Udyog Nagar		neighbourhood
+245678670	node	19.1827053	72.9451907	Veena Nagar		neighbourhood
+245678679	node	19.1823190	72.9396140	Rampada		neighbourhood
+245678846	node	19.1843222	72.9399737	Yogi Hills		neighbourhood
+245678996	node	19.1809000	72.8435000	Rai Pada		neighbourhood
+245680650	node	19.2046539	72.8548369	Chanakya Nagar		neighbourhood
+245680938	node	19.2097189	72.8759248	Thakur Village		suburb
+245680983	node	19.2051958	72.8626165	Kandivali East		suburb
+245681095	node	19.2133612	72.8475671	Boraspada		neighbourhood
+245681323	node	19.2119251	72.8468858	Poisar		quarter
+245681473	node	19.2214400	72.8300268	Charkop Sector 7		neighbourhood
+245681488	node	19.2221864	72.8611566	Jai Jawan Nagar		neighbourhood
+245681824	node	19.2252681	72.8651415	Devipada		neighbourhood
+245681862	node	19.2270440	72.8768029	Navapada		neighbourhood
+245681906	node	19.2300299	72.8740024	Mafco Colony		neighbourhood
+245681908	node	19.2296994	72.8393605	Ashtavinayak Nagar		neighbourhood
+245682562	node	19.2414963	72.8630086	Ovaripada		neighbourhood
+245682701	node	19.2493000	72.8712000	Ashokvan		neighbourhood
+245682920	node	19.2546000	72.8727000	Vaishali Nagar		neighbourhood
+245682936	node	19.2528641	72.8744785	Dharkhadi		neighbourhood
+245682981	node	19.2560922	72.8748351	Ketkipada		neighbourhood
+245683125	node	19.2595846	72.8588480	Gaondevi		neighbourhood
+469318604	node	18.9581616	72.8033665	Malabar Hill	Malabar Hill	suburb
+477243538	node	18.9584855	72.8122522	Gamdevi		suburb
+494919648	node	18.9826851	72.8252534	Dhobi Ghat		neighbourhood
+495196949	node	18.9750400	72.8250555	Agripada		neighbourhood
+495197492	node	18.9892129	72.8186798	Mahalakshmi		suburb
+528866707	node	19.0014180	72.8542575	Sewri		suburb
+528974855	node	19.0242996	72.8721003	Sangam Nagar		neighbourhood
+528974857	node	19.0266907	72.8728751	Bharatiya Kamala Nagar		neighbourhood
+528975097	node	19.0295170	72.8727440	Vijay Nagar		neighbourhood
+529911940	node	18.9779948	72.8191822	Tulsi Wadi		suburb
+529957140	node	18.9927572	72.8175234	Mariammar Nagar		neighbourhood
+537766326	node	19.0215609	72.8173559	Worli Koliwada		neighbourhood
+537767524	node	19.0428153	72.8653563	Sion East		suburb
+564871060	node	19.2406289	72.7857512	Kajori Wadi		neighbourhood
+564878638	node	19.2421038	72.7930382	Juipada		neighbourhood
+564890990	node	19.2168430	72.7824124	Om Wadi		neighbourhood
+564890996	node	19.2202389	72.7871502	Motempada		neighbourhood
+588794625	node	18.9460331	72.8323329			neighbourhood
+593088354	node	19.0649126	72.8270326	Pali Hill	Pali Hill	neighbourhood
+610909222	node	18.9686230	72.8068368	Cumballa Hill		suburb
+618775787	node	18.9718255	72.8167156	Cowasji Jehangir Colony		neighbourhood
+619297605	node	18.9650659	72.8261833	Kamathipura		neighbourhood
+620427148	node	18.9492575	72.8279382	Kalbadevi		suburb
+622002639	node	19.0141778	72.8972339	Mahul		suburb
+622005421	node	19.0543142	72.9134872	Samrat Ashok Nagar		neighbourhood
+622016202	node	19.0767716	72.8592947	Mathuradas Colony		neighbourhood
+622267823	node	19.0583358	72.8302669	Bandra West	Bandra West	suburb
+622267824	node	19.0616565	72.8498111	Bandra East		suburb
+622267825	node	19.0724575	72.8337068	Khar		suburb
+622267826	node	19.0844004	72.8372899	Santacruz West		suburb
+622270672	node	19.0395778	72.9221562	Anushakti Nagar		suburb
+622395124	node	19.0708218	72.8288647	Ambedkar Nagar	Ambedkar Nagar	neighbourhood
+628634586	node	18.9097659	72.8098311	New Navy Nagar		neighbourhood
+629039127	node	19.0391452	72.9485540	Cheeta Camp		suburb
+630302986	node	19.1561292	72.8707223	Aarey Milk Colony		suburb
+631475927	node	19.0278681	72.8795682	Bhakti Park		neighbourhood
+631494008	node	19.0400760	72.8631472	Agarwada Colony		neighbourhood
+631507899	node	19.0439420	72.8601127	Social Nagar		neighbourhood
+631507900	node	19.0407158	72.8579262	Joglekar Nagar		neighbourhood
+631525426	node	19.0423145	72.8398344	Mahim		suburb
+631537707	node	19.0238887	72.8382236	Dadar West	Dadar West	suburb
+632314632	node	19.0548180	72.8979713	Chembur		suburb
+667392410	node	19.1325956	72.9195901	Jyotiba Phule Nagar		neighbourhood
+674704059	node	19.0454948	72.8587682	Laxmi Baug		neighbourhood
+674705698	node	19.0425710	72.8493536	Sheshwadi		neighbourhood
+674751024	node	19.0148811	72.8279556	Prabhadevi	Prabhadevi	suburb
+674751026	node	19.0029881	72.8303219	Lower Parel	Lower Parel	suburb
+674855624	node	19.0117388	72.8178706	Worli	Worli	suburb
+674866079	node	19.0504556	72.8218606	Bandstand		neighbourhood
+700687985	node	19.0005743	72.8469378	Parmanand Wadi		neighbourhood
+700688002	node	19.0079697	72.8566581	Sadbhavana Nagar		neighbourhood
+700688007	node	19.0269192	72.8759337	Wadala	Wadala	suburb
+700728217	node	18.9566459	72.8411014	Wadi Bandar		neighbourhood
+700774326	node	18.9697337	72.8406201	Mazgaon		suburb
+700851652	node	18.9896188	72.8454005	Dock Labour Colony		neighbourhood
+700851691	node	19.0006640	72.8573567	Sewri Koliwada		neighbourhood
+700886147	node	18.9906660	72.8412564	Ambewadi		neighbourhood
+700886173	node	18.9770363	72.8490768	Darukhana		suburb
+702054594	node	19.2467725	72.8489125	I C Colony		neighbourhood
+702054743	node	19.1633281	72.8411995	Goregaon West		suburb
+702054777	node	19.1158835	72.8542020	Andheri East		suburb
+702054798	node	19.2055321	72.8399273	Kandivali West	Kandivali West	suburb
+702054821	node	19.1363940	72.8373817	Jogeshwari West		suburb
+715015485	node	18.9537706	72.8274755	Bhuleshwar	Bhuleshwar	suburb
+715015487	node	18.9681782	72.8286009	Nagpada	Nagpada	suburb
+715015488	node	18.9736935	72.8367795	Byculla East		suburb
+854249988	node	19.0655007	72.8342325	Linking Road Shopping area		neighbourhood
+858714709	node	18.9541066	72.8394907	Dana Bandar		neighbourhood
+884182550	node	19.1392063	72.8206450	S.V. Patel Nagar		neighbourhood
+884265506	node	19.1507707	72.8267729	Milat Nagar		neighbourhood
+884364379	node	19.1505477	72.8366970	Prakash Nagar		neighbourhood
+884364386	node	19.1481254	72.8275990	Yamuna Nagar		neighbourhood
+884364390	node	19.1172495	72.8339680	Andheri West		suburb
+884364394	node	19.1336719	72.8269553	Suresh Nagar		neighbourhood
+884364396	node	19.1323339	72.8296589	Bhudargarh Colony		neighbourhood
+884364411	node	19.1563461	72.8334032	Bhagat Singh Nagar		neighbourhood
+884364415	node	19.1502437	72.8342294	Oshiwara		suburb
+884466842	node	19.1309837	72.8187345	Versova		suburb
+969785834	node	19.1014909	72.8618508	P&T Colony		neighbourhood
+997675414	node	19.2133591	72.8707940	Dattani Park		neighbourhood
+997676415	node	19.2139380	72.8795821	MESB Colony		neighbourhood
+1034842711	node	18.9576845	72.8355858	Mandvi		neighbourhood
+1169590221	node	19.1723644	72.8550274	Yashodham		neighbourhood
+1169602622	node	19.1738527	72.8670935	Gokuldham		neighbourhood
+1288965326	node	19.0158783	72.8550732	Wadala Village		neighbourhood
+1288965355	node	19.0261579	72.8520846	Matunga East	Matunga East	suburb
+1365560111	node	19.0317259	72.8433917	Matunga West	Matunga West	suburb
+1365948775	node	19.0465755	72.8537044	Koliwada		neighbourhood
+1366008903	node	19.0730876	72.8797604	Buddha Colony		neighbourhood
+1366008909	node	19.0757274	72.8799569	Hallow Pul		neighbourhood
+1366008926	node	19.0686026	72.8765830	Kurla West		suburb
+1366900301	node	19.0475502	72.9051895	Deonar		suburb
+1366986899	node	19.0566802	72.9224217	Govandi East		suburb
+1368747052	node	19.1607297	72.8475308	Jawahar Nagar		neighbourhood
+1375170587	node	19.2141193	72.8258652	Charkop		suburb
+1375170588	node	19.1855960	72.8195942	Malwani		suburb
+1375215062	node	19.0792730	72.8612672	Kalina		suburb
+1375251415	node	19.0642162	72.8534765	Sant Dnyaneshwar Nagar		neighbourhood
+1375273529	node	19.1273336	72.8326176	Dadabhai Naoroji Nagar		suburb
+1389428493	node	19.1740198	72.8695219	Dindoshi		suburb
+1389428494	node	19.1616970	72.8867800			suburb
+1392005686	node	19.0828379	72.8435302	Sen Nagar		neighbourhood
+1632712164	node	19.1944819	72.8389662	Orlem		suburb
+1640184966	node	18.9750879	72.8282502	Byculla West	Byculla West	suburb
+1640184981	node	18.9641312	72.8416378	Chinch Bunder		suburb
+1640184983	node	18.9150910	72.8259691	Colaba		suburb
+1640184992	node	18.9543165	72.8179082	Girgaon	Girgaon	suburb
+1640185006	node	18.9519858	72.8396237	Masjid Bunder		suburb
+1640185011	node	18.9722351	72.8203423	Tardeo	Tardeo	suburb
+1640185017	node	18.9270890	72.8235859	Nariman Point		neighbourhood
+1640191299	node	18.9932602	72.8310115			suburb
+1640192794	node	19.0010485	72.8194265	Nehru Nagar	Nehru Nagar	suburb
+1640198202	node	18.9805523	72.8379288			suburb
+1640203457	node	19.2267228	72.8619328	Borivali East		suburb
+1640203468	node	19.1860219	72.8563181	Malad East		suburb
+1640203470	node	19.1840129	72.8412155	Malad West		suburb
+1640244270	node	19.2486925	72.8640593	Dahisar East		suburb
+1640244277	node	19.1692623	72.8552548	Goregaon East		suburb
+1640244289	node	19.1070215	72.8275275	Juhu	Juhu	suburb
+1640244305	node	19.1422869	72.8051956	Versova Koliwada		neighbourhood
+1640244314	node	19.1039080	72.8403010	Vile Parle West		suburb
+1640245085	node	19.0520835	72.9339158	Mankhurd		suburb
+1640248215	node	19.0628944	72.8825604	Kurla East		suburb
+1640248218	node	19.0812972	72.8948540	Vidya Vihar West		suburb
+1640253261	node	19.0084268	72.8425050	Parel	Parel	suburb
+1640253262	node	18.9622265	72.8367950	Dongri		suburb
+1640260024	node	18.9856662	72.8436536	Cotton Green	Cotton Green	suburb
+1640260027	node	19.0368069	72.8960683	Fertilizer Colony		suburb
+1640260029	node	19.0833438	72.9123246	Ghatkopar East	Ghatkopar East	suburb
+1640260030	node	19.0897439	72.9048035	Ghatkopar West	Ghatkopar West	suburb
+1640260039	node	19.1082060	72.8828404	Saki Naka	Saki Naka	suburb
+1640260042	node	19.1172592	72.9355194	Vikhroli East		suburb
+1640260045	node	19.1145410	72.9257184	Vikhroli West		suburb
+1640261139	node	19.0512275	72.8326014	Bandra Reclamation	Bandra Reclamation	neighbourhood
+1640262758	node	19.0671150	72.8657245	Bandra Kurla Complex		suburb
+1640273573	node	19.1462636	72.9339461	Bhandup West		suburb
+1640273575	node	19.1378308	72.9361964	Bhandup East		suburb
+1640273576	node	19.1289914	72.9225983	Kanjur West		suburb
+1640273577	node	19.1618994	72.9478998	Nahur Gaon		neighbourhood
+1640317554	node	19.0499791	72.9169786	Govandi West		suburb
+1640461311	node	18.9366512	72.8391325	Ballard Estate		neighbourhood
+1640461315	node	19.0222370	72.8356574	Bhavanishankar		neighbourhood
+1640461321	node	19.1375285	72.7918857	Madh		suburb
+1640461324	node	19.0532557	72.9377326	Mandala		neighbourhood
+1640461326	node	19.1777778	72.9383511	Mulund Colony		suburb
+1640461328	node	19.0287453	72.8391613	Shivaji Park		neighbourhood
+1640461329	node	19.1196145	72.9343142	Tagore Nagar		neighbourhood
+1640461335	node	19.0692377	72.8978464	Tilak Nagar		neighbourhood
+1640611520	node	19.1688142	72.8336777	Bangur Nagar		suburb
+1640611527	node	18.9776392	72.8090351	Haji Ali		neighbourhood
+1640625266	node	19.1205119	72.8646365	MIDC		suburb
+1640686127	node	19.1632294	72.7856274	Erangal		neighbourhood
+1640686130	node	19.1946967	72.7992026	Marve		suburb
+1640730174	node	19.0742418	72.8253058	Chuim Village		neighbourhood
+1640730175	node	19.0771365	72.8244872	Khar Danda Koliwada		neighbourhood
+1640851799	node	19.1006803	72.8669299	Sahar Village		neighbourhood
+1641890061	node	19.0718905	72.8244456	Union Park		neighbourhood
+1642954353	node	19.0464843	72.8761301	Anik Nagar		neighbourhood
+1643031070	node	19.0747430	72.9039034	Neelkanth Colony		neighbourhood
+1643035279	node	19.0841614	72.9105915	Saibaba Nagar		neighbourhood
+1643351684	node	19.0466800	72.9293794	Mankhurd Village		neighbourhood
+1644081910	node	19.1320512	72.9366078	Chhatrapati Nagar		neighbourhood
+1644098755	node	19.1530293	72.9475181	RCF Colony		neighbourhood
+1645854310	node	18.9923128	72.8305062	BDD Chawl		neighbourhood
+1645906561	node	19.0702213	72.8431601	Golibar		suburb
+1645906569	node	19.0692334	72.8450702	RPF Colony		neighbourhood
+1646196425	node	19.1878187	72.8641984	Kurar		neighbourhood
+1646685589	node	19.1654931	72.8357802	Motilal Nagar II		neighbourhood
+1646685590	node	19.2107529	72.8361875	Renuka Nagar		neighbourhood
+1646850355	node	19.1312855	72.8330052	Jeevan Nagar		neighbourhood
+1646850360	node	19.1430826	72.8246153	Swami Samarth Nagar		neighbourhood
+1646854000	node	19.2088514	72.8182221	Charkop Village		neighbourhood
+1646887486	node	19.1450637	72.8302884	Adarsh Nagar		neighbourhood
+1646887494	node	19.1190441	72.9234984	Surya Nagar		neighbourhood
+1647344892	node	19.0580400	72.8472584	Gandhi Nagar		neighbourhood
+1647344904	node	19.0546701	72.8485093	Kala Nagar		neighbourhood
+1647456081	node	19.1916840	72.8140978	Kharodi		neighbourhood
+1647556012	node	19.2609471	72.8625905	Ashish Complex		neighbourhood
+1647556033	node	19.2592685	72.8620869	Avdhut Nagar		neighbourhood
+1647556041	node	19.1982684	72.8093427	Malvani Koliwada		neighbourhood
+1648168297	node	19.2225206	72.8722221	Mallapada		neighbourhood
+1648168299	node	19.2222177	72.8751693	Talaopada		neighbourhood
+1648244660	node	19.1032332	72.8916304	Mohli Village		neighbourhood
+1648244664	node	19.1193710	72.8924338	Tunga Village		neighbourhood
+1650308571	node	19.1896170	72.8729839	Appapada		neighbourhood
+1650716579	node	19.0156614	72.8617964	New BPT Colony		neighbourhood
+1650738173	node	19.0173569	72.8634317	Nadkarni Park		neighbourhood
+1651678056	node	19.1336970	72.9381936	Kanjur Gaon	Kanjur Village	neighbourhood
+1651803182	node	19.1331581	72.8690001	Model Town		neighbourhood
+1651803183	node	19.1318421	72.8682445	Takshila Colony		neighbourhood
+1651812871	node	19.1268361	72.8597332	Aghadi Nagar		neighbourhood
+1652037108	node	19.0146179	72.8892409	Mahul Koliwada		neighbourhood
+2128601586	node	19.0509346	72.8386133	Qureshi Nagar Hutment Colony		neighbourhood
+2168562597	node	18.9394438	72.8333427	Bori Bunder		neighbourhood
+2173559344	node	19.0622146	72.8289581	Adarsh Nagar		neighbourhood
+2174602452	node	18.9363735	72.8355736	Bora Bazaar		neighbourhood
+2176723311	node	18.9204831	72.8289577	Cusrow Baug		neighbourhood
+2294332684	node	19.0427072	72.8443699	Navjivan Society		neighbourhood
+2294332685	node	19.0340242	72.8452800	Telephone Colony		neighbourhood
+2294332687	node	19.0325181	72.8440251	VSNL Colony		neighbourhood
+2294442679	node	18.9833940	72.8278010	Shantinagar		neighbourhood
+2317278913	node	19.0725501	72.9154451	Kamaraj Nagar		neighbourhood
+2364412584	node	19.1380387	72.8280164	Shastri Nagar		neighbourhood
+2435514129	node	19.0894810	72.8358837	Rizvi Nagar	Rizvi Nagar	neighbourhood
+2442390173	node	19.0635061	72.8304537	Pali Village	Pali Village	neighbourhood
+2442971946	node	19.2338958	72.8504209	Govind Nagar		neighbourhood
+2453909124	node	19.0757324	72.8631867	Sundar Nagar		neighbourhood
+2630028159	node	18.9284581	72.8325994	Kala Ghoda		neighbourhood
+2647295138	node	19.0579376	72.8968948	Chembur Gaothan		neighbourhood
+2647295139	node	19.0320750	72.8709317	Sardar Vallabhbhai Patel Nagar		neighbourhood
+2663176335	node	19.0385829	72.9360089	Mandala		neighbourhood
+2663548200	node	18.9108384	72.8179634	Dhobi Ghat		neighbourhood
+2720451205	node	19.1297617	72.8213781	Seven Bungalows		neighbourhood
+2720451206	node	19.1287942	72.8255543	Four Bungalows		neighbourhood
+2720457383	node	19.1332580	72.8232509	Model Town		neighbourhood
+2851559458	node	19.0488129	72.8227516	Mount Mary	Mount Mary	neighbourhood
+3204171991	node	19.0537812	72.9357219	Bainga Wadi		neighbourhood
+3206235282	node	19.0514916	72.8788545	Rahul Nagar No.2		neighbourhood
+3212404937	node	19.1379576	72.8241873	New Mhada		neighbourhood
+3213761322	node	18.9480268	72.8364964			neighbourhood
+3224764161	node	19.0670061	72.9244301	Milan Colony		neighbourhood
+3228587120	node	19.0444630	72.8586177	Dharavi	Dharavi	suburb
+3232946141	node	19.1635438	72.9463214	Sarvodaya Nagar		neighbourhood
+3308147208	node	19.0553090	72.8415287	Garib Nagar		neighbourhood
+3308169788	node	19.0389639	72.8531682	Cooperative Housing Society		neighbourhood
+3417234389	node	19.0565143	72.8242201	Chimbai Village		neighbourhood
+3564787019	node	19.0993828	72.9115929	Anand nagar		neighbourhood
+3587142678	node	19.1301932	72.9359451	Nutan Nagar		neighbourhood
+3588266504	node	19.1163289	72.9163751	Swami Narayan Nagar		neighbourhood
+3664811366	node	19.1283153	72.8400381	Azad Nagar		neighbourhood
+3680461765	node	19.1395152	72.9234340	Farid Nagar		neighbourhood
+3708838354	node	18.9332665	72.8345146	Fort	Fort	suburb
+3708865583	node	19.0920602	72.8994007	Azad Nagar		neighbourhood
+3766935667	node	19.0116844	72.8436070	Shindewadi	Shindewadi	neighbourhood
+3792256440	node	19.1566163	72.8382077	Motilal Nagar I		neighbourhood
+3862553557	node	19.1387416	72.8722454	Durganagar		neighbourhood
+3878467629	node	19.1339874	72.8133820	Aram Nagar 2		neighbourhood
+3878473584	node	19.1342726	72.8109705	Jeet Nagar		neighbourhood
+3878473585	node	19.1360715	72.8091531	Mangal Nagar		neighbourhood
+3878505997	node	19.0541142	72.9089703	Nagesh Patil Wadi		neighbourhood
+3933822733	node	19.1319501	72.8147329	Aramnagar Part 1		neighbourhood
+3981413767	node	19.0657535	72.9268690	Sanjay Nagar I		neighbourhood
+3981413768	node	19.0673942	72.9274567	Sanjay Nagar II		neighbourhood
+4131027887	node	19.1657976	72.9558930	Azad Nagar		neighbourhood
+4264781361	node	19.1045213	72.9014595	Sangharsh Nagar		neighbourhood
+4292746740	node	19.0239461	72.8685474	Antop Hill	Antop Hill	suburb
+4292823049	node	19.0508747	72.8890543	Sindhi Society		neighbourhood
+4292858290	node	19.0287526	72.8984217	Anik Gaon		neighbourhood
+4296286803	node	19.0498829	72.9209034	Deonar Village		neighbourhood
+4296977738	node	19.0631262	72.8656239	G Block		neighbourhood
+4306945141	node	19.1704719	72.9610447	Mulund East		suburb
+4306945142	node	19.1719717	72.9511956	Mulund West		suburb
+4340947501	node	19.1082081	72.9209503	Godrej Hillside Colony		neighbourhood
+4342420090	node	19.0837209	72.8474008	Aagri Pada		neighbourhood
+4342420091	node	19.0813635	72.8481893	Anand Nagar		neighbourhood
+4342420092	node	19.0845244	72.8496136	D'mello Compound		neighbourhood
+4342420093	node	19.0822655	72.8438324	Dauri Nagar		neighbourhood
+4342420094	node	19.0837995	72.8492005	Dhobighat		neighbourhood
+4342420095	node	19.0835714	72.8501447	Dutta Mandir		neighbourhood
+4342420096	node	19.0858476	72.8531326	Indira Nagar		neighbourhood
+4342420097	node	19.0860707	72.8542216	Lasunwadi		neighbourhood
+4342420098	node	19.0860301	72.8554447	Madraswadi		neighbourhood
+4342420099	node	19.0848793	72.8542055	Milind Nagar		neighbourhood
+4342420100	node	19.0851733	72.8533097	Subhash Nagar		neighbourhood
+4342420101	node	19.0844028	72.8503592	Utkarsha Nagar		neighbourhood
+4342420102	node	19.0852088	72.8493346	Vagri Wada		neighbourhood
+4342420103	node	19.0772165	72.8541304	Yashwant Nagar		neighbourhood
+4344894291	node	19.1048027	72.9289024	Vikhroli Gaon		neighbourhood
+4344903492	node	19.1052091	72.9327930	Godrej Creek Side Colony		neighbourhood
+4681233372	node	19.1974156	72.8204124	Janakalyan Nagar		neighbourhood
+4759418251	node	19.1187195	72.9073476	Powai		suburb
+4846898844	node	19.0425635	72.8427072	Mahim Parsi Colony		neighbourhood
+4892766334	node	18.9659626	72.8148375	Chikalwadi		neighbourhood
+5138326407	node	19.0712777	72.9099330	Ramabai Sahakar Nagar		neighbourhood
+5265596382	node	19.0635611	72.8253892	Malla		neighbourhood
+5296411371	node	19.0519073	72.8308306	Vaidya Nagar		neighbourhood
+5456500632	node	19.1071458	72.9144734	Anandgadh		neighbourhood
+5477750894	node	19.0920487	72.8820992	Jarimari		neighbourhood
+5482345507	node	19.1316825	72.8756297	Sriput Nagar		neighbourhood
+5495380211	node	19.0938554	72.9146793	Nityanand Nagar		neighbourhood
+5496604603	node	18.9935288	72.8424069	Lal Baug		suburb
+5496716436	node	19.0782328	72.8393130	Willingdon		neighbourhood
+5526822722	node	19.0963204	72.8643595	Sutar Pakhadi		neighbourhood
+5631616217	node	19.1460094	72.7906517	Gabriel Wadi		neighbourhood
+5705458089	node	19.1722019	72.9632085	Gavan Pada Koliwada		neighbourhood
+5746301555	node	19.1841024	72.9437657	Model Town		neighbourhood
+5839627467	node	19.1682298	72.9324791	Amar Nagar		neighbourhood
+5839627468	node	19.1652706	72.9317201	Rajaram Wadi		neighbourhood
+5841547697	node	19.1515483	72.9300624	Ganesh Nagar		neighbourhood
+5841547869	node	19.1576140	72.9319721	Milind Nagar		neighbourhood
+5841547870	node	19.1569097	72.9311165	Govind Nagar		neighbourhood
+5843139503	node	19.1393605	72.9204279	Pratap Nagar		neighbourhood
+5843139504	node	19.1412761	72.9207605	Hanuman Nagar		neighbourhood
+5890165451	node	19.0607777	72.8433817	Shivajinagar		neighbourhood
+5890165452	node	19.0612177	72.8448733	Kherwadi		suburb
+5907308816	node	19.0318761	72.8882146	Vashi Village		neighbourhood
+5907308817	node	19.0407251	72.8917015	Maraoli Village		neighbourhood
+5907308818	node	19.0816423	72.8970712	Kirol VIllage		neighbourhood
+5907308819	node	19.0822659	72.8840089	Kurla Christian Village		neighbourhood
+5907308820	node	19.0753000	72.8676796	Kalina Village		neighbourhood
+5907308821	node	19.0787881	72.8643215	Kolivery Village		neighbourhood
+5907308822	node	19.0842532	72.8274411	Tara Village		neighbourhood
+5907308823	node	19.0050981	72.8460610	Bhoiwada		neighbourhood
+5907308824	node	18.9999313	72.8447176	Parel Village		neighbourhood
+5907322637	node	19.1084739	72.8597027	Chakala Village		neighbourhood
+5907330383	node	19.0407302	72.8642303	Sion Koliwada		neighbourhood
+5909533871	node	19.1412711	72.8562427	Pratap Nagar		neighbourhood
+5909533890	node	19.1392946	72.8573263	Gufa Tekdi		neighbourhood
+5910381578	node	19.0452660	72.9006466	Wadavli Village		neighbourhood
+5911311146	node	19.0799440	72.8563178	Vakola Village		neighbourhood
+5911339565	node	19.0526325	72.9040237	Ghatla Village		neighbourhood
+5911339579	node	19.0559726	72.9081058	Khardev Nagar		neighbourhood
+5911636623	node	19.0649420	72.9103053	Jai Ambe Nagar		neighbourhood
+5911636864	node	19.0615449	72.9051501	Garib Janta Nagar		neighbourhood
+5911636865	node	19.0599072	72.9084599	Gaikwad Nagar		neighbourhood
+5911636866	node	19.0640142	72.9055524	Rahul Nagar		neighbourhood
+5911636867	node	19.0609314	72.9065341	Ambedkar Nagar		neighbourhood
+5911636870	node	19.0608072	72.9079664	Adarsh Nagar		neighbourhood
+5911695101	node	19.0535667	72.9214874	Patilwadi		neighbourhood
+5911695104	node	19.0483871	72.9260123	Agarwadi Gaon		neighbourhood
+5912237816	node	19.0536503	72.9240918	Deonar Colony		neighbourhood
+5912237861	node	19.0526286	72.9197627	Tata Nagar		neighbourhood
+5912237931	node	19.0536782	72.9273668	Lallubhai Compound		neighbourhood
+5912238149	node	19.0563630	72.9275680	Dr Zakir Hussain Nagar		neighbourhood
+5912238198	node	19.0535794	72.9294777	Annabhau Sathe Nagar		neighbourhood
+5913226235	node	19.0592481	72.9122150	Limboni Baug		neighbourhood
+5913226243	node	19.0602622	72.9154444	New Gautam Nagar		neighbourhood
+5913226261	node	19.0592050	72.9109007	New Limboni Baug		neighbourhood
+5913278068	node	19.0674872	72.9261571	Nirankari Nagar		neighbourhood
+5913278310	node	19.0654186	72.9283351	Shashtri Nagar		neighbourhood
+5913278312	node	19.0641916	72.9311514	Shanti Nagar		neighbourhood
+5913278313	node	19.0603103	72.9281124	Adarsh Nagar		neighbourhood
+5913278314	node	19.0601405	72.9287294	Bharat Nagar		neighbourhood
+5913278315	node	19.0606526	72.9298130	Indira Nagar		neighbourhood
+5913278316	node	19.0617883	72.9302663	Chikalwadi		neighbourhood
+5913278317	node	19.0628784	72.9310709	Padma Nagar		neighbourhood
+5913464569	node	19.0669244	72.9066681	Chheda Nagar		suburb
+5913464773	node	19.0551208	72.9132128	Govandi Village		neighbourhood
+5913594285	node	19.0864635	72.8435397	Prabhat Colony		neighbourhood
+5913594286	node	19.0816879	72.8400797	Bajaj Wadi		neighbourhood
+5913594287	node	19.0737385	72.8390229	Ram Krishna Nagar		neighbourhood
+5913743889	node	19.2451847	72.8545904	Shivaji Nagar		neighbourhood
+5921458394	node	19.1050777	72.8433734	Hastiraj Plot		neighbourhood
+5924611734	node	19.1652605	72.9452866	Gavni Pada		neighbourhood
+5924793303	node	19.1510112	72.9432535	Bhandup Village West		neighbourhood
+5924793304	node	19.1505602	72.9457211	Bhandup Village East		neighbourhood
+5924793791	node	19.1788853	72.9532850	Babu Jagjivan Ram Nagar		neighbourhood
+5936647182	node	19.1164520	72.8709733	Kondivita Village		neighbourhood
+5936647183	node	19.1176077	72.8760588	Shivaji Nagar		neighbourhood
+5936647216	node	19.1215307	72.8796691	Vijay Nagar		neighbourhood
+5936692750	node	19.1369178	72.8691280	Poonam Nagar		neighbourhood
+5936692778	node	19.1276887	72.8627819	Sher e Punjab Colony		neighbourhood
+5937358379	node	19.1400092	72.8947484	Filter Pada		neighbourhood
+5937381422	node	19.1470533	72.8949416	Sai Bangoda Adivasi Gaothan		neighbourhood
+5937381558	node	19.1222707	72.8827429	Bhavani Nagar		neighbourhood
+5937381560	node	19.1144347	72.8776145	Marol Village		neighbourhood
+5937604816	node	19.1371560	72.8614676	Shyam Nagar		neighbourhood
+5938628743	node	19.1631171	72.8764129	Mali Nagar		neighbourhood
+5939253605	node	19.1732562	72.8808439	Nagari Niwara Colony		neighbourhood
+5939602672	node	19.1645055	72.8873134	Adivasi Nagar		neighbourhood
+5939660384	node	19.1506007	72.8830647	Adarsh Nagar		neighbourhood
+5939662878	node	19.1538287	72.8863263	Royal Palms Estate		neighbourhood
+5939665724	node	19.1530534	72.8804683	Navjeevan Nagar		neighbourhood
+5939688543	node	19.1444030	72.8661454	Ketli Pada		neighbourhood
+5968928052	node	19.1618156	72.9462889	Hira Nagar		neighbourhood
+5969724488	node	19.1649666	72.9505706	Indira Nagar No.2		neighbourhood
+5969983550	node	19.1645131	72.9523516	Nane Pada		neighbourhood
+5970073726	node	19.1714017	72.9382110	Veer Sambhaji Nagar		neighbourhood
+5984940268	node	19.1776756	72.9366839	Hanuman Pada		neighbourhood
+6126211462	node	19.0813635	72.8538930	Vakola	Vakola	neighbourhood
+6133404372	node	19.0452872	72.8200580	Land's End		neighbourhood
+6212377883	node	19.0360520	72.8635501	Indira Nagar		suburb
+6229353243	node	19.1692533	72.9530060	Vijay Nagar		neighbourhood
+6230922018	node	19.1717817	72.9444230	P&T Colony		neighbourhood
+6230922809	node	19.1695877	72.9477167	Ramghad Nagar		neighbourhood
+6230922820	node	19.1663448	72.9469871	St Pius Colony		neighbourhood
+6235398868	node	19.1745887	72.9651296	Neelam Nagar		neighbourhood
+6786347962	node	19.1247542	72.9201221	Ramabai Ambedkar Nagar		neighbourhood
+6786347965	node	19.1242410	72.9178737	Tirandaz Village		neighbourhood
+6786447317	node	19.1826600	72.9471534	Govardhan Nagar		neighbourhood
+8717192415	node	19.0012230	72.8371802	Railway Colony		neighbourhood
+8740794597	node	18.9714363	72.8051492	Breach Candy		neighbourhood
+8846665382	node	19.1095551	72.9160541	Shivaji nagar		neighbourhood
+9348211565	node	18.9157866	72.8189036	Cuffe Parade		neighbourhood
+9404702300	node	19.0537259	72.8275798	Ranwar Village Square		neighbourhood
+9405918643	node	19.0509424	72.8352795	Lal Mati (Lal Mitti)	Lal Mati (Lal Mitti)	neighbourhood
+10244138456	node	19.1855580	72.9470569	Vaishali Nagar		neighbourhood
+10248764916	node	19.1640081	72.9337862	Azad Nagar		neighbourhood
+10257592374	node	19.1735225	72.9325716	Rahul Nagar		neighbourhood
+10257627239	node	19.1705656	72.9319507	Highland Park		neighbourhood
+10257627240	node	19.1674596	72.9333347	Lok Rachna		neighbourhood
+10259407203	node	19.1765053	72.9545564	Narayan Nagar		neighbourhood
+10263176449	node	19.1183882	72.9114640	Hiranandani Gardens		neighbourhood
+10266021394	node	19.1230766	72.8896201	Shiv Shakti Nagar		neighbourhood
+10266102485	node	19.0884102	72.8891587	Kamani		neighbourhood
+10268111721	node	19.0748910	72.9139950	Nalanda Nagar		neighbourhood
+10269097534	node	19.1604517	72.9297727	Jaishankar Nagar		neighbourhood
+10269097549	node	19.1625141	72.9313016	Srirampada		neighbourhood
+10269097550	node	19.1619770	72.9308778	Trimurti Nagar		neighbourhood
+10269109718	node	19.1634312	72.9300195	Khadan		neighbourhood
+10271314339	node	19.0107163	72.8458145	Naigaon		neighbourhood
+10271314366	node	19.0656414	72.8941934	Shell Colony		neighbourhood
+10273976353	node	19.1179422	72.8381109	Dhangar Wadi		neighbourhood
+10273979019	node	19.1215053	72.8415334	Gaondevi Dongri		neighbourhood
+10274112122	node	19.1080937	72.8436845	Irla Gaon	Irla Village	neighbourhood
+10274112123	node	19.1068417	72.8420860	Dhunbai Wadi		neighbourhood
+10274112130	node	19.1029994	72.8416729	Kamala Nagar		neighbourhood
+10275476344	node	19.1782824	72.9544008	Gautam Nagar		neighbourhood
+10278698111	node	19.0485696	72.9392517	Maharashtra Nagar		neighbourhood
+10293809966	node	19.1657976	72.9359418	Nirmal Lifestyle		neighbourhood
+10301015928	node	19.1591292	72.9464400	Nahur		suburb
+10301025767	node	19.1632590	72.9495460	Vaithara Nagar		neighbourhood
+10303031446	node	19.1702337	72.9490739	Rohidas Nagar		neighbourhood
+10305216855	node	19.0530165	72.8837675	Suman Nagar		neighbourhood
+10305216871	node	19.0565684	72.8902960	Swastik Park		neighbourhood
+10305216872	node	19.0578284	72.8920609	Siddharth Colony		neighbourhood
+10308354751	node	19.1618251	72.9364571	Ram Raheem Udyog Nagar		neighbourhood
+10309251532	node	19.1465466	72.9288500	Kokan Nagar		neighbourhood
+10310414274	node	19.1714739	72.9501116	Mirani Nagar		neighbourhood
+10696472357	node	19.0630204	72.8517580	Government Colony		neighbourhood
+10767848899	node	19.1212432	72.8904817	Budhiya Jadhav Wadi		neighbourhood
+10773578912	node	19.1672806	72.9411246	Salpadevipada		neighbourhood
+10775837442	node	19.1720487	72.9315799	Shankar Tekdi		neighbourhood
+10777556513	node	19.2357034	72.8602311	Daulat Nagar		neighbourhood
+10786762433	node	19.0366737	72.8675611	Rawal Camp		neighbourhood
+10809175128	node	19.0729400	72.9066628	Nath Pai Nagar		neighbourhood
+10845482723	node	19.1752173	72.9349382	Ganesh Pada		neighbourhood
+10845482731	node	19.1759374	72.9359217	Bodha Pada		neighbourhood
+10848131522	node	19.1572772	72.9436443	Subhash Nagar		neighbourhood
+10879216197	node	19.1102327	72.8265882	Juhu Gaothan		neighbourhood
+10879221715	node	19.1111705	72.8304076	JVPD Scheme		neighbourhood
+10879221722	node	19.1176837	72.8211969	Mora Gaon	Mora Village	neighbourhood
+10879625874	node	19.2135124	72.8314644	Bunder Pakhadi Gaon		neighbourhood
+11022980195	node	19.0453674	72.8580585	Saibaba Nagar		neighbourhood
+11022980196	node	19.0456514	72.8583401	Gopinath Colony		neighbourhood
+11024326700	node	19.0928654	72.8515077	Shastri Nagar		neighbourhood
+11028340642	node	19.1330356	72.8951990	Gautam Nagar		neighbourhood
+11028470079	node	19.1481581	72.8935683	Maroshi Pada		neighbourhood
+11063231027	node	19.0482121	72.8941022	"Navjivan Society, Chembur"		neighbourhood
+11109855455	node	19.1667033	72.9303535	Najma Nagar		neighbourhood
+11271567832	node	19.1671556	72.9516858	Jai Ambika Nagar		neighbourhood
+11271609123	node	19.1666955	72.9510196	Indira Nagar No.1		neighbourhood
+11271628176	node	19.1646267	72.9495787	Indira Nagar No.3		neighbourhood
+11294890322	node	19.0312440	72.8414449	Rao Wadi	Rao Wadi	neighbourhood
+11383288436	node	19.1231523	72.8599912	Malpa Dongri	Malpa Dongri	neighbourhood
+11553242346	node	19.0802089	72.8454073	Anand Nagar	Anand Nagar	neighbourhood
+11556366812	node	19.0767662	72.8751385	Kismat Nagar		neighbourhood
+11893334880	node	19.1109169	72.8289863	Vithal Nagar	Vithal Nagar	neighbourhood
+11950780604	node	18.9228809	72.8336853	Apollo Bandar		neighbourhood
+11951270816	node	18.9209019	72.8254348	Shiv Shakti Nagar		neighbourhood
+11951270817	node	18.9192628	72.8248018	Machimar Nagar		neighbourhood
+11953259390	node	18.9736436	72.8407770	Anjeer Wadi		neighbourhood
+11953259420	node	18.9745060	72.8391999	Sitaphalwadi		neighbourhood
+11953352257	node	18.9549487	72.8358847	Khadak		neighbourhood
+11953366419	node	18.9601592	72.8345489	Umerkhadi		neighbourhood
+11954176622	node	19.0096121	72.8993404	Gavhanpada		neighbourhood
+11954242057	node	19.0174074	72.8881395	MMRDA Colony		neighbourhood
+11954344551	node	19.0374391	72.8414771	Wanjawadi		neighbourhood
+11954344552	node	19.0470382	72.8428960	Police Colony		neighbourhood
+11954344564	node	19.0476974	72.8371668	Mahim Koliwada		neighbourhood
+11955846297	node	19.1699944	72.9340451			neighbourhood
+11976213041	node	19.0591872	72.8708902	Prem Nagar		neighbourhood
+12311758580	node	19.0833305	72.9115042	Pant Nagar		neighbourhood
+12312154972	node	19.0860326	72.9064053	Kapol Wadi		neighbourhood
+12387619754	node	19.1786705	72.9456335	Kadampada		neighbourhood
+12387623882	node	19.1822836	72.9413072	Swapna Nagari		neighbourhood
+12769498054	node	19.0028763	72.8471233	Mahadevchi Wadi		neighbourhood
+12769498116	node	19.1858626	72.9415365	Ganesh Pada		neighbourhood
+12842089427	node	19.1067020	72.8291232	Ashok Nagar	Ashok Nagar	neighbourhood
+12848913221	node	19.1090438	72.8264362	Juhu Market	Juhu Market	neighbourhood
+12869942763	node	19.1672137	72.9298712	Adivasi Colony		neighbourhood
+12871624389	node	19.2202863	72.8535965	Sumer Nagar		neighbourhood
+12871624390	node	19.2213009	72.8499175	Kora Kendra		neighbourhood
+12871624391	node	19.2168967	72.8478350	Sai Baba Nagar		quarter
+12871624392	node	19.2238836	72.8476854	Shimpoli		quarter
+12871624393	node	19.2219544	72.8475643	Haridas Nagar		neighbourhood
+12871624394	node	19.2207944	72.8584566	Rajendra Nagar		neighbourhood
+12871624396	node	19.2149882	72.8378643	Mahavir Nagar		quarter
+12871624398	node	19.2488750	72.8529590	Dahisar West		suburb
+12871624399	node	19.2561876	72.8635171	Anand Nagar		neighbourhood
+12871624400	node	19.2607622	72.8666023	N. L. Complex		neighbourhood
+12871650510	node	19.2283752	72.8258655	Gorai		quarter
+12871650511	node	19.2530859	72.8528338	Kandarpada		neighbourhood
+12871843893	node	19.2245281	72.8582698	Dattapada		neighbourhood
+12875122172	node	19.1762586	72.9614302	Howchet Wadi		neighbourhood
+12894811008	node	18.9437539	72.8327731	Narayanpada		neighbourhood
+12901643544	node	19.0562195	72.8429745	Behram Pada	Behram Pada	neighbourhood
+13420278461	node	19.1638670	72.9330425	Qismat Nagar		neighbourhood
+152305308	way	19.0359319	72.9210851	Anushakti Nagar		suburb
+300718053	way	19.0611095	72.8297897	Bandra West		suburb
+445187091	way	19.0917338	72.9169344	Laxmi Nagar		neighbourhood
+483179351	way	19.1062233	72.9016938	Sangharsh Nagar		neighbourhood
+572053114	way	19.1651515	72.9455890	Gavni Pada		neighbourhood
+601141833	way	18.9899470	72.8438817	Kalachowki		neighbourhood
+601141837	way	18.9901330	72.8446962	Abhyudaya Nagar		suburb
+627612988	way	19.1834960	72.9384202	Yogi Hills		neighbourhood
+959543434	way	19.1174443	72.9113204	Hiranandani Gardens		neighbourhood
+1127680654	way	18.9837731	72.8403312	Ferbandar		neighbourhood
+1127680795	way	18.9817105	72.8393387	Ghodapdeo		neighbourhood
+1149339606	way	19.0205151	72.8481838	Dadar Hindu Colony		neighbourhood
+1156207430	way	19.2360637	72.8602947	Daulat Nagar		neighbourhood
+1213605860	way	18.9809597	72.8397207	Dhaku Prabhuchi Wadi		neighbourhood
+1411750671	way	19.0505699	72.8612813	PMGP Colony		neighbourhood
+1411775384	way	19.0881674	72.8365247	Khira Nagar		neighbourhood
+12333405	relation	19.0750086	72.8247115	Danda		suburb
