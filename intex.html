@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;The Etymology Map of India&lt;/title&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.jsdelivr.net/npm/chart.js"&gt;&lt;/script&gt;</p>
+<p class="p2"><span class="Apple-converted-space">    </span></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* BASIC STYLING */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body { margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#map { height: 100vh; width: 100vw; z-index: 1; }</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* THE FLOATING DASHBOARD PANEL */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#dashboard {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>position: absolute;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>right: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 350px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: white;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 8px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>box-shadow: 0 4px 15px rgba(0,0,0,0.2);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>z-index: 1000; /* Sit on top of map */</p>
+<p class="p1"><span class="Apple-converted-space">            </span>max-height: 90vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>overflow-y: auto;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: none; /* Hidden by default until a city is selected */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* HEADER &amp; SEARCH */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>h2 { margin-top: 0; font-size: 20px; color: #333; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.subtitle { font-size: 14px; color: #666; margin-bottom: 15px; }</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* TOGGLE BUTTON */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#toggle-btn {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background: #2c3e50; color: white; border: none; padding: 8px 15px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border-radius: 4px; cursor: pointer; font-size: 14px; width: 100%;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#toggle-btn:hover { background: #34495e; }</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>/* LEGEND COLORS */</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.legend-item { display: flex; align-items: center; margin: 5px 0; font-size: 13px; }</p>
+<p class="p1"><span class="Apple-converted-space">        </span>.dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; display: inline-block; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="map"&gt;&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="dashboard"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h2 id="city-title"&gt;City Stats&lt;/h2&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;p class="subtitle" id="city-desc"&gt;Exploring suffixes in this region.&lt;/p&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;canvas id="suffixChart" width="300" height="200"&gt;&lt;/canvas&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;hr style="border: 0; border-top: 1px solid #eee; margin: 15px 0;"&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;h3&gt;Key Suffixes&lt;/h3&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;div id="legend-container"&gt;&lt;/div&gt;</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>&lt;button id="toggle-btn" onclick="resetView()"&gt;Back to India View&lt;/button&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- 1. SETUP THE MAP ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Start focused on India</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var map = L.map('map').setView([20.5937, 78.9629], 5);<span class="Apple-converted-space"> </span></p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// Add the base map tiles (OpenStreetMap)</p>
+<p class="p1"><span class="Apple-converted-space">        </span>L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>attribution: '&amp;copy; OpenStreetMap contributors &amp;copy; CARTO',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>subdomains: 'abcd',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>maxZoom: 19</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}).addTo(map);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>var currentMarkers = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var cityMarkers = [];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>var myChart = null;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- 2. LOAD DATA ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>fetch('data.json')</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.then(response =&gt; response.json())</p>
+<p class="p1"><span class="Apple-converted-space">            </span>.then(data =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>initIndiaView(data);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- 3. INDIA VIEW (Show City Pins) ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function initIndiaView(data) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Clear existing markers</p>
+<p class="p1"><span class="Apple-converted-space">            </span>currentMarkers.forEach(m =&gt; map.removeLayer(m));</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('dashboard').style.display = 'none';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>data.cities.forEach(city =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>var marker = L.marker(city.coords)</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.addTo(map)</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.bindTooltip("&lt;b&gt;" + city.name + "&lt;/b&gt;&lt;br&gt;Click to explore", {permanent: false})</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>.on('click', function() {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>loadCityLevel(city);</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>});</p>
+<p class="p1"><span class="Apple-converted-space">                </span>cityMarkers.push(marker);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- 4. CITY VIEW (Show Neighborhood Dots) ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function loadCityLevel(city) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Remove city markers</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cityMarkers.forEach(m =&gt; map.removeLayer(m));</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Zoom in</p>
+<p class="p1"><span class="Apple-converted-space">            </span>map.flyTo(city.coords, city.zoom, { duration: 1.5 });</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Show Dashboard</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('dashboard').style.display = 'block';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('city-title').innerText = city.name + " Etymology";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>document.getElementById('city-desc').innerText = "Analyzing " + city.neighborhoods.length + " neighborhoods";</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Process Data for Charts &amp; Map</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var suffixCounts = {};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var colors = {};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>city.neighborhoods.forEach(n =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Color Logic</p>
+<p class="p1"><span class="Apple-converted-space">                </span>var color = getColor(n.s);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>colors[n.s] = color;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Add Dot to Map</p>
+<p class="p1"><span class="Apple-converted-space">                </span>var circle = L.circleMarker([n.lat, n.lon], {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>radius: 6,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>fillColor: color,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>color: "#fff",</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>weight: 1,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>opacity: 1,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>fillOpacity: 0.8</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}).addTo(map);</p>
+<p class="p2"><span class="Apple-converted-space">                </span></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Add Tooltip</p>
+<p class="p1"><span class="Apple-converted-space">                </span>circle.bindPopup(`&lt;b&gt;${n.n}&lt;/b&gt;&lt;br&gt;Suffix: ${n.s}&lt;br&gt;Meaning: ${n.m}`);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentMarkers.push(circle);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>// Count for Stats</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (suffixCounts[n.s]) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>suffixCounts[n.s]++;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>suffixCounts[n.s] = 1;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Update Chart</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateChart(suffixCounts, colors);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>updateLegend(suffixCounts, colors);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- HELPER: Colors ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function getColor(suffix) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var palette = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'-pur': '#e74c3c', // Red</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'-nagar': '#f1c40f', // Yellow</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'-halli': '#3498db', // Blue</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'-oor': '#9b59b6', // Purple</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'-pete': '#e67e22', // Orange</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'-andra': '#1abc9c', // Teal</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'Other': '#95a5a6'<span class="Apple-converted-space">  </span>// Grey</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>return palette[suffix] || palette['Other'];</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- HELPER: Charts ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function updateChart(counts, colors) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var ctx = document.getElementById('suffixChart').getContext('2d');</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>// Sort data to show biggest slices first</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var sortedKeys = Object.keys(counts).sort((a,b) =&gt; counts[b] - counts[a]).slice(0, 8); // Top 8</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var dataValues = sortedKeys.map(k =&gt; counts[k]);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var bgColors = sortedKeys.map(k =&gt; colors[k]);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (myChart) myChart.destroy();</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>myChart = new Chart(ctx, {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>type: 'doughnut',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>data: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>labels: sortedKeys,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>datasets: [{</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>data: dataValues,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>backgroundColor: bgColors,</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>borderWidth: 1</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}]</p>
+<p class="p1"><span class="Apple-converted-space">                </span>},</p>
+<p class="p1"><span class="Apple-converted-space">                </span>options: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>responsive: true,</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>plugins: {</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>legend: { display: false } // We use custom legend</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>}</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function updateLegend(counts, colors) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var container = document.getElementById('legend-container');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>container.innerHTML = "";</p>
+<p class="p1"><span class="Apple-converted-space">            </span>var sortedKeys = Object.keys(counts).sort((a,b) =&gt; counts[b] - counts[a]).slice(0, 5);</p>
+<p class="p2"><span class="Apple-converted-space">            </span></p>
+<p class="p1"><span class="Apple-converted-space">            </span>sortedKeys.forEach(key =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>container.innerHTML += `</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;div class="legend-item"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;span class="dot" style="background:${colors[key]}"&gt;&lt;/span&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                        </span>&lt;b&gt;${key}&lt;/b&gt;: ${counts[key]} areas</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>`;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>});</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>// --- HELPER: Reset ---</p>
+<p class="p1"><span class="Apple-converted-space">        </span>function resetView() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>location.reload(); // Simple reload to go back to start</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
