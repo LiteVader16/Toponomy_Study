@@ -121,7 +121,7 @@
             data.forEach(n => {
                 let color = getColor(n.l, n.s); // Get color based on Language & Suffix
                 let circle = L.circleMarker([n.lat, n.lon], {
-                    radius: 6, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8
+                    radius: 5, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8
                 });
                 
                 // Add Metadata for filtering
