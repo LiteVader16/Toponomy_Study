@@ -4,62 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Etymology Map of India</title>
+    
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <style>
-        body { margin: 0; font-family: 'Helvetica Neue', Arial, sans-serif; overflow: hidden; }
-        #map { height: 100vh; width: 100vw; }
+        :root {
+            --bg-color: #ffffff;
+            --panel-bg: rgba(255, 255, 255, 0.98);
+            --text-main: #2c3e50;
+            --text-sub: #7f8c8d;
+            --border-color: #eee;
+            --hover-bg: #f9f9f9;
+            --shadow: 0 8px 32px rgba(0,0,0,0.15);
+        }
         
+        body.dark-mode {
+            --bg-color: #1a1a1a;
+            --panel-bg: rgba(30, 30, 30, 0.98);
+            --text-main: #ecf0f1;
+            --text-sub: #bdc3c7;
+            --border-color: #444;
+            --hover-bg: #444;
+            --shadow: 0 8px 32px rgba(0,0,0,0.5);
+        }
+
+        body { margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; overflow: hidden; background: var(--bg-color); color: var(--text-main); }
+        #map { height: 100vh; width: 100vw; z-index: 1; }
+        
+        /* DASHBOARD PANEL */
         #dashboard {
             position: absolute; top: 20px; right: 20px; width: 360px;
-            background: rgba(255, 255, 255, 0.98); padding: 0; /* Removed padding to fit tabs */
-            border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            background: var(--panel-bg); padding: 0;
+            border-radius: 12px; box-shadow: var(--shadow);
             z-index: 1000; display: none; max-height: 90vh; overflow-y: auto;
+            transition: background 0.3s, color 0.3s;
         }
 
         /* HEADER */
-        .dash-header { padding: 20px 20px 10px 20px; }
-        h2 { margin: 0 0 5px 0; color: #2c3e50; font-size: 22px; }
-        .subtitle { color: #7f8c8d; font-size: 13px; }
+        .dash-header { padding: 20px 20px 10px 20px; position: relative; }
+        h2 { margin: 0 0 5px 0; font-size: 22px; cursor: pointer; display: inline-block; }
+        h2:hover { text-decoration: underline; color: #3498db; }
+        .subtitle { color: var(--text-sub); font-size: 13px; }
+
+        /* DARK MODE TOGGLE */
+        #dm-toggle {
+            position: absolute; top: 20px; right: 20px;
+            background: none; border: 1px solid var(--text-sub);
+            color: var(--text-main); padding: 4px 8px; border-radius: 4px;
+            cursor: pointer; font-size: 12px;
+        }
 
         /* TABS */
-        .tab-container { display: flex; border-bottom: 1px solid #eee; margin-top: 10px; }
+        .tab-container { display: flex; border-bottom: 1px solid var(--border-color); margin-top: 10px; }
         .tab-btn {
             flex: 1; padding: 12px; background: none; border: none;
-            font-weight: 600; color: #95a5a6; cursor: pointer; border-bottom: 3px solid transparent;
+            font-weight: 600; color: var(--text-sub); cursor: pointer; border-bottom: 3px solid transparent;
         }
-        .tab-btn.active { color: #2c3e50; border-bottom: 3px solid #e74c3c; }
-        .tab-btn:hover { background: #f9f9f9; }
+        .tab-btn.active { color: var(--text-main); border-bottom: 3px solid #e74c3c; }
+        .tab-btn:hover { background: var(--hover-bg); }
 
-        /* TAB CONTENT AREAS */
         .tab-content { padding: 20px; display: none; }
         .tab-content.active { display: block; }
 
-        /* INSIGHTS TEXT STYLING */
-        #insight-text { font-size: 14px; line-height: 1.6; color: #34495e; }
+        /* INSIGHTS TEXT */
+        #insight-text { font-size: 14px; line-height: 1.6; color: var(--text-main); }
         #insight-text h4 { margin-top: 0; color: #e74c3c; }
-        #insight-text ul { padding-left: 20px; margin-bottom: 15px; }
-        #insight-text li { margin-bottom: 5px; }
-
-        /* CONTROLS (Stats Tab) */
+        
+        /* CONTROLS */
         .controls { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn {
             flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer;
             font-size: 12px; font-weight: bold; transition: all 0.2s;
         }
-        .btn-chart { background: #ecf0f1; color: #2c3e50; }
-        .btn-chart.active { background: #2c3e50; color: white; }
+        .btn-chart { background: var(--border-color); color: var(--text-main); }
+        .btn-chart.active { background: var(--text-main); color: var(--panel-bg); }
         .btn-dl { background: #27ae60; color: white; }
         
         #back-btn { width: 100%; padding: 12px; background: #e74c3c; color: white; border: none; cursor: pointer; font-weight: bold; }
 
         /* LEGEND */
-        .legend-section { margin-top: 15px; }
-        .legend-title { font-size: 11px; font-weight: bold; color: #95a5a6; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
+        .legend-title { font-size: 11px; font-weight: bold; color: var(--text-sub); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px; }
         .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 4px; transition: background 0.2s; }
-        .legend-item:hover { background: #f0f0f0; }
+        .legend-item:hover { background: var(--hover-bg); }
         .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
     </style>
 </head>
@@ -69,12 +97,13 @@
 
     <div id="dashboard">
         <div class="dash-header">
-            <h2 id="city-title">City</h2>
+            <h2 id="city-title" onclick="resetFilter()" title="Click to Show All">City</h2>
+            <button id="dm-toggle" onclick="toggleDarkMode()">🌙 / ☀</button>
             <div class="subtitle" id="city-stats">Loading...</div>
         </div>
 
         <div class="tab-container">
-            <button class="tab-btn active" onclick="openTab('stats')">Data & Charts</button>
+            <button class="tab-btn active" onclick="openTab('stats')">Data</button>
             <button class="tab-btn" onclick="openTab('insights')">Insights</button>
         </div>
 
@@ -89,37 +118,41 @@
         </div>
 
         <div id="view-insights" class="tab-content">
-            <div id="insight-text">
-                Select a city to read insights.
-            </div>
+            <div id="insight-text">Select a city...</div>
         </div>
         
         <button id="back-btn" onclick="location.reload()">Back to India Map</button>
     </div>
 
     <script>
-        // --- 1. YOUR INSIGHTS DATABASE ---
-        // EDIT THIS SECTION TO ADD TEXT FOR EACH CITY
+        // --- 1. INSIGHTS DATABASE ---
+        // Add your text here for each city
         const cityInsights = {
             "Bengaluru": `
-                <h4>A journey of urbansiation from -pete to -city</h4>
-                <p>Bangalore's etymology reveals a clear divide between its ancient roots and modern expansion.</p>
+                <h4>The Garden City's Layers</h4>
+                <p>Bangalore shows a clear divide between its agrarian past and planned future.</p>
                 <ul>
-                    <li><b>-halli (Village):</b> This suffix dominates the map, proving that modern Bangalore was formed by absorbing hundreds of existing agrarian villages (e.g., Marathahalli, Kodihalli).</li>
-                    <li><b>-nagar (City):</b> These represent the planned extensions post-Independence (e.g., Jayanagar, Indiranagar). Note how they cluster in organized grids.</li>
-                    <li><b>English Influence:</b> Areas like 'Town' (Frazer Town) and 'Layout' reflect the British Cantonment era and modern real estate booms.</li>
-                </ul>
-                <p><i>Click the 'Data' tab to see the breakdown.</i></p>
-            `,
+                    <li><b>-halli (Village):</b> Dominates the map, showing how the city absorbed hundreds of villages.</li>
+                    <li><b>-nagar (City):</b> Represents the massive planned extensions post-independence.</li>
+                    <li><b>English:</b> 'Town' and 'Layout' reflect the Cantonment era and the IT boom.</li>
+                </ul>`,
             "Mumbai": `
-                <h4>Example Text for Mumbai</h4>
-                <p>When you add Mumbai data later, you can type its history here.</p>
-            `
+                <h4>The Seven Islands</h4>
+                <p>Mumbai's etymology is rooted in its coastal geography and colonial reclamation.</p>
+                <ul>
+                    <li><b>-wada (Hamlet):</b> The most common suffix, denoting original settlements.</li>
+                    <li><b>-baug (Garden):</b> Reflects the Parsi influence and old estates.</li>
+                    <li><b>Reclamation:</b> Unique to Mumbai, marking land reclaimed from the sea.</li>
+                </ul>`,
+            "Delhi": `<h4>The Historic Capital</h4><p>Delhi is a mix of Persian influence (-abad) and modern administration (Nagar, Enclave).</p>`,
+            "Chennai": `<h4>The Dravidian Core</h4><p>Dominated by -pakkam (seaside village) and -puram (settlement).</p>`,
+            "Hyderabad": `<h4>The Nizam's City</h4><p>Heavy Persian influence with -abad, mixed with Telugu roots like -pally.</p>`,
+            "Kolkata": `<h4>The Colonial Capital</h4><p>Unique suffixes like -para (neighborhood) and -tola (quarter).</p>`
         };
 
-        // --- 2. CONFIGURATION ---
+        // --- 2. COLOR CONFIGURATION ---
         const colorPalette = {
-             'Dravidian': [
+             'Sanskrit': [
                 '#4A0404', '#610505', '#780606', '#900C0C', '#A71313', 
                 '#BE1A1A', '#D62323', '#E53935', '#EF5350', '#E57373', 
                 '#EF9A9A', '#FFCDD2', '#FFEBEE', '#FF8A80', '#FF5252'
@@ -129,7 +162,8 @@
                 '#42A5F5', '#64B5F6', '#90CAF9', '#BBDEFB', '#E3F2FD', 
                 '#01579B', '#0277BD', '#0288D1', '#039BE5', '#03A9F4'
             ],
-            'Sanskrit': ['#F57F17', '#F9A825', '#FBC02D', '#FDD835', '#FFEB3B', '#FFEE58', '#FFF176', '#FFF59D'],
+            'Dravidian': ['#1b5e20', '#2e7d32', '#388e3c', '#43a047', '#4caf50', '#66bb6a', '#81c784', '#a5d6a7'],
+            'Persian': ['#4a235a', '#5b2c6f', '#6c3483', '#7d3c98', '#8e44ad', '#a569bd', '#bb8fce', '#d2b4de'],
             'Other': ['#95a5a6']
         };
 
@@ -139,65 +173,44 @@
         let chartType = 'doughnut';
 
         // --- INIT MAP ---
-        map = L.map('map').setView([20.5937, 78.9629], 5);
+        map = L.map('map', { zoomControl: false }).setView([20.5937, 78.9629], 5);
+        L.control.zoom({ position: 'bottomright' }).addTo(map);
+        
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap &copy; CARTO'
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
         }).addTo(map);
 
         // --- LOAD DATA ---
         fetch('data.json')
             .then(res => res.json())
-            .then(data => initIndia(data));
+            .then(data => initIndia(data))
+            .catch(err => console.error("Could not load data.json:", err));
 
         function initIndia(data) {
             data.cities.forEach(city => {
                 L.marker(city.coords).addTo(map)
-                 .bindTooltip(`<b>${city.name}</b><br>Click to explore`)
+                 .bindTooltip(`<b>${city.name}</b><br>Click to explore`, {direction: 'top'})
                  .on('click', () => loadCity(city));
             });
         }
 
-        // --- LOAD CITY ---
+        // --- CITY VIEW ---
         function loadCity(city) {
             currentCityData = city;
             document.getElementById('dashboard').style.display = 'block';
             document.getElementById('city-title').innerText = city.name;
-            document.getElementById('city-stats').innerText = `${city.neighborhoods.length} Neighborhoods`;
-
-            // INJECT INSIGHTS
-            const insightBox = document.getElementById('insight-text');
-            if (cityInsights[city.name]) {
-                insightBox.innerHTML = cityInsights[city.name];
-            } else {
-                insightBox.innerHTML = "<p>No insights added for this city yet.</p>";
-            }
-
-            // Reset to Stats Tab by default
-            openTab('stats');
-
-            map.flyTo(city.coords, city.zoom, { duration: 1.5 });
-            renderMap(city.neighborhoods);
-            renderChart(city.neighborhoods);
-        }
-
-        // --- TAB LOGIC ---
-        function openTab(tabName) {
-            // Hide all tabs
-            document.getElementById('view-stats').style.display = 'none';
-            document.getElementById('view-insights').style.display = 'none';
+            document.getElementById('city-stats').innerText = `${city.neighborhoods.length} Neighborhoods Analyzed`;
             
-            // Deactivate buttons
-            const buttons = document.querySelectorAll('.tab-btn');
-            buttons.forEach(b => b.classList.remove('active'));
+            // Set Insights Text
+            const text = cityInsights[city.name] || "<p>Insights coming soon for this city.</p>";
+            document.getElementById('insight-text').innerHTML = text;
 
-            // Show selected tab
-            if (tabName === 'stats') {
-                document.getElementById('view-stats').style.display = 'block';
-                buttons[0].classList.add('active');
-            } else {
-                document.getElementById('view-insights').style.display = 'block';
-                buttons[1].classList.add('active');
-            }
+            // Default to Stats Tab
+            openTab('stats');
+            
+            // Fly to city
+            map.flyTo(city.coords, city.zoom, { duration: 1.5 });
+            resetFilter();
         }
 
         // --- RENDER MAP ---
@@ -208,32 +221,52 @@
             data.forEach(n => {
                 let color = getColor(n.l, n.s);
                 let circle = L.circleMarker([n.lat, n.lon], {
-                    radius: 6, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8
+                    radius: 6, 
+                    fillColor: color, 
+                    color: "#fff", 
+                    weight: 1, 
+                    opacity: 1, 
+                    fillOpacity: 0.8
                 });
+                
+                // Metadata for filtering
                 circle.suffix = n.s; 
+                
                 circle.bindPopup(`<b>${n.n}</b><br>${n.s} (${n.l})<br><i>${n.m}</i>`);
                 circle.addTo(map);
                 markers.push(circle);
             });
         }
 
+        // --- COLOR LOGIC ---
         function getColor(lang, suffix) {
-            let palette = colorPalette[lang] || colorPalette['Other'];
+            // Match language to palette, or default to 'Other'
+            let keys = Object.keys(colorPalette);
+            let palette = colorPalette['Other'];
+            
+            // Fuzzy match for mixed languages (e.g. "Hindi/Urdu" -> "Persian" or "Sanskrit")
+            if (lang.includes('Dravidian') || lang.includes('Tamil') || lang.includes('Kannada')) palette = colorPalette['Dravidian'];
+            else if (lang.includes('English')) palette = colorPalette['English'];
+            else if (lang.includes('Sanskrit') || lang.includes('Hindi') || lang.includes('Marathi')) palette = colorPalette['Sanskrit'];
+            else if (lang.includes('Persian') || lang.includes('Urdu')) palette = colorPalette['Persian'];
+
+            // Hash suffix to pick a shade
             let hash = 0;
             for (let i = 0; i < suffix.length; i++) hash += suffix.charCodeAt(i);
             return palette[hash % palette.length];
         }
 
-        // --- CHART & STATS ---
+        // --- CHARTS ---
         function renderChart(data) {
             const counts = {};
             data.forEach(n => { counts[n.s] = (counts[n.s] || 0) + 1; });
-            const sortedLabels = Object.keys(counts).sort((a,b) => counts[b] - counts[a]);
-            const values = sortedLabels.map(k => counts[k]);
+
+            const sortedKeys = Object.keys(counts).sort((a,b) => counts[b] - counts[a]);
+            const values = sortedKeys.map(k => counts[k]);
             
-            const bgColors = sortedLabels.map(label => {
-                let item = data.find(n => n.s === label);
-                return getColor(item ? item.l : 'Other', label);
+            const bgColors = sortedKeys.map(k => {
+                let item = data.find(n => n.s === k);
+                return getColor(item ? item.l : 'Other', k);
             });
 
             const ctx = document.getElementById('mainChart').getContext('2d');
@@ -242,7 +275,7 @@
             chartInstance = new Chart(ctx, {
                 type: chartType,
                 data: {
-                    labels: sortedLabels,
+                    labels: sortedKeys,
                     datasets: [{
                         data: values,
                         backgroundColor: bgColors,
@@ -254,56 +287,47 @@
                     onClick: (evt, elements) => {
                         if (elements.length > 0) {
                             let idx = elements[0].index;
-                            let label = sortedLabels[idx];
-                            filterMap(label);
+                            filterMap(sortedKeys[idx]);
                         }
                     },
                     plugins: { legend: { display: false } }
                 }
             });
-            buildLegend(counts);
+            
+            buildLegend(counts, sortedKeys, data);
         }
 
-        function buildLegend(counts) {
+        function buildLegend(counts, sortedKeys, data) {
             const container = document.getElementById('legends');
-            container.innerHTML = '<div class="legend-section"><div class="legend-title">Top Suffixes</div></div>';
-            let sorted = Object.keys(counts).sort((a,b) => counts[b] - counts[a]).slice(0, 5);
-            sorted.forEach(k => {
-                container.innerHTML += `<div class="legend-item" onclick="filterMap('${k}')"><b>${k}</b>: ${counts[k]}</div>`;
+            container.innerHTML = '<div class="legend-title">Top Suffixes</div>';
+            
+            // Show top 5
+            sortedKeys.slice(0, 5).forEach(k => {
+                // Find language for this suffix to get correct color
+                let sample = data.find(n => n.s === k);
+                let color = getColor(sample ? sample.l : 'Other', k);
+                
+                container.innerHTML += `
+                    <div class="legend-item" onclick="filterMap('${k}')">
+                        <span class="dot" style="background:${color}"></span>
+                        <b>${k}</b>: ${counts[k]}
+                    </div>`;
             });
         }
 
+        // --- INTERACTIONS ---
         function filterMap(selectedSuffix) {
             markers.forEach(layer => {
                 if (layer.suffix === selectedSuffix) {
-                    layer.setStyle({ fillOpacity: 1, opacity: 1, radius: 8 });
+                    layer.setStyle({ fillOpacity: 1, opacity: 1, radius: 8, stroke: true });
                     layer.bringToFront();
                 } else {
-                    layer.setStyle({ fillOpacity: 0.1, opacity: 0.1, radius: 4 });
+                    layer.setStyle({ fillOpacity: 0.1, opacity: 0.1, radius: 4, stroke: false });
                 }
             });
         }
 
-        function switchChart(type) {
-            chartType = type;
-            document.querySelectorAll('.btn-chart').forEach(b => b.classList.remove('active'));
-            event.target.classList.add('active');
-            if (currentCityData) renderChart(currentCityData.neighborhoods);
-        }
-
-        function downloadCSV() {
-            if (!currentCityData) return;
-            let csvContent = "data:text/csv;charset=utf-8,Name,Suffix,Language,Meaning,Lat,Lon\n";
-            currentCityData.neighborhoods.forEach(n => {
-                csvContent += `"${n.n}","${n.s}","${n.l}","${n.m}",${n.lat},${n.lon}\n`;
-            });
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", `${currentCityData.name}_Etymology_Data.csv`);
-            document.body.appendChild(link);
-            link.click();
-        }
-    </script>
-</body>
-</html>
+        function resetFilter() {
+            if(!currentCityData) return;
+            renderMap(currentCityData.neighborhoods);
+            renderChart(currentCityData.neighborhood
