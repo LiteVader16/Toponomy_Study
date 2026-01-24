@@ -10,75 +10,99 @@
     
     <style>
         :root {
-            --bg-color: #ffffff;
-            --panel-bg: rgba(255, 255, 255, 0.98);
+            /* LIGHT THEME */
+            --bg-color: #f4f6f8;
+            --panel-bg: rgba(255, 255, 255, 0.95);
             --text-main: #2c3e50;
             --text-sub: #7f8c8d;
             --border-color: #eee;
-            --hover-bg: #f9f9f9;
-            --shadow: 0 8px 32px rgba(0,0,0,0.15);
+            --hover-bg: #f8f9fa;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
         }
+        
         body.dark-mode {
-            --bg-color: #1a1a1a;
-            --panel-bg: rgba(30, 30, 30, 0.98);
-            --text-main: #ecf0f1;
-            --text-sub: #bdc3c7;
+            /* DARK THEME */
+            --bg-color: #121212;
+            --panel-bg: rgba(30, 30, 30, 0.90);
+            --text-main: #e0e0e0;
+            --text-sub: #a0a0a0;
             --border-color: #444;
             --hover-bg: #444;
-            --shadow: 0 8px 32px rgba(0,0,0,0.5);
+            --shadow: 0 4px 20px rgba(0,0,0,0.6);
         }
-        body { margin: 0; padding: 0; font-family: 'Helvetica Neue', Arial, sans-serif; overflow: hidden; background: var(--bg-color); color: var(--text-main); }
-        #map { height: 100vh; width: 100vw; z-index: 1; }
+
+        body { 
+            margin: 0; padding: 0; 
+            font-family: 'Helvetica Neue', Arial, sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-main);
+            transition: background 0.3s, color 0.3s;
+            overflow: hidden;
+        }
+
+        #map { height: 100vh; width: 100vw; z-index: 1; background: var(--bg-color); }
         
         #dashboard {
             position: absolute; top: 20px; right: 20px; width: 360px;
             background: var(--panel-bg); padding: 0;
             border-radius: 12px; box-shadow: var(--shadow);
             z-index: 1000; display: none; max-height: 90vh; overflow-y: auto;
+            backdrop-filter: blur(5px);
         }
+
         .dash-header { padding: 20px 20px 10px 20px; position: relative; }
         h2 { margin: 0 0 5px 0; font-size: 22px; cursor: pointer; display: inline-block; }
         h2:hover { text-decoration: underline; color: #3498db; }
         .subtitle { color: var(--text-sub); font-size: 13px; }
+
         #dm-toggle {
             position: absolute; top: 20px; right: 20px;
-            background: none; border: 1px solid var(--text-sub);
-            color: var(--text-main); padding: 4px 8px; border-radius: 4px;
-            cursor: pointer; font-size: 12px;
+            background: var(--hover-bg); border: 1px solid var(--border-color);
+            color: var(--text-main); padding: 6px 10px; border-radius: 6px;
+            cursor: pointer; font-size: 14px; transition: all 0.2s;
         }
+        #dm-toggle:hover { transform: scale(1.05); }
+
         .tab-container { display: flex; border-bottom: 1px solid var(--border-color); margin-top: 10px; }
         .tab-btn {
             flex: 1; padding: 12px; background: none; border: none;
             font-weight: 600; color: var(--text-sub); cursor: pointer; border-bottom: 3px solid transparent;
         }
         .tab-btn.active { color: var(--text-main); border-bottom: 3px solid #e74c3c; }
+        .tab-btn:hover { background: var(--hover-bg); }
+
         .tab-content { padding: 20px; display: none; }
         .tab-content.active { display: block; }
-        #insight-text { font-size: 14px; line-height: 1.6; }
+        #insight-text { font-size: 14px; line-height: 1.6; color: var(--text-main); }
+        
         .controls { display: flex; gap: 10px; margin-bottom: 15px; }
         .btn { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; }
         .btn-chart { background: var(--border-color); color: var(--text-main); }
         .btn-chart.active { background: var(--text-main); color: var(--panel-bg); }
         .btn-dl { background: #27ae60; color: white; }
         #back-btn { width: 100%; padding: 12px; background: #e74c3c; color: white; border: none; cursor: pointer; font-weight: bold; }
+        
         .legend-title { font-size: 11px; font-weight: bold; color: var(--text-sub); margin-bottom: 8px; text-transform: uppercase; }
-        .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 4px; }
+        .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 4px; color: var(--text-main); }
         .legend-item:hover { background: var(--hover-bg); }
         .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
     </style>
 </head>
 <body>
     <div id="map"></div>
+
     <div id="dashboard">
         <div class="dash-header">
-            <h2 id="city-title" onclick="resetFilter()" title="Click to Show All">City</h2>
+            <h2 id="city-title" onclick="resetFilter()" title="Reset Map">City</h2>
             <button id="dm-toggle" onclick="toggleDarkMode()">🌙 / ☀</button>
             <div class="subtitle" id="city-stats">Loading...</div>
         </div>
+        
         <div class="tab-container">
             <button class="tab-btn active" onclick="openTab('stats')">Data</button>
             <button class="tab-btn" onclick="openTab('insights')">Insights</button>
         </div>
+        
         <div id="view-stats" class="tab-content active">
             <div class="controls">
                 <button class="btn btn-chart active" onclick="switchChart('doughnut')">Donut</button>
@@ -88,16 +112,18 @@
             <canvas id="mainChart" width="300" height="250"></canvas>
             <div id="legends"></div>
         </div>
+        
         <div id="view-insights" class="tab-content">
-            <div id="insight-text">Select a city...</div>
+            <div id="insight-text">Select a city to view details.</div>
         </div>
+        
         <button id="back-btn" onclick="location.reload()">Back to India Map</button>
     </div>
 
     <script>
         const cityInsights = {
-            "Bengaluru": `<h4>Bengaluru</h4><p>Dominated by <b>-halli</b> (village) and <b>-nagar</b> (planned city).</p>`,
-            "Mumbai": `<h4>Mumbai</h4><p>Characterized by <b>-wada</b> (hamlets) and <b>-baug</b> (gardens).</p>`,
+            "Bengaluru": `<h4>Bengaluru</h4><p>Dominated by <b>-halli</b> (village) and <b>-nagar</b>.</p>`,
+            "Mumbai": `<h4>Mumbai</h4><p>Characterized by <b>-wada</b> (hamlets) and <b>-baug</b>.</p>`,
             "Delhi": `<h4>Delhi</h4><p>A mix of Persian <b>-abad</b> and modern <b>-nagar</b>.</p>`,
             "Chennai": `<h4>Chennai</h4><p>Roots in <b>-pakkam</b> (seaside) and <b>-puram</b>.</p>`,
             "Hyderabad": `<h4>Hyderabad</h4><p>Persian influence with <b>-abad</b>.</p>`,
@@ -105,10 +131,10 @@
         };
 
         const colorPalette = {
-             'Sanskrit': ['#4A0404', '#610505', '#780606', '#900C0C', '#A71313', '#BE1A1A', '#D62323', '#E53935', '#EF5350', '#E57373', '#EF9A9A', '#FFCDD2'],
-            'English': ['#0D47A1', '#1565C0', '#1976D2', '#1E88E5', '#2196F3', '#42A5F5', '#64B5F6', '#90CAF9', '#BBDEFB'],
-            'Dravidian': ['#1b5e20', '#2e7d32', '#388e3c', '#43a047', '#4caf50', '#66bb6a', '#81c784', '#a5d6a7'],
-            'Persian': ['#4a235a', '#5b2c6f', '#6c3483', '#7d3c98', '#8e44ad', '#a569bd', '#bb8fce', '#d2b4de'],
+             'Sanskrit': ['#c0392b', '#e74c3c', '#d35400', '#e67e22', '#f39c12'],
+            'English': ['#2c3e50', '#34495e', '#2980b9', '#3498db', '#5dade2'],
+            'Dravidian': ['#196f3d', '#27ae60', '#2ecc71', '#52be80', '#229954'],
+            'Persian': ['#5b2c6f', '#8e44ad', '#9b59b6', '#a569bd', '#af7ac5'],
             'Other': ['#95a5a6']
         };
 
@@ -116,15 +142,19 @@
         let currentCityData = null;
         let markers = [];
         let chartType = 'doughnut';
+        let isDarkMode = false;
 
-        map = L.map('map', { zoomControl: false }).setView([20.5937, 78.9629], 5);
+        // MAP LAYERS
+        const lightLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' });
+        const darkLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' });
+
+        map = L.map('map', { zoomControl: false, layers: [lightLayer] }).setView([20.5937, 78.9629], 5);
         L.control.zoom({ position: 'bottomright' }).addTo(map);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OpenStreetMap' }).addTo(map);
 
         fetch('data.json')
             .then(res => res.json())
             .then(data => initIndia(data))
-            .catch(err => { console.error(err); alert("Data Load Error. Check console."); });
+            .catch(err => console.error(err));
 
         function initIndia(data) {
             data.cities.forEach(city => {
@@ -185,6 +215,9 @@
             const ctx = document.getElementById('mainChart').getContext('2d');
             if (chartInstance) chartInstance.destroy();
 
+            // CHART COLOR ADAPTATION
+            const labelColor = isDarkMode ? '#e0e0e0' : '#2c3e50';
+
             chartInstance = new Chart(ctx, {
                 type: chartType,
                 data: {
@@ -196,7 +229,11 @@
                     onClick: (evt, elements) => {
                         if (elements.length > 0) filterMap(sortedKeys[elements[0].index]);
                     },
-                    plugins: { legend: { display: false } }
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { ticks: { color: labelColor, display: chartType === 'bar' } },
+                        y: { ticks: { color: labelColor, display: chartType === 'bar' } }
+                    }
                 }
             });
             
@@ -253,7 +290,22 @@
             event.target.classList.add('active');
         }
 
-        function toggleDarkMode() { document.body.classList.toggle('dark-mode'); }
+        function toggleDarkMode() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+            
+            // Swap Tiles
+            if (isDarkMode) {
+                map.removeLayer(lightLayer);
+                map.addLayer(darkLayer);
+            } else {
+                map.removeLayer(darkLayer);
+                map.addLayer(lightLayer);
+            }
+            
+            // Redraw chart to update font colors
+            if (currentCityData) renderChart(currentCityData.neighborhoods);
+        }
     </script>
 </body>
 </html>
