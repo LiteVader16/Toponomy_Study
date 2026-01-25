@@ -121,6 +121,7 @@
     </div>
 
     <script>
+        // CONFIG
         const cityInsights = {
             "Bengaluru": `<h4>Bengaluru</h4><p>Dominated by <b>-halli</b> (village) and <b>-nagar</b>.</p>`,
             "Mumbai": `<h4>Mumbai</h4><p>Characterized by <b>-wada</b> (hamlets) and <b>-baug</b>.</p>`,
@@ -130,12 +131,18 @@
             "Kolkata": `<h4>Kolkata</h4><p>Known for <b>-para</b> (neighborhoods).</p>`
         };
 
+        // --- NEW COLOUR PALETTE ---
         const colorPalette = {
-             'Sanskrit': ['#c0392b', '#e74c3c', '#d35400', '#e67e22', '#f39c12'],
-            'English': ['#2c3e50', '#34495e', '#2980b9', '#3498db', '#5dade2'],
-            'Dravidian': ['#196f3d', '#27ae60', '#2ecc71', '#52be80', '#229954'],
-            'Persian': ['#5b2c6f', '#8e44ad', '#9b59b6', '#a569bd', '#af7ac5'],
-            'Other': ['#95a5a6']
+            // 1. ENGLISH = BLUE SHADES (Deep Navy to Sky Blue)
+            'English': ['#154360', '#1A5276', '#1F618D', '#2471A3', '#2980B9', '#5499C7', '#7FB3D5', '#A9CCE3'],
+            
+            // 2. SANSKRIT = YELLOW/GOLD SHADES (Dark Gold to Pale Yellow)
+            // Note: We use darker golds so they are visible on a white background
+            'Sanskrit': ['#9A7D0A', '#B7950B', '#D4AC0D', '#F1C40F', '#F4D03F', '#F7DC6F'],
+
+            // 3. REGIONAL / OTHER = RED SHADES (Dark Red to Light Red)
+            // This covers Tamil, Marathi, Persian, etc.
+            'Regional': ['#641E16', '#7B241C', '#922B21', '#C0392B', '#E74C3C', '#EC7063', '#F1948A']
         };
 
         let map, chartInstance;
@@ -190,13 +197,20 @@
             });
         }
 
+        // --- UPDATED COLOUR LOGIC ---
         function getColor(lang, suffix) {
-            let keys = Object.keys(colorPalette);
-            let palette = colorPalette['Other'];
-            if (lang.includes('Dravidian') || lang.includes('Tamil') || lang.includes('Kannada')) palette = colorPalette['Dravidian'];
-            else if (lang.includes('English')) palette = colorPalette['English'];
-            else if (lang.includes('Sanskrit') || lang.includes('Hindi') || lang.includes('Marathi')) palette = colorPalette['Sanskrit'];
-            else if (lang.includes('Persian') || lang.includes('Urdu')) palette = colorPalette['Persian'];
+            // Default: Regional (Red) for everything (Tamil, Marathi, Persian, etc.)
+            let palette = colorPalette['Regional'];
+            
+            // Override for English (Blue)
+            if (lang.includes('English')) {
+                palette = colorPalette['English'];
+            }
+            // Override for Sanskrit (Yellow)
+            else if (lang.includes('Sanskrit')) {
+                palette = colorPalette['Sanskrit'];
+            }
+
             let hash = 0;
             for (let i = 0; i < suffix.length; i++) hash += suffix.charCodeAt(i);
             return palette[hash % palette.length];
