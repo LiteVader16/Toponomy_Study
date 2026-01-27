@@ -10,6 +10,7 @@
     
     <style>
         :root {
+            /* LIGHT THEME */
             --bg-color: #f4f6f8;
             --panel-bg: rgba(255, 255, 255, 0.95);
             --text-main: #2c3e50;
@@ -20,6 +21,7 @@
         }
         
         body.dark-mode {
+            /* DARK THEME */
             --bg-color: #121212;
             --panel-bg: rgba(30, 30, 30, 0.90);
             --text-main: #e0e0e0;
@@ -85,12 +87,23 @@
         .legend-item:hover { background: var(--hover-bg); }
         .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
         
-        /* City Label Style */
+        /* City Label Style - Below Marker */
         .city-label {
-            background: none; border: none; box-shadow: none;
-            color: #000; font-weight: bold; font-size: 14px; text-shadow: 2px 2px 0 #fff;
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            color: #000;
+            font-weight: bold;
+            font-size: 13px;
+            text-align: center;
+            text-shadow: 2px 2px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
         }
-        body.dark-mode .city-label { color: #fff; text-shadow: 2px 2px 0 #000; }
+        
+        /* Dark Mode Label */
+        body.dark-mode .city-label { 
+            color: #fff; 
+            text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+        }
     </style>
 </head>
 <body>
@@ -126,6 +139,7 @@
     </div>
 
     <script>
+        // CONFIG - ADD INSIGHTS HERE
         const cityInsights = {
             "Bengaluru": `<h4>Bengaluru</h4><p>Dominated by <b>-halli</b> (village) and <b>-nagar</b>.</p>`,
             "Mumbai": `<h4>Mumbai</h4><p>Characterized by <b>-wada</b> (hamlets) and <b>-baug</b>.</p>`,
@@ -133,7 +147,7 @@
             "Hyderabad": `<h4>Hyderabad</h4><p>Persian influence with <b>-abad</b> and Telugu <b>-pally</b>.</p>`
         };
 
-        // RESTORED ORIGINAL GRADIENTS
+        // ORIGINAL COLORS PRESERVED
         const colorPalette = {
              'Sanskrit': [
                 '#4A0404', '#610505', '#780606', '#900C0C', '#A71313', 
@@ -169,13 +183,21 @@
 
         function initIndia(data) {
             data.cities.forEach(city => {
-                // FIXED: Black Markers with Permanent Labels
+                // FIXED: Black filled circle
                 let marker = L.circleMarker(city.coords, {
-                    radius: 6, color: 'black', fillColor: 'black', fillOpacity: 1, weight: 2
+                    radius: 5,
+                    color: 'black',
+                    fillColor: 'black',
+                    fillOpacity: 1,
+                    weight: 1
                 }).addTo(map);
                 
+                // FIXED: Label Strictly Below Marker
                 marker.bindTooltip(city.name, {
-                    permanent: true, direction: 'right', className: 'city-label'
+                    permanent: true,
+                    direction: 'bottom', // Points down
+                    offset: [0, 5],      // Slight offset to clear the dot
+                    className: 'city-label'
                 }).openTooltip();
                 
                 marker.on('click', () => loadCity(city));
