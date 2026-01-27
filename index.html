@@ -10,6 +10,7 @@
     
     <style>
         :root {
+            /* LIGHT THEME */
             --bg-color: #f4f6f8;
             --panel-bg: rgba(255, 255, 255, 0.95);
             --text-main: #2c3e50;
@@ -20,6 +21,7 @@
         }
         
         body.dark-mode {
+            /* DARK THEME */
             --bg-color: #121212;
             --panel-bg: rgba(30, 30, 30, 0.90);
             --text-main: #e0e0e0;
@@ -85,19 +87,18 @@
         .legend-item:hover { background: var(--hover-bg); }
         .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
         
-        /* City Label Style - Below Marker */
+        /* City Label Style - Strictly Below */
         .city-label {
             background: transparent !important;
             border: none !important;
             box-shadow: none !important;
             color: #000;
             font-weight: bold;
-            font-size: 13px;
+            font-size: 14px;
             text-align: center;
             text-shadow: 2px 2px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
         }
         
-        /* Dark Mode Label */
         body.dark-mode .city-label { 
             color: #fff; 
             text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
@@ -137,7 +138,6 @@
     </div>
 
     <script>
-        // CONFIG - ADD INSIGHTS HERE
         const cityInsights = {
             "Bengaluru": `<h4>Bengaluru</h4><p>Dominated by <b>-halli</b> (village) and <b>-nagar</b>.</p>`,
             "Mumbai": `<h4>Mumbai</h4><p>Characterized by <b>-wada</b> (hamlets) and <b>-baug</b>.</p>`,
@@ -145,20 +145,20 @@
             "Hyderabad": `<h4>Hyderabad</h4><p>Persian influence with <b>-abad</b> and Telugu <b>-pally</b>.</p>`
         };
 
-        // --- RESTORED ORIGINAL 15-SHADE PALETTE ---
+        // --- FIXED PALETTE: RED, BLUE, YELLOW ---
         const colorPalette = {
              'Sanskrit': [
-                '#4A0404', '#610505', '#780606', '#900C0C', '#A71313', 
-                '#BE1A1A', '#D62323', '#E53935', '#EF5350', '#E57373', 
-                '#EF9A9A', '#FFCDD2', '#FFEBEE', '#FF8A80', '#FF5252'
+                '#c0392b', '#e74c3c', '#d35400', '#e67e22', '#f39c12' // REDS -> ORANGE
             ],
             'English': [
-                '#0D47A1', '#1565C0', '#1976D2', '#1E88E5', '#2196F3', 
-                '#42A5F5', '#64B5F6', '#90CAF9', '#BBDEFB', '#E3F2FD', 
-                '#01579B', '#0277BD', '#0288D1', '#039BE5', '#03A9F4'
+                '#154360', '#1a5276', '#2980b9', '#3498db', '#85c1e9' // BLUES
             ],
-            'Dravidian': ['#1b5e20', '#2e7d32', '#388e3c', '#43a047', '#4caf50', '#66bb6a', '#81c784', '#a5d6a7'],
-            'Persian': ['#4a235a', '#5b2c6f', '#6c3483', '#7d3c98', '#8e44ad', '#a569bd', '#bb8fce', '#d2b4de'],
+            'Dravidian': [
+                '#f1c40f', '#f7dc6f', '#d4ac0d', '#b7950b', '#7d6608' // YELLOWS/GOLD
+            ],
+            'Persian': [
+                '#5b2c6f', '#8e44ad', '#9b59b6', '#a569bd', '#d2b4de' // PURPLES
+            ],
             'Other': ['#95a5a6']
         };
 
@@ -194,7 +194,7 @@
                 marker.bindTooltip(city.name, {
                     permanent: true,
                     direction: 'bottom', // Points down
-                    offset: [0, 5],      // Slight offset to clear the dot
+                    offset: [0, 5],      // Slight offset
                     className: 'city-label'
                 }).openTooltip();
                 
@@ -232,10 +232,13 @@
         function getColor(lang, suffix) {
             let keys = Object.keys(colorPalette);
             let palette = colorPalette['Other'];
+            
+            // Map Language Groups to Palette
             if (lang.includes('Dravidian') || lang.includes('Tamil') || lang.includes('Kannada') || lang.includes('Telugu') || lang.includes('Malayalam')) palette = colorPalette['Dravidian'];
             else if (lang.includes('English')) palette = colorPalette['English'];
             else if (lang.includes('Sanskrit') || lang.includes('Hindi') || lang.includes('Marathi') || lang.includes('Gujarati')) palette = colorPalette['Sanskrit'];
             else if (lang.includes('Persian') || lang.includes('Urdu')) palette = colorPalette['Persian'];
+            
             let hash = 0;
             for (let i = 0; i < suffix.length; i++) hash += suffix.charCodeAt(i);
             return palette[hash % palette.length];
