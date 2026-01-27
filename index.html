@@ -10,7 +10,6 @@
     
     <style>
         :root {
-            /* LIGHT THEME */
             --bg-color: #f4f6f8;
             --panel-bg: rgba(255, 255, 255, 0.95);
             --text-main: #2c3e50;
@@ -21,7 +20,6 @@
         }
         
         body.dark-mode {
-            /* DARK THEME */
             --bg-color: #121212;
             --panel-bg: rgba(30, 30, 30, 0.90);
             --text-main: #e0e0e0;
@@ -86,6 +84,13 @@
         .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 4px; color: var(--text-main); }
         .legend-item:hover { background: var(--hover-bg); }
         .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
+        
+        /* City Label Style */
+        .city-label {
+            background: none; border: none; box-shadow: none;
+            color: #000; font-weight: bold; font-size: 14px; text-shadow: 2px 2px 0 #fff;
+        }
+        body.dark-mode .city-label { color: #fff; text-shadow: 2px 2px 0 #000; }
     </style>
 </head>
 <body>
@@ -128,11 +133,20 @@
             "Hyderabad": `<h4>Hyderabad</h4><p>Persian influence with <b>-abad</b> and Telugu <b>-pally</b>.</p>`
         };
 
+        // RESTORED ORIGINAL GRADIENTS
         const colorPalette = {
-             'Sanskrit': ['#c0392b', '#e74c3c', '#d35400', '#e67e22', '#f39c12'],
-            'English': ['#2c3e50', '#34495e', '#2980b9', '#3498db', '#5dade2'],
-            'Dravidian': ['#196f3d', '#27ae60', '#2ecc71', '#52be80', '#229954'],
-            'Persian': ['#5b2c6f', '#8e44ad', '#9b59b6', '#a569bd', '#af7ac5'],
+             'Sanskrit': [
+                '#4A0404', '#610505', '#780606', '#900C0C', '#A71313', 
+                '#BE1A1A', '#D62323', '#E53935', '#EF5350', '#E57373', 
+                '#EF9A9A', '#FFCDD2', '#FFEBEE', '#FF8A80', '#FF5252'
+            ],
+            'English': [
+                '#0D47A1', '#1565C0', '#1976D2', '#1E88E5', '#2196F3', 
+                '#42A5F5', '#64B5F6', '#90CAF9', '#BBDEFB', '#E3F2FD', 
+                '#01579B', '#0277BD', '#0288D1', '#039BE5', '#03A9F4'
+            ],
+            'Dravidian': ['#1b5e20', '#2e7d32', '#388e3c', '#43a047', '#4caf50', '#66bb6a', '#81c784', '#a5d6a7'],
+            'Persian': ['#4a235a', '#5b2c6f', '#6c3483', '#7d3c98', '#8e44ad', '#a569bd', '#bb8fce', '#d2b4de'],
             'Other': ['#95a5a6']
         };
 
@@ -155,9 +169,16 @@
 
         function initIndia(data) {
             data.cities.forEach(city => {
-                L.marker(city.coords).addTo(map)
-                 .bindTooltip(`<b>${city.name}</b>`, {direction: 'top'})
-                 .on('click', () => loadCity(city));
+                // FIXED: Black Markers with Permanent Labels
+                let marker = L.circleMarker(city.coords, {
+                    radius: 6, color: 'black', fillColor: 'black', fillOpacity: 1, weight: 2
+                }).addTo(map);
+                
+                marker.bindTooltip(city.name, {
+                    permanent: true, direction: 'right', className: 'city-label'
+                }).openTooltip();
+                
+                marker.on('click', () => loadCity(city));
             });
         }
 
@@ -165,7 +186,6 @@
             currentCityData = city;
             document.getElementById('dashboard').style.display = 'block';
             document.getElementById('city-title').innerText = city.name;
-            // UPDATE STATS
             document.getElementById('city-stats').innerText = `${city.neighborhoods.length} Neighborhoods`;
             
             document.getElementById('insight-text').innerHTML = cityInsights[city.name] || "<p>Insights coming soon.</p>";
