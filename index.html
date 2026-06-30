@@ -174,33 +174,46 @@
         map = L.map('map', { zoomControl: false, layers: [lightLayer] }).setView([20.5937, 78.9629], 5);
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-        fetch('data.json')
-            .then(res => res.json())
-            .then(data => initIndia(data))
-            .catch(err => console.error(err));
-
-        function initIndia(data) {
-            data.cities.forEach(city => {
-                // FIXED: Black filled circle
-                let marker = L.circleMarker(city.coords, {
-                    radius: 5,
-                    color: 'black',
-                    fillColor: 'black',
-                    fillOpacity: 1,
-                    weight: 1
-                }).addTo(map);
-                
-                // FIXED: Label Strictly Below Marker
-                marker.bindTooltip(city.name, {
-                    permanent: true,
-                    direction: 'bottom', // Points down
-                    offset: [0, 5],      // Slight offset
-                    className: 'city-label'
-                }).openTooltip();
-                
-                marker.on('click', () => loadCity(city));
-            });
-        }
+        // NEW MAP DRAWING LOGIC
+fetch('data.json')
+  .then(response => response.json())
+  .then(data => {
+      L.geoJSON(data, {
+          // Rule 1: If it only has a center point, draw your solid black dot
+          pointToLayer: function (feature, latlng) {
+              return L.circleMarker(latlng, {
+                  radius: 5,
+                  fillColor: "black",
+                  color: "black",
+                  weight: 1,
+                  opacity: 1,
+                  fillOpacity: 1
+              });
+          },
+          // Rule 2: If it has a boundary, fill it in 
+          style: function (feature) {
+              // Note: You will need to use your existing color function here
+              // Let's assume you have a function called getLanguageColor(name)
+              let areaName = feature.properties.name;
+              return {
+                  fillColor: getLanguageColor(areaName), // Plugs into your color rules
+                  weight: 1.5,
+                  opacity: 1,
+                  color: 'white', // A clean white border around the neighborhood
+                  fillOpacity: 0.6 // Slightly transparent so the base map shows through
+              };
+          },
+          // Rule 3: Add the neighborhood name label
+          onEachFeature: function (feature, layer) {
+              if (feature.properties && feature.properties.name) {
+                  layer.bindTooltip(feature.properties.name, {
+                      permanent: false, // Changes to true if you want names visible without hovering
+                      direction: "auto"
+                  });
+              }
+          }
+      }).addTo(map);
+  });
 
         function loadCity(city) {
             currentCityData = city;
