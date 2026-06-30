@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toponomy of Indian Cities</title>
+    <title>Mapping the Toponymy of Indian Cities</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -86,23 +86,6 @@
         .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 4px; color: var(--text-main); }
         .legend-item:hover { background: var(--hover-bg); }
         .dot { width: 10px; height: 10px; border-radius: 50%; margin-right: 10px; }
-        
-        /* City Label Style - Strictly Below */
-        .city-label {
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            color: #000;
-            font-weight: bold;
-            font-size: 14px;
-            text-align: center;
-            text-shadow: 2px 2px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff, -1px 1px 0 #fff, 1px 1px 0 #fff;
-        }
-        
-        body.dark-mode .city-label { 
-            color: #fff; 
-            text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
-        }
     </style>
 </head>
 <body>
@@ -139,34 +122,26 @@
 
     <script>
         const cityInsights = {
-            "Bengaluru": `<h4>Bengaluru</h4><p>To be aaded.</p>`,
-            "Mumbai": `<h4>Mumbai</h4><p>To be aaded.</p>`,
-            "Delhi": `<h4>Delhi</h4><p>To be aaded.</p>`,
-            "Hyderabad": `<h4>Hyderabad</h4><p>To be aaded.</p>`
+            "Bengaluru": `<h4>Bengaluru</h4><p>Dravidian and Sanskrit roots.</p>`,
+            "Mumbai": `<h4>Mumbai</h4><p>Marathi, Portuguese, and English origins.</p>`,
+            "Delhi": `<h4>Delhi</h4><p>Heavy Persian and Urdu influence.</p>`,
+            "Hyderabad": `<h4>Hyderabad</h4><p>Telugu and Persian roots.</p>`
         };
 
-        // --- FIXED PALETTE: RED, BLUE, YELLOW ---
         const colorPalette = {
-             'Sanskrit': [
-                '#c0392b', '#e74c3c', '#d35400', '#e67e22', '#f39c12' // REDS -> ORANGE
-            ],
-            'English': [
-                '#154360', '#1a5276', '#2980b9', '#3498db', '#85c1e9' // BLUES
-            ],
-            'Dravidian': [
-                '#f1c40f', '#f7dc6f', '#d4ac0d', '#b7950b', '#7d6608' // YELLOWS/GOLD
-            ],
-            'Persian': [
-                '#5b2c6f', '#8e44ad', '#9b59b6', '#a569bd', '#d2b4de' // PURPLES
-            ],
-            'Other': ['#95a5a6']
+             'Sanskrit': ['#c0392b', '#e74c3c', '#d35400', '#e67e22', '#f39c12'],
+             'English': ['#154360', '#1a5276', '#2980b9', '#3498db', '#85c1e9'],
+             'Dravidian': ['#f1c40f', '#f7dc6f', '#d4ac0d', '#b7950b', '#7d6608'],
+             'Persian': ['#5b2c6f', '#8e44ad', '#9b59b6', '#a569bd', '#d2b4de'],
+             'Other': ['#95a5a6']
         };
 
-        let map, chartInstance;
-        let currentCityData = null;
-        let markers = [];
+        let map, chartInstance, geojsonLayer;
+        let allData = { features: [] };
+        let currentCityFeatures = [];
         let chartType = 'doughnut';
         let isDarkMode = false;
+        let currentCityName = "";
 
         const lightLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' });
         const darkLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' });
@@ -174,79 +149,69 @@
         map = L.map('map', { zoomControl: false, layers: [lightLayer] }).setView([20.5937, 78.9629], 5);
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-        // NEW MAP DRAWING LOGIC
-fetch('data.json')
-  .then(response => response.json())
-  .then(data => {
-      L.geoJSON(data, {
-          // Rule 1: If it only has a center point, draw your solid black dot
-          pointToLayer: function (feature, latlng) {
-              return L.circleMarker(latlng, {
-                  radius: 5,
-                  fillColor: "black",
-                  color: "black",
-                  weight: 1,
-                  opacity: 1,
-                  fillOpacity: 1
-              });
-          },
-          // Rule 2: If it has a boundary, fill it in 
-          style: function (feature) {
-              // Note: You will need to use your existing color function here
-              // Let's assume you have a function called getLanguageColor(name)
-              let areaName = feature.properties.name;
-              return {
-                  fillColor: getLanguageColor(areaName), // Plugs into your color rules
-                  weight: 1.5,
-                  opacity: 1,
-                  color: 'white', // A clean white border around the neighborhood
-                  fillOpacity: 0.6 // Slightly transparent so the base map shows through
-              };
-          },
-          // Rule 3: Add the neighborhood name label
-          onEachFeature: function (feature, layer) {
-              if (feature.properties && feature.properties.name) {
-                  layer.bindTooltip(feature.properties.name, {
-                      permanent: false, // Changes to true if you want names visible without hovering
-                      direction: "auto"
-                  });
-              }
-          }
-      }).addTo(map);
-  });
+        // 1. FETCH THE NEW GEOJSON DATA
+        fetch('data.json')
+          .then(response => response.json())
+          .then(data => {
+              allData = data;
+              // Automatically load Bengaluru to start, or fallback to whatever city is first
+              let firstCity = data.features.length > 0 ? data.features[0].properties.city : "Bengaluru";
+              loadCity(firstCity);
+          });
 
-        function loadCity(city) {
-            currentCityData = city;
-            document.getElementById('dashboard').style.display = 'block';
-            document.getElementById('city-title').innerText = city.name;
-            document.getElementById('city-stats').innerText = `${city.neighborhoods.length} Neighborhoods`;
+        function loadCity(cityName) {
+            currentCityName = cityName;
+            // Filter the master list to just the selected city
+            currentCityFeatures = allData.features.filter(f => f.properties.city === cityName);
             
-            document.getElementById('insight-text').innerHTML = cityInsights[city.name] || "<p>Insights coming soon.</p>";
+            document.getElementById('dashboard').style.display = 'block';
+            document.getElementById('city-title').innerText = cityName;
+            document.getElementById('city-stats').innerText = `${currentCityFeatures.length} Neighborhoods`;
+            document.getElementById('insight-text').innerHTML = cityInsights[cityName] || "<p>Insights coming soon.</p>";
+            
             openTab('stats');
-            map.flyTo(city.coords, city.zoom, { duration: 1.5 });
-            resetFilter();
+            renderMap(currentCityFeatures);
+            renderChart(currentCityFeatures);
         }
 
-        function renderMap(data) {
-            markers.forEach(m => map.removeLayer(m));
-            markers = [];
-            data.forEach(n => {
-                let color = getColor(n.l, n.s);
-                let circle = L.circleMarker([n.lat, n.lon], {
-                    radius: 6, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8
-                });
-                circle.suffix = n.s; 
-                circle.bindPopup(`<b>${n.n}</b><br>${n.s} (${n.l})<br><i>${n.m}</i>`);
-                circle.addTo(map);
-                markers.push(circle);
-            });
+        // 2. RENDER THE SHAPES AND DOTS
+        function renderMap(features) {
+            if (geojsonLayer) { map.removeLayer(geojsonLayer); }
+
+            geojsonLayer = L.geoJSON(features, {
+                pointToLayer: function (feature, latlng) {
+                    let s = feature.properties.s || guessSuffix(feature.properties.name);
+                    let l = feature.properties.l || guessLanguage(s);
+                    let color = getColor(l, s);
+                    return L.circleMarker(latlng, {
+                        radius: 6, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8
+                    });
+                },
+                style: function (feature) {
+                    let s = feature.properties.s || guessSuffix(feature.properties.name);
+                    let l = feature.properties.l || guessLanguage(s);
+                    let color = getColor(l, s);
+                    return {
+                        fillColor: color, weight: 1.5, opacity: 1, color: 'white', fillOpacity: 0.6
+                    };
+                },
+                onEachFeature: function (feature, layer) {
+                    let s = feature.properties.s || guessSuffix(feature.properties.name);
+                    layer.suffix = s; // Tag it for filtering later
+                    if (feature.properties.name) {
+                        layer.bindTooltip(`<b>${feature.properties.name}</b><br>Suffix: -${s}`, { direction: "auto" });
+                    }
+                }
+            }).addTo(map);
+
+            // Automatically zoom the map to fit the boundaries of the loaded city
+            if (features.length > 0) {
+                map.fitBounds(geojsonLayer.getBounds(), { padding: [50, 50] });
+            }
         }
 
         function getColor(lang, suffix) {
-            let keys = Object.keys(colorPalette);
             let palette = colorPalette['Other'];
-            
-            // Map Language Groups to Palette
             if (lang.includes('Dravidian') || lang.includes('Tamil') || lang.includes('Kannada') || lang.includes('Telugu') || lang.includes('Malayalam')) palette = colorPalette['Dravidian'];
             else if (lang.includes('English')) palette = colorPalette['English'];
             else if (lang.includes('Sanskrit') || lang.includes('Hindi') || lang.includes('Marathi') || lang.includes('Gujarati')) palette = colorPalette['Sanskrit'];
@@ -257,14 +222,20 @@ fetch('data.json')
             return palette[hash % palette.length];
         }
 
-        function renderChart(data) {
+        // 3. RENDER THE DASHBOARD CHART
+        function renderChart(features) {
             const counts = {};
-            data.forEach(n => { counts[n.s] = (counts[n.s] || 0) + 1; });
+            features.forEach(f => { 
+                let s = f.properties.s || guessSuffix(f.properties.name);
+                counts[s] = (counts[s] || 0) + 1; 
+            });
+            
             const sortedKeys = Object.keys(counts).sort((a,b) => counts[b] - counts[a]);
             const values = sortedKeys.map(k => counts[k]);
             const bgColors = sortedKeys.map(k => {
-                let item = data.find(n => n.s === k);
-                return getColor(item ? item.l : 'Other', k);
+                let sampleFeature = features.find(f => (f.properties.s || guessSuffix(f.properties.name)) === k);
+                let l = sampleFeature.properties.l || guessLanguage(k);
+                return getColor(l, k);
             });
 
             const ctx = document.getElementById('mainChart').getContext('2d');
@@ -293,47 +264,33 @@ fetch('data.json')
             const container = document.getElementById('legends');
             container.innerHTML = '<div class="legend-title">Top Suffixes</div>';
             sortedKeys.slice(0, 5).forEach(k => {
-                let sample = data.find(n => n.s === k);
-                let color = getColor(sample ? sample.l : 'Other', k);
+                let sampleFeature = features.find(f => (f.properties.s || guessSuffix(f.properties.name)) === k);
+                let l = sampleFeature.properties.l || guessLanguage(k);
+                let color = getColor(l, k);
                 container.innerHTML += `<div class="legend-item" onclick="filterMap('${k}')"><span class="dot" style="background:${color}"></span><b>${k}</b>: ${counts[k]}</div>`;
             });
         }
 
         function filterMap(selectedSuffix) {
-            markers.forEach(layer => {
+            geojsonLayer.eachLayer(layer => {
                 if (layer.suffix === selectedSuffix) {
-                    layer.setStyle({ fillOpacity: 1, opacity: 1, radius: 8, stroke: true });
-                    layer.bringToFront();
+                    if(layer.setStyle) layer.setStyle({ fillOpacity: 0.9, opacity: 1, weight: 2 });
                 } else {
-                    layer.setStyle({ fillOpacity: 0.1, opacity: 0.1, radius: 4, stroke: false });
+                    if(layer.setStyle) layer.setStyle({ fillOpacity: 0.1, opacity: 0.1, weight: 0 });
                 }
             });
         }
 
         function resetFilter() {
-            if(!currentCityData) return;
-            renderMap(currentCityData.neighborhoods);
-            renderChart(currentCityData.neighborhoods);
+            if(currentCityFeatures.length === 0) return;
+            renderMap(currentCityFeatures);
         }
 
         function switchChart(type) {
             chartType = type;
             document.querySelectorAll('.btn-chart').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
-            renderChart(currentCityData.neighborhoods);
-        }
-
-        function downloadCSV() {
-            if (!currentCityData) return;
-            let csv = "Name,Suffix,Meaning,Language,Lat,Lon\n";
-            currentCityData.neighborhoods.forEach(n => {
-                let safeSuffix = n.s.startsWith('-') ? n.s.substring(1) : n.s;
-                csv += `"${n.n}","${safeSuffix}","${n.m}","${n.l}",${n.lat},${n.lon}\n`;
-            });
-            const link = document.createElement("a");
-            link.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
-            link.download = `${currentCityData.name}_Etymology.csv`;
-            link.click();
+            renderChart(currentCityFeatures);
         }
 
         function openTab(t) {
@@ -353,7 +310,33 @@ fetch('data.json')
                 map.removeLayer(darkLayer);
                 map.addLayer(lightLayer);
             }
-            if (currentCityData) renderChart(currentCityData.neighborhoods);
+            if (currentCityFeatures.length > 0) renderChart(currentCityFeatures);
+        }
+        
+        function downloadCSV() {
+            alert("CSV download is being updated for the new boundary data formats.");
+        }
+
+        // SMART FALLBACKS: Just in case the Python script didn't attach suffix tags yet
+        function guessSuffix(name) {
+            if(!name) return "other";
+            let n = name.toLowerCase();
+            if(n.includes("nagar")) return "nagar";
+            if(n.includes("pur")) return "pur";
+            if(n.includes("pally") || n.includes("halli")) return "pally/halli";
+            if(n.includes("colony") || n.includes("town") || n.includes("layout")) return "english_root";
+            if(n.includes("bagh")) return "bagh";
+            if(n.includes("wada")) return "wada";
+            return "other";
+        }
+        
+        function guessLanguage(suffix) {
+            if(suffix === "nagar" || suffix === "pur") return "Sanskrit";
+            if(suffix === "pally/halli") return "Dravidian";
+            if(suffix === "english_root") return "English";
+            if(suffix === "bagh") return "Persian";
+            if(suffix === "wada") return "Sanskrit"; // Marathi root
+            return "Other";
         }
     </script>
 </body>
