@@ -46,7 +46,7 @@
             position: absolute; top: 20px; right: 20px; width: 360px;
             background: var(--panel-bg); padding: 0;
             border-radius: 12px; box-shadow: var(--shadow);
-            z-index: 1000; display: none; max-height: 90vh; overflow-y: auto;
+            z-index: 1000; display: block; max-height: 90vh; overflow-y: auto;
             backdrop-filter: blur(5px);
         }
 
@@ -79,8 +79,6 @@
         .btn { flex: 1; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: bold; }
         .btn-chart { background: var(--border-color); color: var(--text-main); }
         .btn-chart.active { background: var(--text-main); color: var(--panel-bg); }
-        .btn-dl { background: #27ae60; color: white; }
-        #back-btn { width: 100%; padding: 12px; background: #e74c3c; color: white; border: none; cursor: pointer; font-weight: bold; }
         
         .legend-title { font-size: 11px; font-weight: bold; color: var(--text-sub); margin-bottom: 8px; text-transform: uppercase; }
         .legend-item { display: flex; align-items: center; margin: 4px 0; font-size: 13px; cursor: pointer; padding: 4px 8px; border-radius: 4px; color: var(--text-main); }
@@ -93,7 +91,7 @@
 
     <div id="dashboard">
         <div class="dash-header">
-            <h2 id="city-title" onclick="resetFilter()" title="Reset Map">City</h2>
+            <h2 id="city-title" onclick="resetFilter()" title="Reset Map">Bengaluru</h2>
             <button id="dm-toggle" onclick="toggleDarkMode()">🌙 / ☀</button>
             <div class="subtitle" id="city-stats">Loading...</div>
         </div>
@@ -107,27 +105,20 @@
             <div class="controls">
                 <button class="btn btn-chart active" onclick="switchChart('doughnut')">Donut</button>
                 <button class="btn btn-chart" onclick="switchChart('bar')">Bar</button>
-                <button class="btn btn-dl" onclick="downloadCSV()">⬇ CSV</button>
             </div>
             <canvas id="mainChart" width="300" height="250"></canvas>
             <div id="legends"></div>
         </div>
         
         <div id="view-insights" class="tab-content">
-            <div id="insight-text">Select a city to view details.</div>
+            <div id="insight-text">
+                <h4>Bengaluru</h4>
+                <p>A mix of Dravidian roots (-halli) and Sanskrit influences (-nagar), reflecting its history and rapid modern expansion.</p>
+            </div>
         </div>
-        
-        <button id="back-btn" onclick="location.reload()">Back to India Map</button>
     </div>
 
     <script>
-        const cityInsights = {
-            "Bengaluru": `<h4>Bengaluru</h4><p>Dravidian and Sanskrit roots.</p>`,
-            "Mumbai": `<h4>Mumbai</h4><p>Marathi, Portuguese, and English origins.</p>`,
-            "Delhi": `<h4>Delhi</h4><p>Heavy Persian and Urdu influence.</p>`,
-            "Hyderabad": `<h4>Hyderabad</h4><p>Telugu and Persian roots.</p>`
-        };
-
         const colorPalette = {
              'Sanskrit': ['#c0392b', '#e74c3c', '#d35400', '#e67e22', '#f39c12'],
              'English': ['#154360', '#1a5276', '#2980b9', '#3498db', '#85c1e9'],
@@ -137,74 +128,56 @@
         };
 
         let map, chartInstance, geojsonLayer;
-        let allData = { features: [] };
         let currentCityFeatures = [];
         let chartType = 'doughnut';
         let isDarkMode = false;
-        let currentCityName = "";
 
         const lightLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' });
         const darkLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; CARTO' });
 
-        map = L.map('map', { zoomControl: false, layers: [lightLayer] }).setView([20.5937, 78.9629], 5);
+        map = L.map('map', { zoomControl: false, layers: [lightLayer] }).setView([12.9716, 77.5946], 11);
         L.control.zoom({ position: 'bottomright' }).addTo(map);
 
-        // 1. FETCH THE NEW GEOJSON DATA
+        // FETCH DATA
         fetch('data.json')
           .then(response => response.json())
           .then(data => {
-              allData = data;
-              // Automatically load Bengaluru to start, or fallback to whatever city is first
-              let firstCity = data.features.length > 0 ? data.features[0].properties.city : "Bengaluru";
-              loadCity(firstCity);
-          });
+              currentCityFeatures = data.features;
+              document.getElementById('city-stats').innerText = `${currentCityFeatures.length} Neighborhoods`;
+              renderMap(currentCityFeatures);
+              renderChart(currentCityFeatures);
+          })
+          .catch(error => console.error("Error loading data.json on GitHub:", error));
 
-        function loadCity(cityName) {
-            currentCityName = cityName;
-            // Filter the master list to just the selected city
-            currentCityFeatures = allData.features.filter(f => f.properties.city === cityName);
-            
-            document.getElementById('dashboard').style.display = 'block';
-            document.getElementById('city-title').innerText = cityName;
-            document.getElementById('city-stats').innerText = `${currentCityFeatures.length} Neighborhoods`;
-            document.getElementById('insight-text').innerHTML = cityInsights[cityName] || "<p>Insights coming soon.</p>";
-            
-            openTab('stats');
-            renderMap(currentCityFeatures);
-            renderChart(currentCityFeatures);
-        }
-
-        // 2. RENDER THE SHAPES AND DOTS
         function renderMap(features) {
             if (geojsonLayer) { map.removeLayer(geojsonLayer); }
 
             geojsonLayer = L.geoJSON(features, {
                 pointToLayer: function (feature, latlng) {
-                    let s = feature.properties.s || guessSuffix(feature.properties.name);
-                    let l = feature.properties.l || guessLanguage(s);
+                    let s = feature.properties.s;
+                    let l = feature.properties.l;
                     let color = getColor(l, s);
                     return L.circleMarker(latlng, {
-                        radius: 6, fillColor: color, color: "#fff", weight: 1, opacity: 1, fillOpacity: 0.8
+                        radius: 7, fillColor: color, color: "#fff", weight: 1.5, opacity: 1, fillOpacity: 0.9
                     });
                 },
                 style: function (feature) {
-                    let s = feature.properties.s || guessSuffix(feature.properties.name);
-                    let l = feature.properties.l || guessLanguage(s);
+                    let s = feature.properties.s;
+                    let l = feature.properties.l;
                     let color = getColor(l, s);
                     return {
-                        fillColor: color, weight: 1.5, opacity: 1, color: 'white', fillOpacity: 0.6
+                        fillColor: color, weight: 2, opacity: 1, color: 'white', fillOpacity: 0.7
                     };
                 },
                 onEachFeature: function (feature, layer) {
-                    let s = feature.properties.s || guessSuffix(feature.properties.name);
-                    layer.suffix = s; // Tag it for filtering later
+                    let s = feature.properties.s;
+                    layer.suffix = s; 
                     if (feature.properties.name) {
-                        layer.bindTooltip(`<b>${feature.properties.name}</b><br>Suffix: -${s}`, { direction: "auto" });
+                        layer.bindTooltip(`<b>${feature.properties.name}</b><br>Origin: ${feature.properties.l}`, { direction: "auto" });
                     }
                 }
             }).addTo(map);
 
-            // Automatically zoom the map to fit the boundaries of the loaded city
             if (features.length > 0) {
                 map.fitBounds(geojsonLayer.getBounds(), { padding: [50, 50] });
             }
@@ -212,30 +185,28 @@
 
         function getColor(lang, suffix) {
             let palette = colorPalette['Other'];
-            if (lang.includes('Dravidian') || lang.includes('Tamil') || lang.includes('Kannada') || lang.includes('Telugu') || lang.includes('Malayalam')) palette = colorPalette['Dravidian'];
-            else if (lang.includes('English')) palette = colorPalette['English'];
-            else if (lang.includes('Sanskrit') || lang.includes('Hindi') || lang.includes('Marathi') || lang.includes('Gujarati')) palette = colorPalette['Sanskrit'];
-            else if (lang.includes('Persian') || lang.includes('Urdu')) palette = colorPalette['Persian'];
+            if (lang === 'Dravidian') palette = colorPalette['Dravidian'];
+            else if (lang === 'English') palette = colorPalette['English'];
+            else if (lang === 'Sanskrit') palette = colorPalette['Sanskrit'];
+            else if (lang === 'Persian') palette = colorPalette['Persian'];
             
             let hash = 0;
             for (let i = 0; i < suffix.length; i++) hash += suffix.charCodeAt(i);
             return palette[hash % palette.length];
         }
 
-        // 3. RENDER THE DASHBOARD CHART
         function renderChart(features) {
             const counts = {};
             features.forEach(f => { 
-                let s = f.properties.s || guessSuffix(f.properties.name);
+                let s = f.properties.s;
                 counts[s] = (counts[s] || 0) + 1; 
             });
             
             const sortedKeys = Object.keys(counts).sort((a,b) => counts[b] - counts[a]);
             const values = sortedKeys.map(k => counts[k]);
             const bgColors = sortedKeys.map(k => {
-                let sampleFeature = features.find(f => (f.properties.s || guessSuffix(f.properties.name)) === k);
-                let l = sampleFeature.properties.l || guessLanguage(k);
-                return getColor(l, k);
+                let sampleFeature = features.find(f => f.properties.s === k);
+                return getColor(sampleFeature.properties.l, k);
             });
 
             const ctx = document.getElementById('mainChart').getContext('2d');
@@ -263,10 +234,9 @@
             
             const container = document.getElementById('legends');
             container.innerHTML = '<div class="legend-title">Top Suffixes</div>';
-            sortedKeys.slice(0, 5).forEach(k => {
-                let sampleFeature = features.find(f => (f.properties.s || guessSuffix(f.properties.name)) === k);
-                let l = sampleFeature.properties.l || guessLanguage(k);
-                let color = getColor(l, k);
+            sortedKeys.forEach(k => {
+                let sampleFeature = features.find(f => f.properties.s === k);
+                let color = getColor(sampleFeature.properties.l, k);
                 container.innerHTML += `<div class="legend-item" onclick="filterMap('${k}')"><span class="dot" style="background:${color}"></span><b>${k}</b>: ${counts[k]}</div>`;
             });
         }
@@ -311,32 +281,6 @@
                 map.addLayer(lightLayer);
             }
             if (currentCityFeatures.length > 0) renderChart(currentCityFeatures);
-        }
-        
-        function downloadCSV() {
-            alert("CSV download is being updated for the new boundary data formats.");
-        }
-
-        // SMART FALLBACKS: Just in case the Python script didn't attach suffix tags yet
-        function guessSuffix(name) {
-            if(!name) return "other";
-            let n = name.toLowerCase();
-            if(n.includes("nagar")) return "nagar";
-            if(n.includes("pur")) return "pur";
-            if(n.includes("pally") || n.includes("halli")) return "pally/halli";
-            if(n.includes("colony") || n.includes("town") || n.includes("layout")) return "english_root";
-            if(n.includes("bagh")) return "bagh";
-            if(n.includes("wada")) return "wada";
-            return "other";
-        }
-        
-        function guessLanguage(suffix) {
-            if(suffix === "nagar" || suffix === "pur") return "Sanskrit";
-            if(suffix === "pally/halli") return "Dravidian";
-            if(suffix === "english_root") return "English";
-            if(suffix === "bagh") return "Persian";
-            if(suffix === "wada") return "Sanskrit"; // Marathi root
-            return "Other";
         }
     </script>
 </body>
