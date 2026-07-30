@@ -1,0 +1,29 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Microsoft Office lock files (Drive leaves these behind)
+~$*
+*.tmp
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Large raw geodata — regenerate with the fetch scripts, don't version it.
+# ka.geojson alone is 84 MB and GitHub warns above 50 MB.
+01_Data_Raw/
+*.geojson.gz
+ka.geojson
+
+# Build intermediates. The DEPLOYED copies live at the repo root and in archive/,
+# so 03_Build is scratch and stays untracked.
+03_Build/
+
+# Editor
+.vscode/
+.idea/

@@ -1,0 +1,120 @@
+{
+ "surface": {
+  "light": "#fcfcfb",
+  "dark": "#1a1a19"
+ },
+ "family_base": {
+  "light": {
+   "yellow": "#c68200",
+   "red": "#d84c5a",
+   "blue": "#3379d7",
+   "purple": "#464990",
+   "grey": "#8a8a86"
+  },
+  "dark": {
+   "yellow": "#c38700",
+   "red": "#df4558",
+   "blue": "#3485e2",
+   "purple": "#795a98",
+   "grey": "#7e7e7a"
+  }
+ },
+ "semantic": {
+  "light": {
+   "settlement": "#ed6b42",
+   "planned_admin": "#704a00",
+   "water": "#4e69ab",
+   "land": "#05764e",
+   "built_social": "#773869",
+   "unresolved": "#8a8a86"
+  },
+  "dark": {
+   "settlement": "#b44300",
+   "planned_admin": "#c48200",
+   "water": "#006ca6",
+   "land": "#007743",
+   "built_social": "#a975ce",
+   "unresolved": "#7e7e7a"
+  }
+ },
+ "semantic_label": {
+  "settlement": "Settlement",
+  "planned_admin": "Planned / administrative",
+  "water": "Water",
+  "land": "Land & terrain",
+  "built_social": "Built & social",
+  "unresolved": "Unresolved"
+ },
+ "shades": {
+  "light": {
+   "yellow": [
+    "#e1ad00",
+    "#c69600",
+    "#aa8100",
+    "#916b00",
+    "#795600",
+    "#614200"
+   ],
+   "red": [
+    "#ff8e86",
+    "#ff605c",
+    "#e64344",
+    "#cc262e",
+    "#b00019",
+    "#8b0011"
+   ],
+   "blue": [
+    "#7fb6ff",
+    "#559cff",
+    "#2982fc",
+    "#056ae2",
+    "#0052c9",
+    "#0040a0"
+   ],
+   "purple": [
+    "#d592ff",
+    "#c372f8",
+    "#ab5bdf",
+    "#9443c6",
+    "#7e29ad",
+    "#680395"
+   ]
+  },
+  "dark": {
+   "yellow": [
+    "#f3bd00",
+    "#d9a400",
+    "#bd8d00",
+    "#a17700",
+    "#886100",
+    "#6f4c00"
+   ],
+   "red": [
+    "#ffa9a2",
+    "#ff7f77",
+    "#f75452",
+    "#dc383b",
+    "#c01424",
+    "#9e0016"
+   ],
+   "blue": [
+    "#9ac6ff",
+    "#70adff",
+    "#4092ff",
+    "#1e78f1",
+    "#0060d7",
+    "#004ab5"
+   ],
+   "purple": [
+    "#e0aaff",
+    "#d185ff",
+    "#ba69ee",
+    "#a251d4",
+    "#8a38bb",
+    "#741ba2"
+   ]
+  }
+ },
+ "shade_count": 6,
+ "note": "family hues gated all-pairs; within-family shades are ordinal, not categorical"
+}
