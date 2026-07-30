@@ -19,7 +19,7 @@ import argparse, datetime, os, re, shutil, sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARCHIVE = os.path.join(REPO, "archive")
-RUNTIME = ["index.html", "data.json", "palette.json", "lexicon.json"]
+RUNTIME = ["index.html", "data.json", "polygons.geojson", "palette.json", "lexicon.json"]
 
 
 def next_version():
