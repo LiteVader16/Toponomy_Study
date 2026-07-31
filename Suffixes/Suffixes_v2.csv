@@ -6,7 +6,9 @@ chowk,chowk,Gujarati / Hindi,Indo-Aryan,red,commerce,built_social,Square / Court
 ganj,ganj,Persian/Urdu,Perso-Arabic,purple,commerce,built_social,Market / Trading Post,attested,,
 ganj,gunj,Persian/Urdu,Perso-Arabic,purple,commerce,built_social,Market / Trading Post,attested,,
 hat,hat,Bengali,Indo-Aryan,red,commerce,built_social,Market,attested,,
+khadan,khadan,Marathi,Indo-Aryan,red,commerce,built_social,Quarry,probable,,added in v2 lexicon expansion
 market,market,English,English,blue,commerce,built_social,Market,attested,,
+mithagar,mithagar,Marathi,Indo-Aryan,red,commerce,built_social,Salt pan,attested,,added in v2 lexicon expansion
 ngad,ngad,Malayalam,Dravidian,yellow,commerce,built_social,Market (probably),attested,,
 pet,pet,Kannada,Dravidian,yellow,commerce,built_social,Market,attested,,
 pet,pete,Kannada,Dravidian,yellow,commerce,built_social,Market,attested,,
@@ -31,6 +33,7 @@ field,field,English,English,blue,flora_agriculture,land,An area of open land,att
 gachhi,gachhi,Bengali,Indo-Aryan,red,flora_agriculture,land,Tree / Plant,attested,,
 garden,garden,English,English,blue,flora_agriculture,land,Garden,attested,,
 garden,gardens,English,English,blue,flora_agriculture,land,Garden,attested,,
+green,green,English,English,blue,flora_agriculture,land,Open green / common,attested,,added in v2 lexicon expansion
 kadu,kadu,Malayalam,Dravidian,yellow,flora_agriculture,land,Forest,attested,,
 kara,kara,Malayalam,Dravidian,yellow,flora_agriculture,land,Bank / Shore / Land,attested,,
 kaval,kaval,Kannada,Dravidian,yellow,flora_agriculture,land,Grazing land / reserved pasture,probable,,added in v2 lexicon expansion
@@ -49,6 +52,8 @@ van,van,Sanskrit,Indo-Aryan,red,flora_agriculture,land,Garden,attested,,
 darwaza,darwaja,Hindi/Urdu,Indo-Aryan,red,fortification,built_social,Area around a fort gate,attested,,
 darwaza,darwaza,Hindi/Urdu,Indo-Aryan,red,fortification,built_social,Area around a fort gate,attested,,
 fort,fort,English,English,blue,fortification,built_social,Fort,attested,,
+gad,gad,Marathi,Indo-Aryan,red,fortification,built_social,Fort,probable,,added in v2 lexicon expansion
+gadh,gadh,Marathi,Indo-Aryan,red,fortification,built_social,Fort,attested,,added in v2 lexicon expansion
 garh,garh,Hindi/Rajasthani,Indo-Aryan,red,fortification,built_social,Fort,attested,,
 gate,gate,English,English,blue,fortification,built_social,Gate,attested,,
 kote,kote,Kannada,Dravidian,yellow,fortification,built_social,Fort,attested,,added in v2 lexicon expansion
@@ -58,6 +63,7 @@ bhavi,bhavi,Kannada,Dravidian,yellow,hydrology,water,Well,probable,,added in v2 
 bowli,bowli,Hindi/Urdu,Indo-Aryan,red,hydrology,water,Stepwell,attested,,
 chira,chira,Malayalam,Dravidian,yellow,hydrology,water,Dam or bund constructed to hold back water,attested,,
 dam,dam,Malayalam,Dravidian,yellow,hydrology,water,Dam or bund constructed to hold back water (probably),speculative,,
+dhara,dhara,Marathi,Indo-Aryan,red,hydrology,water,Stream / flow,speculative,,added in v2 lexicon expansion
 eri,ere,Kannada,Dravidian,yellow,hydrology,water,Unknown,speculative,,
 eri,eri,Tamil,Dravidian,yellow,hydrology,water,Lake,attested,,
 ghat,ghat,Bengali/Hindi,Indo-Aryan,red,hydrology,water,River Landing / Steps,attested,,also attested as Sanskrit
@@ -66,6 +72,7 @@ hauz,hauz,Persian/Urdu,Perso-Arabic,purple,hydrology,water,A man-made water rese
 juli,juli,Assamese,Indo-Aryan,red,hydrology,water,Stream,attested,,
 katte,katte,Kannada,Dravidian,yellow,hydrology,water,Tank bund / raised stone platform,probable,,added in v2 lexicon expansion
 kere,kere,Kannada,Dravidian,yellow,hydrology,water,Lake,attested,,
+khadi,khadi,Marathi,Indo-Aryan,red,hydrology,water,Creek / tidal inlet,attested,,added in v2 lexicon expansion
 kulam,kulam,Malayalam,Dravidian,yellow,hydrology,water,Pond,attested,,
 kundi,kundi,Kannada,Dravidian,yellow,hydrology,water,Unknown,speculative,,
 kunte,gunta,Kannada,Dravidian,yellow,hydrology,water,Pond / small tank,probable,,added in v2 lexicon expansion
@@ -74,17 +81,28 @@ kunte,kunta,Telugu,Dravidian,yellow,hydrology,water,Pond,attested,,
 kunte,kunte,Kannada,Dravidian,yellow,hydrology,water,Pond / small tank,probable,,added in v2 lexicon expansion
 kuva,kuva,Gujarati,Indo-Aryan,red,hydrology,water,Well,attested,,
 mukh,mukh,Malayalam/Sanskrit,Dravidian,yellow,hydrology,water,Face / Mouth (River),attested,,
+nala,nala,Marathi,Indo-Aryan,red,hydrology,water,Watercourse / drain,probable,,added in v2 lexicon expansion
 pukhuri,pukhuri,Assamese,Indo-Aryan,red,hydrology,water,Pond,attested,,
 pukur,pukur,Bengali,Indo-Aryan,red,hydrology,water,Pond,attested,,
 puzha,puzha,Malayalam,Dravidian,yellow,hydrology,water,River,attested,,
+sagar,sagar,Sanskrit,Indo-Aryan,red,hydrology,water,Sea,attested,,added in v2 lexicon expansion
 sandra,sandra,Kannada,Dravidian,yellow,hydrology,water,Lake Bed,attested,,
 sar,sar,Rajasthani,Indo-Aryan,red,hydrology,water,Lake / Pond,attested,,
+talao,talao,Marathi,Indo-Aryan,red,hydrology,water,Tank / lake,attested,,added in v2 lexicon expansion
 thangal,thangal,Tamil,Dravidian,yellow,hydrology,water,Tank / Lake,attested,,
 bandar,bandar,Marathi,Indo-Aryan,red,infrastructure,built_social,Harbor / Port,attested,,
 bandar,bunder,Marathi,Indo-Aryan,red,infrastructure,built_social,Harbor / Port,attested,,
+bandstand,bandstand,English,English,blue,infrastructure,built_social,Bandstand promenade,attested,,added in v2 lexicon expansion
+causeway,causeway,English,English,blue,infrastructure,built_social,Causeway,attested,,added in v2 lexicon expansion
 chowki,chowki,Hindi,Indo-Aryan,red,infrastructure,built_social,Police station,attested,,
+chowky,chowky,Marathi,Indo-Aryan,red,infrastructure,built_social,Post / station,probable,,added in v2 lexicon expansion
+dock,dock,English,English,blue,infrastructure,built_social,Dock,attested,,added in v2 lexicon expansion
+docks,docks,English,English,blue,infrastructure,built_social,Dock,attested,,added in v2 lexicon expansion
+galli,galli,Marathi,Indo-Aryan,red,infrastructure,built_social,Lane,attested,,added in v2 lexicon expansion
+gully,gully,Marathi,Indo-Aryan,red,infrastructure,built_social,Lane,probable,,added in v2 lexicon expansion
 marg,marg,Sanskrit/Hindi,Indo-Aryan,red,infrastructure,built_social,Road / Path,attested,,
 naka,naka,Marathi,Indo-Aryan,red,infrastructure,built_social,Street corner,attested,,
+parade,parade,English,English,blue,infrastructure,built_social,Parade ground / promenade,attested,,added in v2 lexicon expansion
 thura,thura,Malayalam,Dravidian,yellow,infrastructure,built_social,Harbor / Port,attested,,
 byrathi,byrathi,Kannada,Dravidian,yellow,other,unresolved,Unknown,speculative,,
 dinne,dinne,Kannada,Dravidian,yellow,other,unresolved,Mound / hillock,probable,,added in v2 lexicon expansion
@@ -107,8 +125,10 @@ layout,layout,English,English,blue,planned_administrative,planned_admin,Planned 
 lines,lines,English,English,blue,planned_administrative,planned_admin,Unknown,speculative,,
 maidan,maidan,Hindi/Urdu,Indo-Aryan,red,planned_administrative,planned_admin,Ground,attested,,
 phase,phase,English,English,blue,planned_administrative,planned_admin,Phase,attested,,
+plot,plot,English,English,blue,planned_administrative,planned_admin,Surveyed plot,probable,,added in v2 lexicon expansion
 point,point,English,English,blue,planned_administrative,planned_admin,Location,attested,,
 quarters,quarters,English,English,blue,planned_administrative,planned_admin,Part of a town,attested,,
+reclamation,reclamation,English,English,blue,planned_administrative,planned_admin,Reclaimed land,attested,,added in v2 lexicon expansion
 scheme,scheme,English,English,blue,planned_administrative,planned_admin,Layout,attested,,
 sector,sector,English,English,blue,planned_administrative,planned_admin,Sector,attested,,
 society,society,English,English,blue,planned_administrative,planned_admin,Society,attested,,
@@ -155,6 +175,7 @@ im,im,Konkani,Indo-Aryan,red,settlement,settlement,Village / Settlement (Locativ
 kalan,kalan,Persian,Perso-Arabic,purple,settlement,settlement,Big (Senior),attested,,
 khera,khera,Hindi,Indo-Aryan,red,settlement,settlement,Mound / Village,attested,,
 khurd,khurd,Persian,Perso-Arabic,purple,settlement,settlement,Small (Junior),attested,,
+koliwada,koliwada,Marathi,Indo-Aryan,red,settlement,settlement,Koli fishing settlement,attested,,added in v2 lexicon expansion
 kuppam,kuppam,Tamil,Dravidian,yellow,settlement,settlement,Fishing Hamlet,attested,,
 lim,lim,Konkani,Indo-Aryan,red,settlement,settlement,Village (from Halli),attested,,
 mangala,mangala,Kannada,Dravidian,yellow,settlement,settlement,Unknown,speculative,,
@@ -178,6 +199,7 @@ pura,pur,Sanskrit,Indo-Aryan,red,settlement,settlement,City / Fort,attested,,
 pura,pura,Sanskrit,Indo-Aryan,red,settlement,settlement,City/Town,attested,,
 pura,puram,Sanskrit,Indo-Aryan,red,settlement,settlement,City/Town,attested,,
 pura,puri,Sanskrit,Indo-Aryan,red,settlement,settlement,City / Fort,attested,,
+shrushti,shrushti,Sanskrit,Indo-Aryan,red,settlement,settlement,Creation / world (modern coinage),probable,,added in v2 lexicon expansion
 tola,tola,Bengali,Indo-Aryan,red,settlement,settlement,Quarter / Locality,attested,,
 town,town,English,English,blue,settlement,settlement,Town,attested,,
 township,township,English,English,blue,settlement,settlement,Township,attested,,
@@ -194,6 +216,8 @@ village,village,English,English,blue,settlement,settlement,Village,attested,,
 bande,bande,Kannada,Dravidian,yellow,topography,land,Rock / boulder outcrop,probable,,added in v2 lexicon expansion
 betta,betta,Kannada,Dravidian,yellow,topography,land,Hill,attested,,added in v2 lexicon expansion
 danga,danga,Bengali,Indo-Aryan,red,topography,land,High Land,attested,,
+dongar,dongar,Marathi,Indo-Aryan,red,topography,land,Hill,attested,,added in v2 lexicon expansion
+dongri,dongri,Marathi,Indo-Aryan,red,topography,land,Hillock (from dongar),attested,,added in v2 lexicon expansion
 ghatta,gatta,Kannada,Dravidian,yellow,topography,land,Hill / ridge,probable,,added in v2 lexicon expansion
 ghatta,ghatta,Kannada,Dravidian,yellow,topography,land,Hill / ridge,probable,,added in v2 lexicon expansion
 giri,giri,Kannada,Dravidian,yellow,topography,land,Hill,attested,,
@@ -203,8 +227,11 @@ gutta,gutta,Telugu,Dravidian,yellow,topography,land,Small hill,attested,,
 hill,hill,English,English,blue,topography,land,Hill,attested,,
 hill,hills,English,English,blue,topography,land,Hill,attested,,
 kallu,kallu,Kannada,Dravidian,yellow,topography,land,Stone / rock,probable,,added in v2 lexicon expansion
+khadak,khadak,Marathi,Indo-Aryan,red,topography,land,Rock / rocky ground,probable,,added in v2 lexicon expansion
 khind,khind,Marathi,Indo-Aryan,red,topography,land,Mountain Pass,attested,,
+kop,kop,Marathi,Indo-Aryan,red,topography,land,Hamlet / cluster,speculative,,added in v2 lexicon expansion
 madu,madu,Kannada,Dravidian,yellow,topography,land,Pool / hollow / low ground,speculative,,added in v2 lexicon expansion
 malai,malai,Tamil,Dravidian,yellow,topography,land,Hill / Mount,attested,,
+mati,mati,Marathi,Indo-Aryan,red,topography,land,Earth / soil,probable,,added in v2 lexicon expansion
 met,met,Telugu,Dravidian,yellow,topography,land,Height / Hill,attested,,
 tekdi,tekdi,Marathi,Indo-Aryan,red,topography,land,Hill,attested,,

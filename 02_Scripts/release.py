@@ -6,7 +6,8 @@ Copies the current runtime files to the repo root (what GitHub Pages serves) and
 snapshots the same set into archive/v<N>_<YYYYMMDD>/ so every published version stays
 retrievable. Version number is inferred from the highest existing archive folder.
 
-Archived per version: index.html, data.json, palette.json, lexicon.json.
+Archived per version: index.html, data.json, palette.json, lexicon.json,
+plus every polygons_<City>.geojson present.
 index.html and data.json are the two you asked for; palette.json and lexicon.json come
 along because without them an archived index.html will not render -- an archive you
 cannot run is not an archive.
@@ -19,7 +20,14 @@ import argparse, datetime, os, re, shutil, sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ARCHIVE = os.path.join(REPO, "archive")
-RUNTIME = ["index.html", "data.json", "polygons.geojson", "palette.json", "lexicon.json"]
+BASE_RUNTIME = ["index.html", "data.json", "palette.json", "lexicon.json"]
+
+
+def runtime_files(src):
+    """Base files plus one polygons_<City>.geojson per city present."""
+    import glob
+    extra = sorted(os.path.basename(p) for p in glob.glob(os.path.join(src, "polygons_*.geojson")))
+    return BASE_RUNTIME + extra
 
 
 def next_version():
@@ -38,7 +46,8 @@ def main():
     a = ap.parse_args()
 
     src = os.path.abspath(os.path.expanduser(a.src))
-    missing = [f for f in RUNTIME if not os.path.exists(os.path.join(src, f))]
+    RUNTIME = runtime_files(src)
+    missing = [f for f in BASE_RUNTIME if not os.path.exists(os.path.join(src, f))]
     if missing:
         sys.exit("missing in %s: %s" % (src, ", ".join(missing)))
 

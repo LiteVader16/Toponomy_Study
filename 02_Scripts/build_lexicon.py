@@ -92,7 +92,14 @@ _cat("flora_agriculture", "bari park kaval kavalu")
 _cat("hydrology", "kundi godi")                   # kundi pit/pond; godi dock/wharf
 _cat("religious", "deo")                          # deva — god
 _cat("commerce", "ngad")
-_cat("planned_administrative", "east west maidan")  # directional qualifiers; maidan open ground
+_cat("planned_administrative", "east west maidan plot reclamation")
+_cat("topography", "dongri dongar khadak mati kop")
+_cat("hydrology", "khadi talao nala sagar dhara")
+_cat("commerce", "mithagar khadan")
+_cat("settlement", "koliwada shrushti")
+_cat("infrastructure", "galli gully bandar chowky causeway dock docks parade bandstand")
+_cat("fortification", "gadh gad")
+_cat("flora_agriculture", "green")
 # byrathi, ruthy, vathy remain 'other' — genuinely unresolved, flagged for research
 
 # ---------------------------------------------------------------- variant → lemma collapse
@@ -155,7 +162,52 @@ ADDITIONS = [
     ("kodi",    "Kannada", "End / edge / boundary",                        "probable"),
     ("khane",   "Persian", "House / quarter",                              "probable"),
     ("grounds", "English", "Open ground",                                  "attested"),
+
+    # --- Mumbai / Marathi-Konkani expansion (v10) ---------------------------
+    # Mumbai's naming is structurally unlike Bengaluru's: fewer productive suffixes,
+    # more simplex island-village names inherited from Koli and East Indian settlement,
+    # plus a distinct colonial descriptive layer absent from Bengaluru.
+    ("dongri",   "Marathi",  "Hillock (from dongar)",                      "attested"),
+    ("dongar",   "Marathi",  "Hill",                                       "attested"),
+    ("khadi",    "Marathi",  "Creek / tidal inlet",                        "attested"),
+    ("khadak",   "Marathi",  "Rock / rocky ground",                        "probable"),
+    ("khadan",   "Marathi",  "Quarry",                                     "probable"),
+    ("mithagar", "Marathi",  "Salt pan",                                   "attested"),
+    ("koliwada", "Marathi",  "Koli fishing settlement",                    "attested"),
+    ("talao",    "Marathi",  "Tank / lake",                                "attested"),
+    ("galli",    "Marathi",  "Lane",                                       "attested"),
+    ("gully",    "Marathi",  "Lane",                                       "probable"),
+    ("sagar",    "Sanskrit", "Sea",                                        "attested"),
+    ("gadh",     "Marathi",  "Fort",                                       "attested"),
+    ("gad",      "Marathi",  "Fort",                                       "probable"),
+    ("mati",     "Marathi",  "Earth / soil",                               "probable"),
+    ("dhara",    "Marathi",  "Stream / flow",                              "speculative"),
+    ("bandar",   "Marathi",  "Harbour / port",                             "attested"),
+    ("chowky",   "Marathi",  "Post / station",                             "probable"),
+    ("nala",     "Marathi",  "Watercourse / drain",                        "probable"),
+    ("kop",      "Marathi",  "Hamlet / cluster",                           "speculative"),
+    ("shrushti", "Sanskrit", "Creation / world (modern coinage)",          "probable"),
+
+    # Colonial descriptive layer — a genuine Mumbai naming stratum, not noise.
+    ("green",       "English", "Open green / common",                      "attested"),
+    ("parade",      "English", "Parade ground / promenade",                "attested"),
+    ("reclamation", "English", "Reclaimed land",                           "attested"),
+    ("bandstand",   "English", "Bandstand promenade",                      "attested"),
+    ("causeway",    "English", "Causeway",                                 "attested"),
+    ("dock",        "English", "Dock",                                     "attested"),
+    ("docks",       "English", "Dock",                                     "attested"),
+    ("plot",        "English", "Surveyed plot",                            "probable"),
 ]
+
+# Whole names that must NEVER be suffix-matched. Each is a simplex toponym whose ending
+# coincides with a real suffix; matching them manufactures a false etymology.
+# ("Lal Bahadur Shastri Nagar" is already safe -- the token-aware matcher takes the final
+# word -- but a bare "Bahadur" would otherwise be read as Dravidian -ur.)
+NEVER_MATCH = {
+    "bahadur", "bandra", "chembur", "nahur", "mahur", "sion", "khar", "mahim",
+    "worli", "parel", "colaba", "dharavi", "juhu", "madh", "marve", "gorai",
+    "danda", "powai", "kalina", "vakola", "wadala", "mahul", "deonar",
+}
 
 NON_SUFFIX = {"suffix", "no", "area"}   # header artefacts / too generic to match on
 

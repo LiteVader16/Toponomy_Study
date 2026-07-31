@@ -1,0 +1,66 @@
+# SIMPLEX TOPONYMS — names that are a single morpheme with no productive suffix.
+#
+# These are not classification failures. Mumbai's core toponymy is largely simplex:
+# the seven islands and the Koli / East Indian fishing villages absorbed into the city
+# carry names that predate the suffixing patterns seen in Bengaluru. Several of them
+# END in a sequence that coincides with a real suffix (Chembur/-ur, Bandra/-andra),
+# so without this list the matcher manufactures a false etymology.
+#
+# A name here is reported as `simplex`, distinct from `unresolved` ("we don't know").
+# Only add a name once you are satisfied it has no suffix — not merely because the
+# classifier missed it. One lowercase name per line.
+
+# --- Mumbai: seven islands and old island villages ---
+colaba
+mazgaon
+mahim
+parel
+worli
+sion
+dharavi
+juhu
+powai
+sewri
+wadala
+mahul
+deonar
+versova
+kalina
+vakola
+gorai
+danda
+madh
+marve
+erangal
+malwani
+kharodi
+kurar
+dindoshi
+chakala
+asalpha
+nahur
+mandvi
+orlem
+chembur
+khar
+trombay
+bandra
+andheri
+malad
+matunga
+dadar
+byculla
+bhandup
+mulund
+kanjur
+vikhroli
+kurla
+amboli
+mandala
+golibar
+jarimari
+darukhana
+
+# --- generic traps ---
+bahadur
+mahur

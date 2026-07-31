@@ -21,17 +21,40 @@ Linkable views: `?view=language|semantic` and `?theme=light|dark`.
 ```bash
 python3 02_Scripts/build_lexicon.py      # Suffixes.csv       -> Suffixes/Suffixes_v2.csv
 python3 02_Scripts/make_palette.py       #                    -> 03_Build/palette.json
-python3 02_Scripts/classify.py Bengaluru # points + lexicon   -> 03_Build/data.json + audit CSV
-cp 03_Build/{data,lexicon,palette}.json 04_App/
+python3 02_Scripts/classify.py Bengaluru Mumbai   # -> 03_Build/data.json + audit CSVs
+python3 02_Scripts/build_polygons.py Bengaluru Mumbai  # -> 03_Build/polygons_<City>.geojson
+cp 03_Build/{data,lexicon,palette}.json 03_Build/polygons_*.geojson .
 ```
 
-## Results
+## Cities
+
+| | points | unresolved | simplex | distinct lemmas | polygon coverage |
+|---|---|---|---|---|---|
+| Bengaluru | 1,036 | 3.67% | 0.00% | 67 | **27.0%** |
+| Mumbai | 630 | 3.33% | 6.03% | 65 | **2.5%** |
+
+Two structural contrasts fall straight out of this, and they are the finding, not a defect:
+
+**Mumbai's toponymy is partly simplex.** Worli, Parel, Mahim, Colaba, Juhu, Dharavi, Powai and
+about forty others are single morphemes with no productive suffix — names predating the suffixing
+patterns that dominate Bengaluru. Bengaluru has **zero**. These are reported as `simplex`, a
+distinct outcome from `unresolved`; forcing them under a coverage target would mean inventing
+etymologies. `Suffixes/never_match.txt` is the list, and it is also what stops the matcher reading
+Chembur as Dravidian `-ur` or Bandra as `-andra`.
+
+**Mumbai has almost no boundary data.** Bengaluru reaches 27% because Karnataka publishes 2,769
+revenue-village polygons and OSM carries 421 admin relations with vernacular names. Maharashtra's
+equivalent village dataset contains **6 features** for Mumbai, mostly unnamed corporation
+fragments, and BMC's 24 wards are lettered A/B/C with no name to match on. Mumbai is fully
+urbanised, so the historic-village cadastral layer that carries Bengaluru simply does not exist.
+
+## Results (Bengaluru, v8 rebuild)
 
 | | before | after |
 |---|---|---|
-| Unclassified | 10.32% | **3.48%** |
+| Unclassified | 10.32% | **3.67%** |
 | Distinct suffixes assigned | 31 | **67** |
-| Lexicon entries | 191 rows / 183 unique | **209 entries, 174 lemmas** |
+| Lexicon entries | 191 rows / 183 unique | **236 entries, 201 lemmas** |
 
 The dominant fix was not the lexicon — it was the matcher. The old pipeline matched raw character
 suffixes, so the commonest Bengaluru naming pattern (initials + suffix word: *JP Nagar*, *NR Colony*,

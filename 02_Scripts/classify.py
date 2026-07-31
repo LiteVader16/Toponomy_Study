@@ -76,10 +76,32 @@ def tokens(name):
     return [t for t in (re.sub(r"[^a-z]", "", p.lower()) for p in re.split(r"[\s\-_/]+", name)) if t]
 
 
+def load_never_match():
+    """Simplex toponyms whose ending coincides with a real suffix.
+
+    Mumbai is full of these -- Worli, Parel, Mahim, Colaba, Chembur -- single-morpheme
+    island-village names with no productive suffix at all. Left alone, the matcher reads
+    Chembur as Dravidian -ur and invents an etymology. Leaving them unresolved is the
+    correct answer, not a coverage failure.
+    """
+    p = os.path.join(ROOT, "Suffixes", "never_match.txt")
+    if not os.path.exists(p):
+        return set()
+    with open(p, encoding="utf-8") as fh:
+        return {ln.strip().lower() for ln in fh
+                if ln.strip() and not ln.startswith("#")}
+
+
+NEVER = load_never_match()
+
+
 def classify(name, lex, ordered):
     tk = tokens(name)
     if not tk:
         return None, None
+    # a bare simplex toponym gets no suffix, by name
+    if len(tk) == 1 and tk[0] in NEVER:
+        return None, "simplex"
     # 1. final whole word
     if tk[-1] in lex:
         return lex[tk[-1]], "word"
@@ -92,6 +114,8 @@ def classify(name, lex, ordered):
                 return lex[t], "lead"
     # 3. agglutinated final token
     last = tk[-1]
+    if last in NEVER:
+        return None, "simplex"
     for s in ordered:
         if len(s) < MIN_AGGLUT_SUFFIX:
             continue
@@ -206,6 +230,10 @@ def run(city):
                 "sg": rec["semantic_group"],
                 "cn": rec["confidence"],
             })
+        elif stage == "simplex":
+            feature.update({"s": "—", "lem": "Simplex", "m": "Single morpheme, no suffix",
+                            "l": "Pre-suffixal", "lf": "Other", "cf": "grey",
+                            "sc": "simplex", "sg": "simplex", "cn": "attested"})
         else:
             feature.update({"s": "Other", "lem": "Other", "m": "Unresolved",
                             "l": "Unknown", "lf": "Other", "cf": "grey",
@@ -224,10 +252,13 @@ def run(city):
              if any(a["name"] == f["n"] and a["suffix"] == f["s"] for f in out)]
 
     total = len(out)
-    unres = sum(1 for f in out if f["s"] == "Other")
+    unres = sum(1 for f in out if f["lem"] == "Other")
+    simp = sum(1 for f in out if f["lem"] == "Simplex")
+    # simplex names are classified, not missing -- the target applies to genuine unknowns
     pct = 100.0 * unres / total if total else 0
-    print("  %d points  |  unresolved %d (%.2f%%)  |  distinct lemmas %d"
-          % (total, unres, pct, len({f["lem"] for f in out if f["lem"] != "Other"})))
+    print("  %d points  |  unresolved %d (%.2f%%)  |  simplex %d (%.2f%%)  |  distinct lemmas %d"
+          % (total, unres, pct, simp, 100.0 * simp / total if total else 0,
+             len({f["lem"] for f in out if f["lem"] not in ("Other", "Simplex")})))
     print("  match stages: %s" % dict(stages))
     if dropped:
         print("  dropped %d data-bug records: %s" % (len(dropped), Counter(b for _, b in dropped)))

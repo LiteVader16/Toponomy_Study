@@ -53,6 +53,7 @@ SEMANTIC = {
         "land":          "#05764e",
         "built_social":  "#773869",
         "unresolved":    "#8a8a86",
+        "simplex":       "#4f4f4c",
     },
     "dark": {
         "settlement":    "#b44300",
@@ -61,6 +62,7 @@ SEMANTIC = {
         "land":          "#007743",
         "built_social":  "#a975ce",
         "unresolved":    "#7e7e7a",
+        "simplex":       "#c2c2ba",
     },
 }
 
@@ -71,7 +73,13 @@ SEMANTIC_LABEL = {
     "land":          "Land & terrain",
     "built_social":  "Built & social",
     "unresolved":    "Unresolved",
+    "simplex":       "Simplex (no suffix)",
 }
+
+# simplex and unresolved are both neutrals, so they are exempt from the chromatic gate,
+# but they must still be told apart from each other:
+#   light  #4f4f4c vs #8a8a86  normal-vision dE 20.6  (>=15)  contrast 8.01:1
+#   dark   #c2c2ba vs #7e7e7a  normal-vision dE 22.0  (>=15)  contrast 9.72:1
 
 SURFACE = {"light": "#fcfcfb", "dark": "#1a1a19"}
 

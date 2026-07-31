@@ -19,7 +19,7 @@ point set: -halli ~49% has a polygon, -layout ~15%, -garden ~6%. So "share of th
 AREA that is -halli" overstates -halli badly. Counts stay the honest denominator; the
 per-tier coverage table printed at the end is what to publish alongside any area claim.
 
-Usage: python3 02_Scripts/build_polygons.py
+Usage: python3 02_Scripts/build_polygons.py [City ...]      (default: Bengaluru)
 """
 import json, math, os, re, sys, time
 import urllib.parse
@@ -29,6 +29,26 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "01_Data_Raw")
 BUILD = os.path.join(ROOT, "03_Build")
 MAX_SNAP_KM = 4.0        # matched polygon must be this close to the point, else reject
+
+# Per-city sources. `area` is the OSM area name to clip Overpass queries to; `local`
+# lists ready-made GeoJSON files in 01_Data_Raw with the property holding the name.
+# Bengaluru has usable ward and revenue-village files; Mumbai does not -- BMC's 24 wards
+# are lettered A/B/C with no vernacular name to match on -- so Mumbai leans on OSM.
+CITIES = {
+    "Bengaluru": {
+        "area": "Bengaluru",
+        "local": [("BBMP.geojson", ("KGISWardName",), "bbmp_ward"),
+                  ("blr_villages.geojson", ("NAME", "VILL_NAME"), "revenue_village")],
+    },
+    # OSM has no single city-level relation called "Mumbai" -- only "Mumbai City District"
+    # and "Mumbai Suburban District" at admin_level 5 -- so an area lookup returns nothing.
+    # A bounding box over Greater Mumbai is the reliable clip.
+    "Mumbai": {
+        "bbox": (18.87, 72.76, 19.32, 73.04),        # S, W, N, E
+        "local": [("mum_villages.geojson", ("NAME", "VILL_NAME"), "revenue_village")],
+    },
+}
+TIER_RANK = {"osm_place": 0, "osm_admin": 1, "bbmp_ward": 2, "revenue_village": 3}
 
 
 # ------------------------------------------------------------------ helpers
@@ -118,15 +138,24 @@ def round_geom(geom, nd=5):
 
 
 # ------------------------------------------------------------------ sources
-def fetch_osm_place_polygons():
-    cache = os.path.join(RAW, "osm_place_polygons.json")
+def fetch_osm_place_polygons(city, area):
+    cache = os.path.join(RAW, "osm_place_polygons_%s.json" % city.lower())
+    legacy = os.path.join(RAW, "osm_place_polygons.json")
+    if city == "Bengaluru" and not os.path.exists(cache) and os.path.exists(legacy):
+        cache = legacy
     if os.path.exists(cache):
         with open(cache) as fh:
             return json.load(fh)
-    q = """[out:json][timeout:180];
-area["name"="Bengaluru"]["boundary"="administrative"]->.a;
+    if isinstance(area, tuple):
+        clip = "(%s)" % ",".join(str(x) for x in area)
+        q = """[out:json][timeout:240];
+way["place"~"^(suburb|neighbourhood|quarter|village|town|hamlet|locality)$"]%s;
+out geom;""" % clip
+    else:
+        q = """[out:json][timeout:240];
+area["name"="%s"]["boundary"="administrative"]->.a;
 way["place"~"^(suburb|neighbourhood|quarter|village|town|hamlet|locality)$"](area.a);
-out geom;"""
+out geom;""" % area
     data = None
     for attempt in range(4):
         for ep in ("https://overpass-api.de/api/interpreter",
@@ -151,16 +180,25 @@ out geom;"""
     return data
 
 
-def fetch_osm_admin():
+def fetch_osm_admin(city, area):
     """admin_level 9/10 relations — revenue villages and wards, with vernacular names."""
-    cache = os.path.join(RAW, "osm_admin_geom.json")
+    cache = os.path.join(RAW, "osm_admin_geom_%s.json" % city.lower())
+    legacy = os.path.join(RAW, "osm_admin_geom.json")
+    if city == "Bengaluru" and not os.path.exists(cache) and os.path.exists(legacy):
+        cache = legacy
     if os.path.exists(cache):
         with open(cache) as fh:
             return json.load(fh)
-    q = """[out:json][timeout:300];
-area["name"="Bengaluru"]["boundary"="administrative"]->.a;
+    if isinstance(area, tuple):
+        clip = "(%s)" % ",".join(str(x) for x in area)
+        q = """[out:json][timeout:300];
+relation["boundary"="administrative"]["admin_level"~"^(8|9|10|11)$"]%s;
+out geom;""" % clip
+    else:
+        q = """[out:json][timeout:300];
+area["name"="%s"]["boundary"="administrative"]->.a;
 relation["boundary"="administrative"]["admin_level"~"^(9|10|11)$"](area.a);
-out geom;"""
+out geom;""" % area
     data = None
     for attempt in range(4):
         for ep in ("https://overpass-api.de/api/interpreter",
@@ -231,10 +269,12 @@ def stitch(members):
     return {"type": "MultiPolygon", "coordinates": [[r] for r in rings]}
 
 
-def load_sources():
+def load_sources(city):
+    cfg = CITIES.get(city, {"area": city, "local": []})
+    area = cfg.get("bbox") or cfg.get("area", city)
     src = []
 
-    osm = fetch_osm_place_polygons()
+    osm = fetch_osm_place_polygons(city, area)
     n = 0
     for e in osm.get("elements", []):
         name = (e.get("tags") or {}).get("name")
@@ -246,9 +286,9 @@ def load_sources():
             ring.append(ring[0])
         src.append((norm(name), name, {"type": "Polygon", "coordinates": [ring]}, "osm_place"))
         n += 1
-    print("  tier 1 osm_place       : %d polygons" % n)
+    print("  osm_place       : %d polygons" % n)
 
-    adm = fetch_osm_admin()
+    adm = fetch_osm_admin(city, area)
     n = 0
     for e in adm.get("elements", []):
         name = (e.get("tags") or {}).get("name")
@@ -258,48 +298,41 @@ def load_sources():
         if g:
             src.append((norm(name), name, g, "osm_admin"))
             n += 1
-    print("  tier 2 osm_admin       : %d polygons" % n)
+    print("  osm_admin       : %d polygons" % n)
 
-    p = os.path.join(RAW, "BBMP.geojson")
-    n = 0
-    if os.path.exists(p):
-        for f in json.load(open(p))["features"]:
-            nm = f["properties"].get("KGISWardName")
-            if nm and f.get("geometry"):
-                src.append((norm(nm), nm, f["geometry"], "bbmp_ward"))
-                n += 1
-    print("  tier 3 bbmp_ward       : %d polygons" % n)
-
-    p = os.path.join(RAW, "blr_villages.geojson")
-    n = 0
-    if os.path.exists(p):
-        for f in json.load(open(p))["features"]:
-            nm = f["properties"].get("NAME") or f["properties"].get("VILL_NAME")
-            if nm and str(nm).strip().lower() != "no data" and f.get("geometry"):
-                src.append((norm(nm), nm, f["geometry"], "revenue_village"))
-                n += 1
-    print("  tier 4 revenue_village : %d polygons" % n)
+    for fname, keys, tier in cfg["local"]:
+        p = os.path.join(RAW, fname)
+        n = 0
+        if os.path.exists(p):
+            for f in json.load(open(p))["features"]:
+                nm = next((f["properties"].get(k) for k in keys if f["properties"].get(k)), None)
+                if nm and str(nm).strip().lower() != "no data" and f.get("geometry"):
+                    src.append((norm(nm), nm, f["geometry"], tier))
+                    n += 1
+        print("  %-15s : %d polygons%s" % (tier, n, "" if n else "  (file absent)"))
 
     return src
 
 
 # ------------------------------------------------------------------ main
-def main():
-    data = json.load(open(os.path.join(BUILD, "data.json")))
-    city = data["cities"][0]
+def build(city_name):
+    path = os.path.join(BUILD, "data_%s.json" % city_name)
+    if not os.path.exists(path):
+        path = os.path.join(BUILD, "data.json")
+    data = json.load(open(path))
+    city = next(c for c in data["cities"] if c["name"] == city_name)
     feats = city["neighborhoods"]
-    print("classified points: %d\n" % len(feats))
+    print("\n%s — classified points: %d" % (city_name, len(feats)))
 
     print("polygon sources:")
-    sources = load_sources()
+    sources = load_sources(city_name)
 
     index = {}
     for key, name, geom, tier in sources:
         if key:
             index.setdefault(key, []).append((name, geom, tier))
     for lst in index.values():
-        lst.sort(key=lambda x: {"osm_place": 0, "osm_admin": 1,
-                                "bbmp_ward": 2, "revenue_village": 3}[x[2]])
+        lst.sort(key=lambda x: TIER_RANK[x[2]])
 
     out, tally = [], {}
     for f in feats:
@@ -325,11 +358,11 @@ def main():
         out.append({"type": "Feature", "properties": props, "geometry": geom})
 
     fc = {"type": "FeatureCollection",
-          "name": "Bengaluru toponymy",
+          "name": "%s toponymy" % city_name,
           "city": {"name": city["name"], "coords": city["coords"], "zoom": city.get("zoom", 11)},
           "shade_of": data.get("shade_of", {}),
           "features": out}
-    path = os.path.join(BUILD, "polygons.geojson")
+    path = os.path.join(BUILD, "polygons_%s.geojson" % city_name)
     with open(path, "w") as fh:
         json.dump(fc, fh, separators=(",", ":"))
 
@@ -353,6 +386,11 @@ def main():
             d[1] += 1
     for lem, (n, g) in sorted(bysfx.items(), key=lambda x: -x[1][0])[:14]:
         print("  %-12s %4d pts  %4d polygons  %5.1f%%" % (lem, n, g, 100 * g / n))
+
+
+def main():
+    for c in (sys.argv[1:] or ["Bengaluru"]):
+        build(c)
 
 
 if __name__ == "__main__":
